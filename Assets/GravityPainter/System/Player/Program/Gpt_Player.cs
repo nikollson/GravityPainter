@@ -10,15 +10,16 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerJump playerJump;
     public Gpt_PlayerAttack playerAttack;
     public Gpt_PlayerBodyColor playerBodyColor;
+    public Gpt_PlayerWait playerWait;
 
-    
+
     public enum MODE { WAIT, RUN, ATTACK, ROT1, ROT2, SKILL, JUMP, FEEVER, AIR };
     public enum ATTACK_MODE { RIGHT, LEFT };
     public enum FEEVER_MODE { NONE, FEEVER };
     public MODE Mode { get; private set; }
     public ATTACK_MODE AttackMode { get; private set; }
     public FEEVER_MODE feeverMode { get; private set; }
-    
+
     void Update()
     {
         UpdateMode();
@@ -47,6 +48,7 @@ public class Gpt_Player : MonoBehaviour
     }
     void UpdateMode_StartWait()
     {
+        playerWait.StartWait();
         Mode = MODE.WAIT;
     }
     void UpdateMode_StartJump()
@@ -64,9 +66,9 @@ public class Gpt_Player : MonoBehaviour
 
     void UpdateMode_Wait()
     {
-        if (HasMoveInput()) UpdateMode_StartRun();
-        if (HasAttackInput()) UpdateMode_StartAttack(ATTACK_MODE.RIGHT);
-        if (HasJumpInput()) UpdateMode_StartJump();
+        if (HasMoveInput()) { playerWait.EndWait(); UpdateMode_StartRun(); }
+        if (HasAttackInput()) { playerWait.EndWait(); UpdateMode_StartAttack(ATTACK_MODE.RIGHT); }
+        if (HasJumpInput()) { playerWait.EndWait(); UpdateMode_StartJump(); }
     }
 
     void UpdateMode_Run()
