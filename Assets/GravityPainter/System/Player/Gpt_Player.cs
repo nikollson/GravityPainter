@@ -1,74 +1,98 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Gpt_Player : MonoBehaviour {
-    
-    public Gpt_Camera camera;
-    public float speed = 1.0f;
-    public HitManager attackHitManager;
+public class Gpt_Player : MonoBehaviour
+{
 
+    public Gpt_Camera camera;
+
+    public Gpt_PlayerRun playerRun;
+    public Gpt_PlayerAttack playerAttack;
     public Gpt_PlayerBodyColor playerBodyColor;
 
-    public enum MODE { WAIT, RUN, ATTACK, ROT, SKILL, JUMP };
-    public enum FEEVER_MODE { NONE, FEEVER};
-    public enum ATTACK_MODE { RIGHT, LEFT }
+    
+    public enum MODE { WAIT, RUN, ATTACK, ROT1, ROT2, SKILL, JUMP, FEEVER };
+    public enum ATTACK_MODE { RIGHT, LEFT };
+    public enum FEEVER_MODE { NONE, FEEVER };
+    public MODE Mode { get; private set; }
+    public ATTACK_MODE AttackMode { get; private set; }
+    public FEEVER_MODE feeverMode { get; private set; }
     
     void Update()
     {
-        Update_Move();
-        Update_Attack();
+        UpdateMode();
     }
 
-    void Update_Attack()
+    void UpdateMode()
     {
-        if (Gpt_Input.Attack)
+
+        if (Mode == MODE.WAIT) UpdateMode_Wait();
+        if (Mode == MODE.RUN) UpdateMode_Run();
+        if (Mode == MODE.ATTACK) UpdateMode_Attack();
+    }
+
+
+    bool HasMoveInput() { float EPS = 0.001f; return Gpt_Input.Move.magnitude > EPS; }
+    bool HasAttackInput() { return Gpt_Input.Attack; }
+    bool HasFeeverInput() { return Gpt_Input.Feever; }
+    bool HasSkillInput() { return Gpt_Input.Skill; }
+    bool HasJumpInput() { return Gpt_Input.Jump; }
+
+    void UpdateMode_StartRun()
+    {
+        playerRun.StartRun();
+        Mode = MODE.RUN;
+    }
+
+    void UpdateMode_StartWait()
+    {
+        Mode = MODE.WAIT;
+    }
+
+    void UpdateMode_StartAttack(ATTACK_MODE atmode)
+    {
+        playerAttack.StartAttack();
+        Mode = MODE.ATTACK;
+        AttackMode = atmode;
+    }
+
+    void UpdateMode_Wait()
+    {
+        if (HasMoveInput()) UpdateMode_StartRun();
+        if (HasAttackInput()) UpdateMode_StartAttack(ATTACK_MODE.RIGHT);
+    }
+
+    void UpdateMode_Run()
+    {
+        if (!HasMoveInput())
         {
-            IsAttacking = true;
-            string log = "";
-            foreach(var a in attackHitManager.HitColliders)
+            playerRun.EndRun();
+            UpdateMode_StartWait();
+        }
+        if (HasAttackInput())
+        {
+            playerRun.EndRun();
+            UpdateMode_StartAttack(ATTACK_MODE.RIGHT);
+        }
+    }
+
+    void UpdateMode_Attack()
+    {
+        if (playerAttack.CanSecondAttack())
+        {
+            if (HasAttackInput())
             {
-                log += a.name;
+                playerAttack.EndAttack();
+                ATTACK_MODE next = AttackMode == ATTACK_MODE.LEFT ? ATTACK_MODE.RIGHT : ATTACK_MODE.LEFT;
+                UpdateMode_StartAttack(next);
             }
-            Debug.Log(log);
         }
-        else
+        if (playerAttack.IsAttackEnd())
         {
-            IsAttacking = false;
-        }
+            playerAttack.EndAttack();
+            if (!HasMoveInput()) UpdateMode_StartWait();
+            if (HasMoveInput()) UpdateMode_StartRun();
+         }
+
     }
-
-    void Update_Move()
-    {
-        float EPS = 0.001f;
-        bool isMoving = Gpt_Input.Move.magnitude > EPS;
-
-        if (isMoving)
-        {
-            Vector3 camForward = camera.transform.forward;
-            camForward.y = 0;
-            camForward = camForward.normalized;
-            Vector3 camRight = new Vector3(camForward.z, 0, -camForward.x);
-
-            Vector3 move = speed * (camForward * Gpt_Input.Move.y + camRight * Gpt_Input.Move.x);
-
-            this.transform.position += move;
-            float angle = Mathf.Atan2(move.z, move.x);
-            this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle), 0));
-        }
-    }
-
-    float radToDigree(float rad)
-    {
-        return rad / Mathf.PI * 180;
-    }
-
-    public bool IsRunning
-    {
-        get
-        {
-            float EPS = 0.001f;
-            return Gpt_Input.Move.magnitude > EPS;
-        }
-    }
-    public bool IsAttacking { get; private set; }
 }
