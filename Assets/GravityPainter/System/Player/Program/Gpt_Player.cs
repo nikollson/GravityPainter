@@ -4,14 +4,15 @@ using System.Collections;
 public class Gpt_Player : MonoBehaviour
 {
 
-    public Gpt_Camera camera;
+    public Gpt_PlayerUtillity playerUtillity;
 
     public Gpt_PlayerRun playerRun;
+    public Gpt_PlayerJump playerJump;
     public Gpt_PlayerAttack playerAttack;
     public Gpt_PlayerBodyColor playerBodyColor;
 
     
-    public enum MODE { WAIT, RUN, ATTACK, ROT1, ROT2, SKILL, JUMP, FEEVER };
+    public enum MODE { WAIT, RUN, ATTACK, ROT1, ROT2, SKILL, JUMP, FEEVER, AIR };
     public enum ATTACK_MODE { RIGHT, LEFT };
     public enum FEEVER_MODE { NONE, FEEVER };
     public MODE Mode { get; private set; }
@@ -25,10 +26,10 @@ public class Gpt_Player : MonoBehaviour
 
     void UpdateMode()
     {
-
         if (Mode == MODE.WAIT) UpdateMode_Wait();
         if (Mode == MODE.RUN) UpdateMode_Run();
         if (Mode == MODE.ATTACK) UpdateMode_Attack();
+        if (Mode == MODE.JUMP) UpdateMode_Jump();
     }
 
 
@@ -38,17 +39,21 @@ public class Gpt_Player : MonoBehaviour
     bool HasSkillInput() { return Gpt_Input.Skill; }
     bool HasJumpInput() { return Gpt_Input.Jump; }
 
+
     void UpdateMode_StartRun()
     {
         playerRun.StartRun();
         Mode = MODE.RUN;
     }
-
     void UpdateMode_StartWait()
     {
         Mode = MODE.WAIT;
     }
-
+    void UpdateMode_StartJump()
+    {
+        playerJump.StartJump();
+        Mode = MODE.JUMP;
+    }
     void UpdateMode_StartAttack(ATTACK_MODE atmode)
     {
         playerAttack.StartAttack();
@@ -56,10 +61,12 @@ public class Gpt_Player : MonoBehaviour
         AttackMode = atmode;
     }
 
+
     void UpdateMode_Wait()
     {
         if (HasMoveInput()) UpdateMode_StartRun();
         if (HasAttackInput()) UpdateMode_StartAttack(ATTACK_MODE.RIGHT);
+        if (HasJumpInput()) UpdateMode_StartJump();
     }
 
     void UpdateMode_Run()
@@ -73,6 +80,11 @@ public class Gpt_Player : MonoBehaviour
         {
             playerRun.EndRun();
             UpdateMode_StartAttack(ATTACK_MODE.RIGHT);
+        }
+        if (HasJumpInput())
+        {
+            playerRun.EndRun();
+            UpdateMode_StartJump();
         }
     }
 
@@ -92,7 +104,16 @@ public class Gpt_Player : MonoBehaviour
             playerAttack.EndAttack();
             if (!HasMoveInput()) UpdateMode_StartWait();
             if (HasMoveInput()) UpdateMode_StartRun();
+            if (HasJumpInput()) UpdateMode_StartJump();
          }
+    }
 
+    void UpdateMode_Jump()
+    {
+        if (playerJump.IsJumpEnd())
+        {
+            playerJump.EndJump();
+            UpdateMode_StartWait();
+        }
     }
 }
