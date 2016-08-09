@@ -11,6 +11,7 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerAttack playerAttack;
     public Gpt_PlayerBodyColor playerBodyColor;
     public Gpt_PlayerWait playerWait;
+    public Gpt_PlayerAir playerAir;
 
 
     public enum MODE { WAIT, RUN, ATTACK, ROT1, ROT2, SKILL, JUMP, FEEVER, AIR };
