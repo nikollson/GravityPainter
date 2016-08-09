@@ -10,19 +10,15 @@ public class Gpt_PlayerJump : MonoBehaviour {
     public float jumpTime = 0.2f;
     float jumpCount = 0;
 
-    bool isJumping = false;
-
     public void StartJump()
     {
-        isJumping = true;
         jumpCount = 0;
-
         playerRigidbody.AddForce(jumpForce, ForceMode.Impulse);
     }
 
     public void EndJump()
     {
-        isJumping = false;
+
     }
 
     public bool IsJumpEnd()
@@ -30,11 +26,9 @@ public class Gpt_PlayerJump : MonoBehaviour {
         return jumpCount > jumpTime;
     }
 
-    void Update()
+    public void UpdateJump()
     {
-        if (isJumping)
-        {
-            jumpCount += Time.deltaTime;
-        }
+        jumpCount += Time.deltaTime;
     }
-}
+  
+  }
