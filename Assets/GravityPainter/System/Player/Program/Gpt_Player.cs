@@ -12,6 +12,7 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerBodyColor playerBodyColor;
     public Gpt_PlayerWait playerWait;
     public Gpt_PlayerAir playerAir;
+    public Gpt_TrailControl trailControl;
 
     public enum MODE { WAIT, RUN, ATTACK, ROT1, ROT2, SKILL, JUMP, FEEVER, AIR };
     public enum ATTACK_MODE { RIGHT, LEFT };
@@ -63,6 +64,7 @@ public class Gpt_Player : MonoBehaviour
         playerAttack.StartAttack();
         Mode = MODE.ATTACK;
         AttackMode = atmode;
+        trailControl.StartTrail();
     }
     void UpdateMode_StartAir()
     {
@@ -109,7 +111,6 @@ public class Gpt_Player : MonoBehaviour
         {
             if (HasAttackInput())
             {
-                endAttack = true;
                 ATTACK_MODE next = AttackMode == ATTACK_MODE.LEFT ? ATTACK_MODE.RIGHT : ATTACK_MODE.LEFT;
                 UpdateMode_StartAttack(next);
             }
@@ -122,7 +123,11 @@ public class Gpt_Player : MonoBehaviour
             if (HasJumpInput()) UpdateMode_StartJump();
          }
 
-        if (endAttack) playerAttack.EndAttack();
+        if (endAttack)
+        {
+            playerAttack.EndAttack();
+            trailControl.EndTrail();
+        }
     }
 
     void UpdateMode_Jump()
