@@ -31,9 +31,7 @@ public class Gpt_PlayerRun : MonoBehaviour
         Vector3 power = targetSpeed * analogPadMove - friction * rigidbody.velocity;
         rigidbody.AddForce(power, ForceMode.VelocityChange);
 
-        float angle = Mathf.Atan2(analogPadMove.z, analogPadMove.x);
-        this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle), 0));
-
+        playerUtillity.LookAnalogpadDirction();
     }
 
 

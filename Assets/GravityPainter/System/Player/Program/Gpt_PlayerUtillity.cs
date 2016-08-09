@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Gpt_PlayerUtillity : MonoBehaviour {
+public class Gpt_PlayerUtillity : MonoBehaviour
+{
 
     public Gpt_Camera camera;
     public HitManager footCollider;
@@ -31,5 +32,26 @@ public class Gpt_PlayerUtillity : MonoBehaviour {
     public void IgnoreFootCollider()
     {
         ignoreFootColliderCount = 0;
+    }
+
+    public void LookAnalogpadDirction()
+    {
+        if (HasAnalogpadMove())
+        {
+            Vector3 analogPadMove = GetAnalogpadMove();
+            float angle = Mathf.Atan2(analogPadMove.z, analogPadMove.x);
+            this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle), 0));
+        }
+    }
+
+    public bool HasAnalogpadMove()
+    {
+        float EPS = 0.0001f;
+        return GetAnalogpadMove().magnitude > EPS;
+    }
+
+    float radToDigree(float rad)
+    {
+        return rad / Mathf.PI * 180;
     }
 }

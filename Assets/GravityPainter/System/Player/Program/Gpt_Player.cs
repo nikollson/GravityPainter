@@ -13,8 +13,6 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerWait playerWait;
     public Gpt_PlayerAir playerAir;
 
-
-
     public enum MODE { WAIT, RUN, ATTACK, ROT1, ROT2, SKILL, JUMP, FEEVER, AIR };
     public enum ATTACK_MODE { RIGHT, LEFT };
     public enum FEEVER_MODE { NONE, FEEVER };
@@ -139,11 +137,6 @@ public class Gpt_Player : MonoBehaviour
 
             if (!playerUtillity.IsGround()) UpdateMode_StartAir();
             else UpdateMode_StartWait();
-        }
-        if (playerUtillity.IsGround())
-        {
-            endJump = true;
-            UpdateMode_StartWait();
         }
 
         if (endJump) playerJump.EndJump();
