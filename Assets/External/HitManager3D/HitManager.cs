@@ -8,6 +8,9 @@ public class HitManager : MonoBehaviour
     public enum Mode { Normal, OnceHitRespawn, OnceHitEver}
     public Mode mode;
     public HitManager[] child;
+    public Collider[] ignoreCollider;
+    public bool isIgnoreTrigger = false;
+    public bool isIgnoreCollider = false;
 
     List<Data> dict = new List<Data>();
 
@@ -53,6 +56,11 @@ public class HitManager : MonoBehaviour
         detectAnd = this.GetComponents<HitAND>();
         detectOr = this.GetComponents<HitOR>();
         collider = this.GetComponent<Collider>();
+
+        foreach(var a in ignoreCollider)
+        {
+            Physics.IgnoreCollision(collider, a);
+        }
     }
 
     public void Respawn()
@@ -178,9 +186,12 @@ public class HitManager : MonoBehaviour
     {
         bool andOK = true;
         foreach (var a in detectAnd) andOK &= a.IgnoreAND(collider);
+        andOK &= !(collider.isTrigger && isIgnoreTrigger);
+        andOK &= !(!collider.isTrigger && isIgnoreCollider);
 
         bool orOK = (detectOr.Length == 0) ? true : false;
         foreach (var a in detectOr) orOK |= a.IgnoreOR(collider);
+
 
         return !andOK || !orOK;
     }
