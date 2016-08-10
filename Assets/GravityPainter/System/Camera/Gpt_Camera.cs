@@ -7,7 +7,7 @@ public class Gpt_Camera : MonoBehaviour
     public Transform lookTransform;     // 注視点
     public Transform placeTransform;    // 移動基準座標
 
-    public float distance = 5.0f;       // プレイヤーとの距離s
+    public float distance = 5.0f;       // プレイヤーとの距離
     public float angleDown = 60.0f;
     public float startRot = 0.0f;
     public float rotSpeed = 3.0f;
@@ -17,10 +17,9 @@ public class Gpt_Camera : MonoBehaviour
     void Start()
     {
         rot = startRot;
-        distance = 8.0f;
     }
 
-    // カメラ更新
+    // レンダリング前カメラ更新
     void OnPreRender()
     {
         Update_Rotation();
@@ -51,7 +50,7 @@ public class Gpt_Camera : MonoBehaviour
         this.transform.LookAt(lookTransform.position);
     }
 
-    // 角度をラジアン変換関数
+    // 角度をラジアンに変換する関数
     float angToRad(float ang)
     {
         return ang / 180 * Mathf.PI;
