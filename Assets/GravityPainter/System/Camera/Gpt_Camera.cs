@@ -11,22 +11,34 @@ public class Gpt_Camera : MonoBehaviour
     public Transform lookTransform;     // 注視点
     public Transform placeTransform;    // 移動基準座標
     public GameObject player;           // プレイヤー情報
-
+    public float slowRotTime = 1.0f;    // 回転の余韻時間
     public float distance = 5.0f;       // プレイヤーとの距離
     public float angleDown = 60.0f;
-    public float startRot = 0.0f;
-    public float rotSpeed = 3.0f;
+    public float rotSpeed = 30.0f;
 
+    public float startRot = 0.0f;
     float rot;
+    bool oldCameraRotFlg;               // カメラ回転制御が行われたかどうか(前のフレームにて)
+    bool cameraRotFlg;                  // カメラ回転制御が行われたかどうか(このフレームにて)
+    float reqEndCntAndFlg;              // 回転リクエストが終わってからの経過時間兼フラグ
+    float reqMoveX;
+
+    bool oldStickPushFlg = false;
+    bool stickPushFlg = false;
 
     void Start()
     {
         rot = startRot;
+        oldCameraRotFlg = false;
+        cameraRotFlg = false;
     }
 
     // レンダリング前カメラ更新
     void OnPreRender()
     {
+        oldCameraRotFlg = cameraRotFlg;
+        oldStickPushFlg = stickPushFlg;
+
         Update_Rotation();
         Update_Position();
         Update_Look();
@@ -35,12 +47,47 @@ public class Gpt_Camera : MonoBehaviour
     // 回転制御関数
     void Update_Rotation()
     {
-        rot -= Gpt_Input.CamMove.x * angToRad(rotSpeed);
+        // 回転リクエストがあれば
+        if (Gpt_Input.CamMove.x != 0.0f)
+        {
+            cameraRotFlg = true;
+            rot -= Gpt_Input.CamMove.x * angToRad(rotSpeed);    // 回転させる
+            reqMoveX = Gpt_Input.CamMove.x*0.01f;
+        }
+        else
+        {
+            cameraRotFlg = false;
+        }
+
+        // このフレームで回転リクエストが終わっているならば
+        if(oldCameraRotFlg && !cameraRotFlg)
+        {
+            reqEndCntAndFlg = slowRotTime;      // 緩やかに回転する時間
+        }
+
+        // 余韻回転
+        if (reqEndCntAndFlg > 0.0f)
+        {
+            reqEndCntAndFlg -= Time.deltaTime;
+            rot -= reqMoveX * reqEndCntAndFlg;
+        }
+        else
+        {
+            reqEndCntAndFlg = 0.0f;
+        }
 
         // 右スティック押し込みでカメラを初期位置へ
         if (Gpt_Input.CameraPush)
         {
-            rot = (180.0f - player.transform.eulerAngles.y) * (3.14f / 180.0f);
+            stickPushFlg = true;
+        }
+        else
+        {
+            stickPushFlg = false;
+        }
+        if (Gpt_Input.CameraPush && !oldStickPushFlg)
+        {
+            rot = (180.0f - player.transform.eulerAngles.y) * (Mathf.PI / 180.0f);
         }
     }
 
