@@ -11,6 +11,8 @@ public class Gpt_Input : MonoBehaviour {
     public static bool Feever { get { inputGetter.Update(); return inputGetter.Feever; } }
     public static Vector2 Move { get { inputGetter.Update(); return inputGetter.Move; } }
     public static Vector2 CamMove { get { inputGetter.Update(); return inputGetter.CamMove; } }
+    public static bool MovePush { get { inputGetter.Update(); return inputGetter.MovePush; } }
+    public static bool CameraPush { get { inputGetter.Update(); return inputGetter.CameraPush; } }
 
     [System.Serializable]
     class InputGetter
@@ -23,6 +25,8 @@ public class Gpt_Input : MonoBehaviour {
         public string yKey = "Vertical";
         public string camXKey = "CamHorizontal";
         public string camYKey = "CamVertical";
+        public string movePushKey = "MovePush";
+        public string cameraPushKey = "CameraPush";
 
         public bool Jump { get; private set; }
         public bool Attack { get; private set; }
@@ -30,6 +34,8 @@ public class Gpt_Input : MonoBehaviour {
         public bool Skill { get; private set; }
         public Vector2 Move { get; private set; }
         public Vector2 CamMove { get; private set; }
+        public bool MovePush { get; private set; }
+        public bool CameraPush { get; private set; }
 
         int prevFrame = -1;
 
@@ -45,6 +51,9 @@ public class Gpt_Input : MonoBehaviour {
 
             Move = new Vector2(Input.GetAxis(xKey), Input.GetAxis(yKey));
             CamMove = new Vector2(Input.GetAxis(camXKey), Input.GetAxis(camYKey));
+
+            MovePush = Input.GetButton(movePushKey);
+            CameraPush = Input.GetButton(cameraPushKey);
         }
     }
 
