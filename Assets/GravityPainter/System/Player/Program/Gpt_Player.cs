@@ -68,7 +68,8 @@ public class Gpt_Player : MonoBehaviour
     }
     void UpdateMode_StartAir()
     {
-        playerAir.StartAir();
+        if (Mode == MODE.JUMP) playerAir.StartAir_FromJump(Gpt_Input.JumpStartFrame);
+        else playerAir.StartAir();
         Mode = MODE.AIR;
     }
 
@@ -149,7 +150,7 @@ public class Gpt_Player : MonoBehaviour
 
     void UpdateMode_Air()
     {
-        playerAir.UpdateAir();
+        playerAir.UpdateAir(Gpt_Input.Jump, Gpt_Input.JumpStartFrame);
 
         bool endAir = false;
 
