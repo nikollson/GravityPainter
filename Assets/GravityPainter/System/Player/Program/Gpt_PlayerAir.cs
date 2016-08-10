@@ -10,11 +10,23 @@ public class Gpt_PlayerAir : MonoBehaviour
     public float friction = 10;
     public float frictionXZ = 10;
     public float downForce = 200;
+
     
+    public float jumpContinueTime = 0.5f;
+    public float jumpContinuePower = 20;
+    int jumpStartFrame_log = 0;
+
+    float airCount = 0;
 
     public void StartAir()
     {
-        
+        airCount = 0;
+    }
+
+    public void StartAir_FromJump(int jumpStartFame)
+    {
+        jumpStartFrame_log = jumpStartFame;
+        StartAir();
     }
 
     public void EndAir()
@@ -23,7 +35,15 @@ public class Gpt_PlayerAir : MonoBehaviour
     }
 
 
-    public void UpdateAir()
+    public void UpdateAir(bool jumpPushing, int jumpStartFrame)
+    {
+        airCount += Time.deltaTime;
+
+        UpdateAir_JumpContinue(jumpPushing, jumpStartFrame);
+        UpdateAir_MoveAndFriction();
+    }
+
+    void UpdateAir_MoveAndFriction()
     {
         Vector3 input = playerUtillity.GetAnalogpadMove();
 
@@ -37,5 +57,15 @@ public class Gpt_PlayerAir : MonoBehaviour
         rigidbody.AddForce(Time.deltaTime * allPower, ForceMode.Acceleration);
 
         playerUtillity.LookAnalogpadDirction();
+    }
+
+    void UpdateAir_JumpContinue(bool jumpPushing, int jumpStartFrame)
+    {
+        if (jumpPushing && jumpStartFrame_log == jumpStartFrame && airCount < jumpContinueTime)
+        {
+            Vector3 force = jumpContinuePower * new Vector3(0, 1, 0);
+            rigidbody.AddForce(Time.deltaTime * force, ForceMode.Acceleration);
+        }
+
     }
 }

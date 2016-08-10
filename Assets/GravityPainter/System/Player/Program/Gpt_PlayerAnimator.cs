@@ -9,7 +9,7 @@ public class Gpt_PlayerAnimator : MonoBehaviour {
     void Update()
     {
         animator.SetBool("IsRunning", player.Mode == Gpt_Player.MODE.RUN);
-        animator.SetBool("IsAttackingRight", player.Mode == Gpt_Player.MODE.ATTACK && player.AttackMode == Gpt_Player.ATTACK_MODE.RIGHT);
-        animator.SetBool("IsAttackingLeft", player.Mode == Gpt_Player.MODE.ATTACK && player.AttackMode == Gpt_Player.ATTACK_MODE.LEFT);
+        animator.SetBool("IsAttackingRight", player.Mode == Gpt_Player.MODE.ATTACK && player.AttackDirection == Gpt_Player.ATTACK_DIRECTION.RIGHT);
+        animator.SetBool("IsAttackingLeft", player.Mode == Gpt_Player.MODE.ATTACK && player.AttackDirection == Gpt_Player.ATTACK_DIRECTION.LEFT);
     }
 }
