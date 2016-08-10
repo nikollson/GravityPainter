@@ -3,13 +3,17 @@ using System.Collections;
 
 public class Gpt_PlayerAttack : MonoBehaviour
 {
-    public Gpt_Player player;
     public HitManager attackHitManager;
+    public new Rigidbody rigidbody;
 
     public float attackEndTime = 0.2f;
     public float secondAttackTime = 0.15f;
+
+    public float friction = 20f;
+
     float attackCount = 0.0f;
     int attackInputFrame_log = -1;
+    
 
     public void StartAttack(int attackInputFrame)
     {
@@ -41,5 +45,8 @@ public class Gpt_PlayerAttack : MonoBehaviour
     public void UpdateAttack()
     {
         attackCount += Time.deltaTime;
+
+        Vector3 fricionPower = -1 * friction * rigidbody.velocity;
+        rigidbody.AddForce(Time.deltaTime * fricionPower, ForceMode.Acceleration);
     }
 }
