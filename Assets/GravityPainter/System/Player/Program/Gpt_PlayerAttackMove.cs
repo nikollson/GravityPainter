@@ -1,19 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Gpt_PlayerAttack : MonoBehaviour
+public class Gpt_PlayerAttackMove : MonoBehaviour
 {
     public Gpt_PlayerUtillity playerUtillity;
-    public HitManager attackHitManager;
     public new Rigidbody rigidbody;
 
-    public float attackEndTime = 0.2f;
-    public float secondAttackTime = 0.15f;
+    public float attackEndTime = 0.4f;
+    public float secondAttackTime = 0.2f;
 
-    public float friction = 20f;
+    public float friction = 90f;
 
-    public float dashAttackSpeed = 20;
-    public float normalAttackSpeed = 10;
+    public float dashAttackSpeed = 4;
+    public float normalAttackSpeed = 1;
 
     float attackCount = 0.0f;
     int attackInputFrame_log = -1;
