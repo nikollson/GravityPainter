@@ -6,12 +6,15 @@ public class Gpt_Enemy : MonoBehaviour {
     public Gpt_EnemyMove EnemyMove;
     public Gpt_EnemyColor EnemyColor;
 
+    public int hitPoint = 1;
+
     float test;
     
     // Use this for initialization
     void Start () {
         EnemyMove.SetSpeed(2f);
         EnemyMove.SetVecter(transform.forward);
+        EnemyColor.SetColor(1);
     }
 
     // Update is called once per frame
@@ -20,7 +23,7 @@ public class Gpt_Enemy : MonoBehaviour {
         test+=0.01f;
         Vector3 testvec=AngleToVector(test);
 
-        EnemyMove.SetVecter(testvec);
+        //EnemyMove.SetVecter(testvec);
     }
 
     //角度からベクトル算出

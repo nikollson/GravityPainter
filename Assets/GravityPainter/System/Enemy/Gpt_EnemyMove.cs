@@ -4,9 +4,11 @@ using System.Collections;
 public class Gpt_EnemyMove : MonoBehaviour {
     
     public float enemySpeed = 5.0f;
+    public new Rigidbody rigidbody;
+
+    public float friction = 0.6f;
 
     private Vector3 enemyVector = new Vector3();
-    CharacterController character;
     Transform myTransform;
 
     float GRAVITY = 9.8f;
@@ -15,7 +17,6 @@ public class Gpt_EnemyMove : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        character = GetComponent<CharacterController>();
         myTransform = transform;
         enemyVector= new Vector3(0, 0, 1);
     }
@@ -23,24 +24,19 @@ public class Gpt_EnemyMove : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        //地面についているかどうか
-        if (character.isGrounded)
-        {
-
-        }
-        else
-        {
-            // 重力を計算
-            gravity -= GRAVITY * Time.deltaTime;
-        }
+        gravity -= GRAVITY * Time.deltaTime;
 
         Vector3 enemyMove;
 
         enemyMove.x= enemyVector.x * enemySpeed;
-        enemyMove.y = gravity;
+        enemyMove.y =gravity;
         enemyMove.z = enemyVector.z * enemySpeed;
         // 移動
-        character.Move(enemyMove * Time.deltaTime);
+
+        Vector3 power = enemyMove - friction * rigidbody.velocity;
+        rigidbody.AddForce(power, ForceMode.VelocityChange);
+
+        //character.Move(enemyMove * Time.deltaTime);
         gravity = enemyMove.y;
         //移動方向の取得
         float angle = Mathf.Atan2(enemyVector.z, enemyVector.x);
