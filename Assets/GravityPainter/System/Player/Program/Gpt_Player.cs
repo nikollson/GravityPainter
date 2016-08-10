@@ -83,9 +83,9 @@ public class Gpt_Player : MonoBehaviour
         bool endWait = false;
 
         if (CanStartMove()) { endWait = true; UpdateMode_StartRun(); }
-        if (CanStartAttack()) { endWait = true; UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.NORMAL, ATTACK_DIRECTION.RIGHT); }
-        if (CanStartJump()) { endWait = true; UpdateMode_StartJump(); }
-        if (!playerUtillity.IsGround()) { endWait = true; UpdateMode_StartAir(); }
+        else if (CanStartAttack()) { endWait = true; UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.NORMAL, ATTACK_DIRECTION.RIGHT); }
+        else if (CanStartJump()) { endWait = true; UpdateMode_StartJump(); }
+        else if (!playerUtillity.IsGround()) { endWait = true; UpdateMode_StartAir(); }
 
         if (endWait) playerWait.EndWait();
     }
@@ -97,9 +97,9 @@ public class Gpt_Player : MonoBehaviour
         bool endRun = false;
 
         if (!CanStartMove()) { endRun = true; UpdateMode_StartWait(); }
-        if (CanStartAttack()) { endRun = true; UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.DASH, ATTACK_DIRECTION.RIGHT); }
-        if (CanStartJump()) { endRun = true; UpdateMode_StartJump(); }
-        if (!playerUtillity.IsGround()) { endRun = true; UpdateMode_StartAir(); }
+        else if (CanStartAttack()) { endRun = true; UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.DASH, ATTACK_DIRECTION.RIGHT); }
+        else if (CanStartJump()) { endRun = true; UpdateMode_StartJump(); }
+        else if (!playerUtillity.IsGround()) { endRun = true; UpdateMode_StartAir(); }
 
         if (endRun) playerRun.EndRun();
     }
@@ -111,21 +111,18 @@ public class Gpt_Player : MonoBehaviour
 
         bool endAttack = false;
 
-        if (playerAttack.CanSecondAttack(Gpt_Input.AttackStartFrame))
+        if (playerAttack.CanSecondAttack(Gpt_Input.AttackStartFrame) && CanStartAttack())
         {
-            if (CanStartAttack())
-            {
-                ATTACK_DIRECTION next = (AttackDirection == ATTACK_DIRECTION.LEFT) ? ATTACK_DIRECTION.RIGHT : ATTACK_DIRECTION.LEFT;
-                UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.NORMAL, next);
-            }
+            ATTACK_DIRECTION next = (AttackDirection == ATTACK_DIRECTION.LEFT) ? ATTACK_DIRECTION.RIGHT : ATTACK_DIRECTION.LEFT;
+            UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.NORMAL, next);
         }
-        if (playerAttack.IsAttackEnd())
+        else if (playerAttack.IsAttackEnd())
         {
             endAttack = true;
             if (!CanStartMove()) UpdateMode_StartWait();
-            if (CanStartMove()) UpdateMode_StartRun();
-            if (CanStartJump()) UpdateMode_StartJump();
-         }
+            else if (CanStartMove()) UpdateMode_StartRun();
+            else if (CanStartJump()) UpdateMode_StartJump();
+        }
 
         if (endAttack)
         {

@@ -66,6 +66,10 @@ public class Gpt_PlayerState : MonoBehaviour
         if (redCombo.IsComboCutted()) MakeSpecialEnemy(redCombo);
         if (blueCombo.IsComboCutted()) MakeSpecialEnemy(blueCombo);
         if (yellowCombo.IsComboCutted()) MakeSpecialEnemy(yellowCombo);
+
+        redCombo.Update();
+        blueCombo.Update();
+        yellowCombo.Update();
     }
 
     void MakeSpecialEnemy(ComboControl comboControl)
