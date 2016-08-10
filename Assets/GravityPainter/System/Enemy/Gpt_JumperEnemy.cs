@@ -29,15 +29,6 @@ public class Gpt_JumperEnemy : MonoBehaviour {
 
             rigidbody.AddForce(power * Time.deltaTime, ForceMode.Acceleration);
         }
-
-        if (footCollider.IsHit)
-        {
-            string aa = "";
-            foreach (var a in footCollider.HitColliders)
-            {
-                aa += a.gameObject.name;
-            }
-        }
     }
 
     bool IsGround()
