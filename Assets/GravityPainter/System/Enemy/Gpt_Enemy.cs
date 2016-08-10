@@ -26,27 +26,18 @@ public class Gpt_Enemy : MonoBehaviour {
         EnemyGravityManeger.AddEnemyList(this);
         Speed(2f);
         EnemyMove.SetVecter(this.transform.forward);
-        EnemyColor.SetColor(1);
-
+        int temp= Random.Range(1, 4); 
+        EnemyColor.SetColor(temp);
+        
         Character = this.GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
     void Update () {
 
-        test+=0.01f;
-        Vector3 testvec=AngleToVector(test);
-        //EnemyMove.SetVecter(testvec);
+        
     }
 
-    //角度からベクトル算出
-    Vector3 AngleToVector(float angle)
-    {
-        float x=Mathf.Sin(angle);
-        float z=Mathf.Cos(angle);
-
-        return new Vector3(x,0,z);
-    }
 
 
     public void Speed(float s)
@@ -64,5 +55,10 @@ public class Gpt_Enemy : MonoBehaviour {
         rigid.isKinematic = false;
         rigid.useGravity = true;
         rigid.AddForce(-gravityVec * gravity, ForceMode.VelocityChange);
+    }
+
+    public int GetColor()
+    {
+        return EnemyColor.GetColor();
     }
 }

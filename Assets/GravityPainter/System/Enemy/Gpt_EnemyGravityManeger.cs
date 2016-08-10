@@ -21,20 +21,24 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
             for (int j = i; j < num; j++)
             {
                 if (j == i) continue;
-                if (Vector3.Distance(EnemyList[i].transform.position, EnemyList[j].transform.position) < 10.0f)
+
+                if(EnemyList[i].GetColor()== EnemyList[j].GetColor())
                 {
-                    //i番目へのベクトル
-                    Vector3 objVec1 = EnemyList[i].transform.position - EnemyList[j].transform.position;
+                    if (Vector3.Distance(EnemyList[i].transform.position, EnemyList[j].transform.position) < 10.0f)
+                    {
+                        //i番目へのベクトル
+                        Vector3 objVec1 = EnemyList[i].transform.position - EnemyList[j].transform.position;
 
-                    //j番目へのベクトル
-                    Vector3 objVec2 = EnemyList[j].transform.position - EnemyList[i].transform.position;
+                        //j番目へのベクトル
+                        Vector3 objVec2 = EnemyList[j].transform.position - EnemyList[i].transform.position;
 
-                    Vector3 normVec1 = objVec1.normalized;
-                    Vector3 normVec2 = objVec2.normalized;
-                    EnemyList[i].SetGravity(normVec1);
-                    EnemyList[j].SetGravity(normVec2);
+                        Vector3 normVec1 = objVec1.normalized;
+                        Vector3 normVec2 = objVec2.normalized;
+                        EnemyList[i].SetGravity(normVec1);
+                        EnemyList[j].SetGravity(normVec2);
+                    }
                 }
-
+                
             }
         }
     }

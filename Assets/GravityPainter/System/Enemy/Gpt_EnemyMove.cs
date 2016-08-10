@@ -15,6 +15,10 @@ public class Gpt_EnemyMove : MonoBehaviour {
     float GRAVITY = 9.8f;
     private float gravity;
 
+
+    //移動回転角
+    private float moveAngle;
+
     // Use this for initialization
     void Start()
     {
@@ -34,7 +38,12 @@ public class Gpt_EnemyMove : MonoBehaviour {
         {
             gravity -= GRAVITY * Time.deltaTime;
         }
-        
+
+        moveAngle += 0.01f;
+        Vector3 testvec = AngleToVector(moveAngle);
+        //EnemyMove.SetVecter(testvec);
+
+
         Vector3 enemyMove;
 
         enemyMove.x= enemyVector.x * enemySpeed;
@@ -48,7 +57,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
         //移動方向の取得
         float angle = Mathf.Atan2(enemyMove.z, enemyMove.x);
         //移動方向に回転
-        //this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle), 0));
+        this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle), 0));
         
     }
 
@@ -73,5 +82,15 @@ public class Gpt_EnemyMove : MonoBehaviour {
     float radToDigree(float rad)
     {
         return rad / Mathf.PI * 180;
+    }
+
+
+    //角度からベクトル算出
+    Vector3 AngleToVector(float angle)
+    {
+        float x = Mathf.Sin(angle);
+        float z = Mathf.Cos(angle);
+
+        return new Vector3(x, 0, z);
     }
 }
