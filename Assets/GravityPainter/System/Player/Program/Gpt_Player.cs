@@ -36,11 +36,11 @@ public class Gpt_Player : MonoBehaviour
     }
 
 
-    bool HasMoveInput() { float EPS = 0.001f; return Gpt_Input.Move.magnitude > EPS; }
-    bool HasAttackInput() { return Gpt_Input.Attack; }
-    bool HasFeeverInput() { return Gpt_Input.Feever; }
-    bool HasSkillInput() { return Gpt_Input.Skill; }
-    bool HasJumpInput() { return Gpt_Input.Jump; }
+    bool CanStartMove() { return playerUtillity.HasAnalogpadMove(); }
+    bool CanStartAttack() { return Gpt_Input.Attack && playerAttack.CanFirstAttack(Gpt_Input.AttackStartFrame); }
+    bool CanStartFeever() { return Gpt_Input.Feever; }
+    bool CanStartSkill() { return Gpt_Input.Skill; }
+    bool CanStartJump() { return Gpt_Input.Jump; }
 
 
     void UpdateMode_StartRun()
@@ -61,7 +61,7 @@ public class Gpt_Player : MonoBehaviour
     }
     void UpdateMode_StartAttack(ATTACK_MODE atmode)
     {
-        playerAttack.StartAttack();
+        playerAttack.StartAttack(Gpt_Input.AttackStartFrame);
         Mode = MODE.ATTACK;
         AttackMode = atmode;
         trailControl.StartTrail();
@@ -79,9 +79,9 @@ public class Gpt_Player : MonoBehaviour
 
         bool endWait = false;
 
-        if (HasMoveInput()) { endWait = true; UpdateMode_StartRun(); }
-        if (HasAttackInput()) { endWait = true; UpdateMode_StartAttack(ATTACK_MODE.RIGHT); }
-        if (HasJumpInput()) { endWait = true; UpdateMode_StartJump(); }
+        if (CanStartMove()) { endWait = true; UpdateMode_StartRun(); }
+        if (CanStartAttack()) { endWait = true; UpdateMode_StartAttack(ATTACK_MODE.RIGHT); }
+        if (CanStartJump()) { endWait = true; UpdateMode_StartJump(); }
         if (!playerUtillity.IsGround()) { endWait = true; UpdateMode_StartAir(); }
 
         if (endWait) playerWait.EndWait();
@@ -93,9 +93,9 @@ public class Gpt_Player : MonoBehaviour
 
         bool endRun = false;
 
-        if (!HasMoveInput()) { endRun = true; UpdateMode_StartWait(); }
-        if (HasAttackInput()) { endRun = true; UpdateMode_StartAttack(ATTACK_MODE.RIGHT); }
-        if (HasJumpInput()) { endRun = true; UpdateMode_StartJump(); }
+        if (!CanStartMove()) { endRun = true; UpdateMode_StartWait(); }
+        if (CanStartAttack()) { endRun = true; UpdateMode_StartAttack(ATTACK_MODE.RIGHT); }
+        if (CanStartJump()) { endRun = true; UpdateMode_StartJump(); }
         if (!playerUtillity.IsGround()) { endRun = true; UpdateMode_StartAir(); }
 
         if (endRun) playerRun.EndRun();
@@ -107,9 +107,9 @@ public class Gpt_Player : MonoBehaviour
 
         bool endAttack = false;
 
-        if (playerAttack.CanSecondAttack())
+        if (playerAttack.CanSecondAttack(Gpt_Input.AttackStartFrame))
         {
-            if (HasAttackInput())
+            if (CanStartAttack())
             {
                 ATTACK_MODE next = AttackMode == ATTACK_MODE.LEFT ? ATTACK_MODE.RIGHT : ATTACK_MODE.LEFT;
                 UpdateMode_StartAttack(next);
@@ -118,9 +118,9 @@ public class Gpt_Player : MonoBehaviour
         if (playerAttack.IsAttackEnd())
         {
             endAttack = true;
-            if (!HasMoveInput()) UpdateMode_StartWait();
-            if (HasMoveInput()) UpdateMode_StartRun();
-            if (HasJumpInput()) UpdateMode_StartJump();
+            if (!CanStartMove()) UpdateMode_StartWait();
+            if (CanStartMove()) UpdateMode_StartRun();
+            if (CanStartJump()) UpdateMode_StartJump();
          }
 
         if (endAttack)
