@@ -7,10 +7,8 @@ public class Gpt_PlayerJump : MonoBehaviour {
     public new Rigidbody rigidbody;
     public Vector3 jumpForce;
     public float speedDownXZ = 0.5f;
-
-    public float jumpTime = 0.2f;
+    public float jumpTime = 0.0000001f;
     float jumpCount = 0;
-
     int jumpPushFrame_log = 0;
 
     public void StartJump(int JumpPushFrame)
