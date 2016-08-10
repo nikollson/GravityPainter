@@ -5,21 +5,21 @@ public class Gpt_PlayerAttack : MonoBehaviour
 {
     public Gpt_Player player;
     public HitManager attackHitManager;
-    bool isAttacking = false;
 
     public float attackEndTime = 0.2f;
     public float secondAttackTime = 0.15f;
     float attackCount = 0.0f;
+    int attackInputFrame_log = -1;
 
-    public void StartAttack()
+    public void StartAttack(int attackInputFrame)
     {
-        isAttacking = true;
         attackCount = 0;
+        attackInputFrame_log = attackInputFrame;
     }
 
     public void EndAttack()
     {
-        isAttacking = false;
+
     }
 
 
@@ -28,12 +28,17 @@ public class Gpt_PlayerAttack : MonoBehaviour
         return attackCount > attackEndTime;
     }
 
-    public bool CanSecondAttack()
+    public bool CanFirstAttack(int attackInputFrame)
     {
-        return attackCount > secondAttackTime;
+        return attackInputFrame_log != attackInputFrame;
     }
 
-    void Update()
+    public bool CanSecondAttack(int attackInputFrame)
+    {
+        return attackCount > secondAttackTime && attackInputFrame_log != attackInputFrame;
+    }
+
+    public void UpdateAttack()
     {
         attackCount += Time.deltaTime;
     }

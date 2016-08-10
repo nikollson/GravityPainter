@@ -4,25 +4,23 @@ using System.Collections;
 public class Gpt_PlayerJump : MonoBehaviour {
 
     public Gpt_PlayerUtillity playerUtillity;
-    public Rigidbody playerRigidbody;
-    public Vector2 jumpForce;
+    public new Rigidbody rigidbody;
+    public Vector3 jumpForce;
+    public float speedDownXZ = 0.5f;
 
     public float jumpTime = 0.2f;
     float jumpCount = 0;
 
-    bool isJumping = false;
-
     public void StartJump()
     {
-        isJumping = true;
         jumpCount = 0;
-
-        playerRigidbody.AddForce(jumpForce, ForceMode.Impulse);
+        Vector3 speedDownXZPower = -1 * speedDownXZ * (rigidbody.velocity - new Vector3(0, rigidbody.velocity.y, 0));
+        rigidbody.AddForce(jumpForce + speedDownXZPower, ForceMode.VelocityChange);
     }
 
     public void EndJump()
     {
-        isJumping = false;
+
     }
 
     public bool IsJumpEnd()
@@ -30,11 +28,9 @@ public class Gpt_PlayerJump : MonoBehaviour {
         return jumpCount > jumpTime;
     }
 
-    void Update()
+    public void UpdateJump()
     {
-        if (isJumping)
-        {
-            jumpCount += Time.deltaTime;
-        }
+        jumpCount += Time.deltaTime;
     }
-}
+  
+  }
