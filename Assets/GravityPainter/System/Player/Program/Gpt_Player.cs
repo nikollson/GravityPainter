@@ -40,7 +40,7 @@ public class Gpt_Player : MonoBehaviour
     bool CanStartAttack() { return Gpt_Input.Attack && playerAttack.CanFirstAttack(Gpt_Input.AttackStartFrame); }
     bool CanStartFeever() { return Gpt_Input.Feever; }
     bool CanStartSkill() { return Gpt_Input.Skill; }
-    bool CanStartJump() { return Gpt_Input.Jump; }
+    bool CanStartJump() { return Gpt_Input.Jump && playerJump.CanStartJump(Gpt_Input.JumpStartFrame); }
 
 
     void UpdateMode_StartRun()
@@ -55,7 +55,7 @@ public class Gpt_Player : MonoBehaviour
     }
     void UpdateMode_StartJump()
     {
-        playerJump.StartJump();
+        playerJump.StartJump(Gpt_Input.JumpStartFrame);
         playerUtillity.IgnoreFootCollider();
         Mode = MODE.JUMP;
     }
