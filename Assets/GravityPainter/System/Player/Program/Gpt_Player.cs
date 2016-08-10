@@ -6,6 +6,7 @@ public class Gpt_Player : MonoBehaviour
 
     public Gpt_PlayerUtillity playerUtillity;
 
+    // プレイヤーの動作に必要なクラス
     public Gpt_PlayerRun playerRun;
     public Gpt_PlayerJump playerJump;
     public Gpt_PlayerAttackMove playerAttack;
@@ -13,14 +14,14 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerBodyColor playerBodyColor;
     public Gpt_PlayerWait playerWait;
     public Gpt_PlayerAir playerAir;
+    public Gpt_PlayerState state;
     public Gpt_TrailControl trailControl;
-
+    
+    // プレイヤーの状態管理
     public enum MODE { WAIT, RUN, ATTACK, ROT1, ROT2, SKILL, JUMP, FEEVER, AIR };
     public enum ATTACK_DIRECTION { RIGHT, LEFT };
-    public enum FEEVER_MODE { NONE, FEEVER };
     public MODE Mode { get; private set; }
     public ATTACK_DIRECTION AttackDirection { get; private set; }
-    public FEEVER_MODE feeverMode { get; private set; }
 
     void Update()
     {
