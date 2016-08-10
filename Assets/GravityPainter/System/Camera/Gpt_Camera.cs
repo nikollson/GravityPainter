@@ -25,6 +25,8 @@ public class Gpt_Camera : MonoBehaviour
 
     bool oldStickPushFlg = false;
     bool stickPushFlg = false;
+    public const float MIN_ROT_Y = -5.0f;
+    public const float MAX_ROT_Y = 40.0f;
 
     void Start()
     {
@@ -47,6 +49,22 @@ public class Gpt_Camera : MonoBehaviour
     // 回転制御関数
     void Update_Rotation()
     {
+        // 上下回転
+        if(angleDown >= MIN_ROT_Y && angleDown <= MAX_ROT_Y)
+        {
+            angleDown += Gpt_Input.CamMove.y;
+        }
+        // 上下回転の角度限界突破を防止する
+        if (angleDown < MIN_ROT_Y)
+        {
+            angleDown = MIN_ROT_Y;
+        }
+        else if (angleDown > MAX_ROT_Y)
+        {
+            angleDown = MAX_ROT_Y;
+        }
+        Debug.Log(angleDown);
+
         // 回転リクエストがあれば
         if (Gpt_Input.CamMove.x != 0.0f)
         {
