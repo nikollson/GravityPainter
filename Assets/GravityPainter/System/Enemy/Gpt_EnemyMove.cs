@@ -6,6 +6,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
     public float enemySpeed = 5.0f;
     public new Rigidbody rigidbody;
 
+    private CharacterController Character;
     public float friction = 0.6f;
 
     private Vector3 enemyVector = new Vector3();
@@ -17,33 +18,38 @@ public class Gpt_EnemyMove : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        Character = GetComponent<CharacterController>();
+
         myTransform = transform;
-        enemyVector= new Vector3(0, 0, 1);
+        enemyVector= new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        gravity -= GRAVITY * Time.deltaTime;
-
+        if (Character.isGrounded)
+        {
+        }
+        else
+        {
+            gravity -= GRAVITY * Time.deltaTime;
+        }
+        
         Vector3 enemyMove;
 
         enemyMove.x= enemyVector.x * enemySpeed;
         enemyMove.y =gravity;
         enemyMove.z = enemyVector.z * enemySpeed;
         // 移動
+        
 
-        Vector3 power = enemyMove - friction * rigidbody.velocity;
-        rigidbody.AddForce(power, ForceMode.VelocityChange);
-
-        //character.Move(enemyMove * Time.deltaTime);
+        Character.Move(enemyMove * Time.deltaTime);
         gravity = enemyMove.y;
         //移動方向の取得
-        float angle = Mathf.Atan2(enemyVector.z, enemyVector.x);
+        float angle = Mathf.Atan2(enemyMove.z, enemyMove.x);
         //移動方向に回転
-        this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle), 0));
-
-        //移動量の初期化
+        //this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle), 0));
+        
     }
 
     //移動方向の設定
