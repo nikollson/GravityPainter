@@ -25,9 +25,9 @@ public class Gpt_PlayerAttackState : MonoBehaviour {
 
     void DrawEnemy(Gpt_EnemyColor enemyColor)
     {
-        if (enemyColor.GetColor() != playerState.PlayerColor)
+        if (enemyColor.GetColor() != (int)playerState.PlayerColor)
         {
-            enemyColor.SetColor(playerState.PlayerColor);
+            enemyColor.SetColor((int)playerState.PlayerColor);
             playerState.AddPlayerColorCombo();
         }
     }

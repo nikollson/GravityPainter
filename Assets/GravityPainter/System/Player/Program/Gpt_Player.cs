@@ -15,6 +15,7 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerWait playerWait;
     public Gpt_PlayerAir playerAir;
     public Gpt_PlayerState state;
+    public Gpt_PlayerColor playerColor;
     public Gpt_PlayerAnimator playerAnimator;
     public Gpt_TrailControl trailControl;
     
@@ -27,6 +28,7 @@ public class Gpt_Player : MonoBehaviour
     void Update()
     {
         UpdateMode();
+        UpdateColor();
     }
 
     void UpdateMode()
@@ -36,6 +38,12 @@ public class Gpt_Player : MonoBehaviour
         if (Mode == MODE.ATTACK) UpdateMode_Attack();
         if (Mode == MODE.JUMP) UpdateMode_Jump();
         if (Mode == MODE.AIR) UpdateMode_Air();
+    }
+
+    void UpdateColor()
+    {
+        if (Gpt_Input.ColorLeftDown) playerColor.SetPrevColor();
+        if (Gpt_Input.ColorRightDown) playerColor.SetNextColor();
     }
 
 

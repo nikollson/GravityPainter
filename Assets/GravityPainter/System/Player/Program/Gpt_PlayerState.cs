@@ -3,15 +3,16 @@ using System.Collections;
 
 public class Gpt_PlayerState : MonoBehaviour
 {
+    public Gpt_PlayerColor playerColor;
 
     public int HPMax = 12;
     public float inkMax = 1;
     public float feeverMax = 1;
-    public int firstPlayerColor = 1;
-
+    public float mutekiTime = 1.0f;
+    
     public ComboControlSetting comboSetting;
     ComboControl redCombo, blueCombo, yellowCombo;
-
+    float mutekiCount = 0;
 
     // プロパティ
     public int HP { get; private set; }
@@ -23,16 +24,24 @@ public class Gpt_PlayerState : MonoBehaviour
     public int YellowCombo { get { return yellowCombo.Combo; } }
 
     public bool IsFeever { get; private set; }
-    public int PlayerColor { get; private set; }
+
+    public bool IsMuteki { get { return mutekiCount < mutekiTime; } }
+    public Gpt_InkColor PlayerColor { get { return playerColor.currentColor; } }
 
 
     // プロパティをいじる関数
     public void AddHP(int value) { HP = intValueLimit(0, HPMax, HP + value); }
-    public void MinusHP(int value) { AddHP(-value); }
+    public void AddHPDamage(int value)
+    {
+        if (!IsMuteki)
+        {
+            AddHP(-value);
+            mutekiCount = 0;
+        }
+    }
     public void AddInk(float value) { Ink = floatValueLimit(0f, inkMax, Ink + value); }
-    public void MinusInk(float value) { AddInk(-value); }
+    public void AddInkConsume(float value) { AddInk(-value); }
     public void AddFeever(float value) { Feever = floatValueLimit(0f, feeverMax, Feever + value); }
-    public void MinusFeever(float value) { AddFeever(-value); }
 
     public void StartFeever() { IsFeever = true; }
     public void EndFeever() { IsFeever = false; }
@@ -55,7 +64,6 @@ public class Gpt_PlayerState : MonoBehaviour
 
     void Start()
     {
-        PlayerColor = firstPlayerColor;
         redCombo = new ComboControl(comboSetting);
         blueCombo = new ComboControl(comboSetting);
         yellowCombo = new ComboControl(comboSetting);
@@ -70,6 +78,8 @@ public class Gpt_PlayerState : MonoBehaviour
         redCombo.Update();
         blueCombo.Update();
         yellowCombo.Update();
+
+        mutekiCount += Time.deltaTime;
     }
 
     void MakeSpecialEnemy(ComboControl comboControl)
