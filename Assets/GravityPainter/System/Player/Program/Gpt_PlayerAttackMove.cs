@@ -67,9 +67,9 @@ public class Gpt_PlayerAttackMove : MonoBehaviour
         return attackInputFrame_log != attackInputFrame;
     }
 
-    public bool CanSecondAttack(int attackInputFrame)
+    public bool CanSecondAttack()
     {
-        return attackCount > secondAttackTime && attackInputFrame_log != attackInputFrame;
+        return attackCount > secondAttackTime;
     }
 
     public void UpdateAttack()

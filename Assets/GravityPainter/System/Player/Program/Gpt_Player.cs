@@ -18,6 +18,7 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerColor playerColor;
     public Gpt_PlayerAnimator playerAnimator;
     public Gpt_TrailControl trailControl;
+    public Gpt_PlayerSkill playerSkill;
     
     // プレイヤーの状態管理
     public enum MODE { WAIT, RUN, ATTACK, ROT1, ROT2, SKILL, JUMP, FEEVER, AIR };
@@ -38,6 +39,7 @@ public class Gpt_Player : MonoBehaviour
         if (Mode == MODE.ATTACK) UpdateMode_Attack();
         if (Mode == MODE.JUMP) UpdateMode_Jump();
         if (Mode == MODE.AIR) UpdateMode_Air();
+        if (Mode == MODE.SKILL) UpdateMode_Skill();
     }
 
     void UpdateColor()
@@ -50,9 +52,8 @@ public class Gpt_Player : MonoBehaviour
     bool CanStartMove() { return playerUtillity.HasAnalogpadMove(); }
     bool CanStartAttack() { return Gpt_Input.Attack && playerAttack.CanFirstAttack(Gpt_Input.AttackStartFrame); }
     bool CanStartFeever() { return Gpt_Input.Feever; }
-    bool CanStartSkill() { return Gpt_Input.Skill; }
+    bool CanStartSkill() { return Gpt_Input.Skill && playerSkill.CanStartSkill(Gpt_Input.SkillStartFrame); }
     bool CanStartJump() { return Gpt_Input.Jump && playerJump.CanStartJump(Gpt_Input.JumpStartFrame); }
-
 
     void UpdateMode_StartRun()
     {
@@ -83,6 +84,11 @@ public class Gpt_Player : MonoBehaviour
         else playerAir.StartAir();
         Mode = MODE.AIR;
     }
+    void UpdateMode_StartSkill()
+    {
+        Mode = MODE.SKILL;
+        playerSkill.StartSkill(Gpt_Input.SkillStartFrame, state.PlayerColor);
+    }
 
 
     void UpdateMode_Wait()
@@ -94,6 +100,7 @@ public class Gpt_Player : MonoBehaviour
         if (CanStartMove()) { endWait = true; UpdateMode_StartRun(); }
         else if (CanStartAttack()) { endWait = true; UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.NORMAL, ATTACK_DIRECTION.RIGHT); }
         else if (CanStartJump()) { endWait = true; UpdateMode_StartJump(); }
+        else if(CanStartSkill()) { endWait = true;  UpdateMode_StartSkill(); }
         else if (!playerUtillity.IsGround()) { endWait = true; UpdateMode_StartAir(); }
 
         if (endWait) playerWait.EndWait();
@@ -108,6 +115,7 @@ public class Gpt_Player : MonoBehaviour
         if (!CanStartMove()) { endRun = true; UpdateMode_StartWait(); }
         else if (CanStartAttack()) { endRun = true; UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.DASH, ATTACK_DIRECTION.RIGHT); }
         else if (CanStartJump()) { endRun = true; UpdateMode_StartJump(); }
+        else if (CanStartSkill()) { endRun = true;  UpdateMode_StartSkill(); }
         else if (!playerUtillity.IsGround()) { endRun = true; UpdateMode_StartAir(); }
 
         if (endRun) playerRun.EndRun();
@@ -120,17 +128,25 @@ public class Gpt_Player : MonoBehaviour
 
         bool endAttack = false;
 
-        if (playerAttack.CanSecondAttack(Gpt_Input.AttackStartFrame) && CanStartAttack())
+        if (playerAttack.CanSecondAttack() && CanStartAttack())
         {
             ATTACK_DIRECTION next = (AttackDirection == ATTACK_DIRECTION.LEFT) ? ATTACK_DIRECTION.RIGHT : ATTACK_DIRECTION.LEFT;
             UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.NORMAL, next);
+        }else if (playerAttack.CanSecondAttack() && CanStartJump())
+        {
+            endAttack = true;
+            UpdateMode_StartJump();
+        }
+        else if(playerAttack.CanSecondAttack() && CanStartSkill())
+        {
+            endAttack = true;
+            UpdateMode_StartSkill();
         }
         else if (playerAttack.IsAttackEnd())
         {
             endAttack = true;
             if (!CanStartMove()) UpdateMode_StartWait();
             else if (CanStartMove()) UpdateMode_StartRun();
-            else if (CanStartJump()) UpdateMode_StartJump();
         }
 
         if (endAttack)
@@ -170,5 +186,20 @@ public class Gpt_Player : MonoBehaviour
         }
 
         if (endAir) playerAir.EndAir();
+    }
+
+    void UpdateMode_Skill()
+    {
+        playerSkill.UpdateSkill();
+
+        bool endSkill = false;
+
+        if (playerSkill.IsEndSkill())
+        {
+            endSkill = true;
+            UpdateMode_StartWait();
+        }
+
+        if (endSkill) playerSkill.EndSkill();
     }
 }
