@@ -26,7 +26,7 @@ public class Gpt_PlayerState : MonoBehaviour
     public bool IsFeever { get; private set; }
 
     public bool IsMuteki { get { return mutekiCount < mutekiTime; } }
-    public Gpt_InkColor PlayerColor { get { return playerColor.currentColor; } }
+    public Gpt_InkColor PlayerColor { get { return playerColor.Color; } }
 
 
     // プロパティをいじる関数

@@ -75,7 +75,7 @@ public class Gpt_Player : MonoBehaviour
         Mode = MODE.ATTACK;
         playerAttack.StartAttack(mode, Gpt_Input.AttackStartFrame);
         AttackDirection = dir;
-        trailControl.StartTrail();
+        trailControl.StartTrail(playerColor.Color);
     }
     void UpdateMode_StartAir()
     {
