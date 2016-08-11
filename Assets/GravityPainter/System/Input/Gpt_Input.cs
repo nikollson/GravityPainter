@@ -16,6 +16,7 @@ public class Gpt_Input : MonoBehaviour {
     public static bool CameraPush { get { inputGetter.Update(); return inputGetter.CameraPush; } }
     public static bool ColorLeft { get { inputGetter.Update(); return inputGetter.ColorLeft; } }
     public static bool ColorRight { get { inputGetter.Update(); return inputGetter.ColorRight; } }
+    public static bool Option { get { inputGetter.Update(); return inputGetter.Option; } }
 
     //キーが押され始めたフレームを返すプロパティ。押されてないときは0を返す
     public static int JumpStartFrame { get { inputGetter.Update(); return inputGetter.JumpStartFrame; } }
@@ -26,6 +27,7 @@ public class Gpt_Input : MonoBehaviour {
     public static int CameraPushStartFrame { get { inputGetter.Update(); return inputGetter.CameraPushStartFrame; } }
     public static int ColorLeftStartFrame { get { inputGetter.Update(); return inputGetter.ColorLeftStartFrame; } }
     public static int ColorRightStartFrame { get { inputGetter.Update(); return inputGetter.ColorRightStartFrame; } }
+    public static int OptionStartFrame { get { inputGetter.Update(); return inputGetter.OptionStartFrame; } }
 
     //キーが押されたフレームだけ、Trueを返すプロパティ
     public static bool JumpDown { get { inputGetter.Update(); return inputGetter.JumpStartFrame == Time.frameCount; } }
@@ -36,6 +38,7 @@ public class Gpt_Input : MonoBehaviour {
     public static bool CameraPushDown { get { inputGetter.Update(); return inputGetter.CameraPushStartFrame == Time.frameCount; } }
     public static bool ColorLeftDown { get { inputGetter.Update(); return inputGetter.ColorLeftStartFrame == Time.frameCount; } }
     public static bool ColorRightDown { get { inputGetter.Update(); return inputGetter.ColorRightStartFrame == Time.frameCount; } }
+    public static bool OptionDown { get { inputGetter.Update(); return inputGetter.OptionStartFrame == Time.frameCount; } }
 
     [System.Serializable]
     class InputGetter
@@ -52,6 +55,7 @@ public class Gpt_Input : MonoBehaviour {
         const string cameraPushKey = "CameraPush";
         const string colorLeftKey = "L1";
         const string colorRightKey = "R1";
+        const string optionKey = "Option";
 
         public bool Jump { get; private set; }
         public bool Attack { get; private set; }
@@ -63,6 +67,7 @@ public class Gpt_Input : MonoBehaviour {
         public bool CameraPush { get; private set; }
         public bool ColorLeft { get; private set; }
         public bool ColorRight { get; private set; }
+        public bool Option { get; private set; }
 
         public int JumpStartFrame { get; private set; }
         public int AttackStartFrame { get; private set; }
@@ -72,6 +77,7 @@ public class Gpt_Input : MonoBehaviour {
         public int CameraPushStartFrame { get; private set; }
         public int ColorLeftStartFrame { get; private set; }
         public int ColorRightStartFrame { get; private set; }
+        public int OptionStartFrame { get; private set; }
 
         int prevFrame = -1;
         
@@ -99,6 +105,7 @@ public class Gpt_Input : MonoBehaviour {
 
             ColorLeft = Input.GetButton(colorLeftKey);
             ColorRight = Input.GetButton(colorRightKey);
+            Option = Input.GetButton(optionKey);
         }
 
 
@@ -112,6 +119,7 @@ public class Gpt_Input : MonoBehaviour {
             CameraPushStartFrame = CameraPush ? (CameraPushStartFrame == 0 ? Time.frameCount : CameraPushStartFrame) : 0;
             ColorLeftStartFrame = ColorLeft ? (ColorLeftStartFrame == 0 ? Time.frameCount : ColorLeftStartFrame) : 0;
             ColorRightStartFrame = ColorRight ? (ColorRightStartFrame == 0 ? Time.frameCount : ColorRightStartFrame) : 0;
+            OptionStartFrame = Option ? (OptionStartFrame == 0 ? Time.frameCount : OptionStartFrame) : 0;
         }
     }
 
