@@ -15,6 +15,7 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerWait playerWait;
     public Gpt_PlayerAir playerAir;
     public Gpt_PlayerState state;
+    public Gpt_PlayerAnimator playerAnimator;
     public Gpt_TrailControl trailControl;
     
     // プレイヤーの状態管理
@@ -63,8 +64,8 @@ public class Gpt_Player : MonoBehaviour
     }
     void UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE mode, ATTACK_DIRECTION dir)
     {
-        playerAttack.StartAttack(mode, Gpt_Input.AttackStartFrame);
         Mode = MODE.ATTACK;
+        playerAttack.StartAttack(mode, Gpt_Input.AttackStartFrame);
         AttackDirection = dir;
         trailControl.StartTrail();
     }

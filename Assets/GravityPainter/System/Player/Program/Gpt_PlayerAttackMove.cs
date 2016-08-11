@@ -21,7 +21,7 @@ public class Gpt_PlayerAttackMove : MonoBehaviour
     float currentDirection = 0;
     
     public enum ATTACK_MODE { NORMAL, DASH, ROTATE }
-
+    
     public void StartAttack(ATTACK_MODE attackMode, int attackInputFrame)
     {
         attackCount = 0;
