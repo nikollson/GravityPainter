@@ -8,17 +8,20 @@ public class Gpt_PlayerAttackMove : MonoBehaviour
 
     public float attackEndTime = 0.4f;
     public float secondAttackTime = 0.2f;
-
-    public float friction = 90f;
+    
+    public float dashAttackFriction = 400f;
+    public float normalAttackFriction = 200f;
+    public float directionChangeFriction = 0.8f;
 
     public float dashAttackSpeed = 4;
     public float normalAttackSpeed = 1;
 
     float attackCount = 0.0f;
     int attackInputFrame_log = -1;
+    float currentDirection = 0;
     
     public enum ATTACK_MODE { NORMAL, DASH, ROTATE }
-
+    
     public void StartAttack(ATTACK_MODE attackMode, int attackInputFrame)
     {
         attackCount = 0;
@@ -29,14 +32,21 @@ public class Gpt_PlayerAttackMove : MonoBehaviour
 
     void StartDashAttack()
     {
-        Vector3 force = dashAttackSpeed * playerUtillity.GetAnalogpadMove();
-        rigidbody.AddForce(force, ForceMode.VelocityChange);
+        playerUtillity.LookAnalogpadDirction();
+        AttackStartAddForce(dashAttackSpeed, directionChangeFriction, dashAttackFriction);
     }
 
     void StartNormalAttack()
     {
-        Vector3 force = normalAttackSpeed * playerUtillity.GetAnalogpadMove();
+        playerUtillity.LookAnalogpadDirction();
+        AttackStartAddForce(normalAttackSpeed, directionChangeFriction, normalAttackFriction);
+    }
+
+    void AttackStartAddForce(float power, float stop, float friction)
+    {
+        Vector3 force = power * playerUtillity.GetAnalogpadMove() - stop * rigidbody.velocity;
         rigidbody.AddForce(force, ForceMode.VelocityChange);
+        currentDirection = friction;
     }
 
 
@@ -66,7 +76,7 @@ public class Gpt_PlayerAttackMove : MonoBehaviour
     {
         attackCount += Time.deltaTime;
 
-        Vector3 fricionPower = -1 * friction * rigidbody.velocity;
+        Vector3 fricionPower = -1 * currentDirection * rigidbody.velocity;
         rigidbody.AddForce(Time.deltaTime * fricionPower, ForceMode.Acceleration);
     }
 }

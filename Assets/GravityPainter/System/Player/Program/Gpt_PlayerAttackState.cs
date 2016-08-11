@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Gpt_PlayerAttackState : MonoBehaviour {
 
+    public Gpt_PlayerState playerState;
     public HitManager attackCollider;
     public string enemyTag = "Enemy";
 
@@ -11,24 +12,23 @@ public class Gpt_PlayerAttackState : MonoBehaviour {
     {
         if (attackCollider.IsHit)
         {
-            List<Gpt_EnemyColor> scripts = new List<Gpt_EnemyColor>();
-
             foreach (var a in attackCollider.HitColliders)
             {
                 if(a.gameObject.tag == enemyTag)
                 {
-                    var parentTracker = a.gameObject.GetComponent<Gpt_ParentTracker>();
-                    if (parentTracker == null) continue;
-
-                    var enemyColor = parentTracker.parentObject.GetComponent<Gpt_EnemyColor>();
-                    if (enemyColor != null) scripts.Add(enemyColor);
+                    var enemyColor = Gpt_ParentTracker.Track<Gpt_EnemyColor>(a.gameObject);
+                    if (enemyColor != null) DrawEnemy(enemyColor);
                 }
             }
+        }
+    }
 
-            foreach(var a in scripts)
-            {
-                a.SetColor(2);
-            }
+    void DrawEnemy(Gpt_EnemyColor enemyColor)
+    {
+        if (enemyColor.GetColor() != (int)playerState.PlayerColor)
+        {
+            enemyColor.SetColor((int)playerState.PlayerColor);
+            playerState.AddPlayerColorCombo();
         }
     }
 }
