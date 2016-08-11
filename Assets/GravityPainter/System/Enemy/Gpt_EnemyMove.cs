@@ -3,7 +3,9 @@ using System.Collections;
 
 
 public class Gpt_EnemyMove : MonoBehaviour {
-    
+
+    //雑魚パターン(0:近接 1:遠隔)
+    public int enemyPattern;
     //走行スピード
     public float enemySpeed;
     //加速
@@ -13,7 +15,11 @@ public class Gpt_EnemyMove : MonoBehaviour {
     //プレイヤー取得
     private GameObject player;
 
+    //索敵範囲
     public float searchArea;
+
+    //遠隔攻撃範囲
+    public float attackArea;
 
     public new Rigidbody rigidbody;
 
@@ -112,6 +118,12 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 {
                     enemyTemp += enemyAccelerate;
                     enemyTemp = enemyTemp < enemySpeed ? enemyTemp : enemySpeed;
+                    //遠隔攻撃の射程に入った時
+                    if (enemyPattern == 1 && Vector3.Distance(player.transform.position, this.transform.position) < attackArea)
+                    {
+                        enemyTemp = 0.1f;
+                    }
+
                     enemyMove.x = moveVec.x * enemyTemp;
                     enemyMove.y = gravity;
                     enemyMove.z = moveVec.z * enemyTemp;
