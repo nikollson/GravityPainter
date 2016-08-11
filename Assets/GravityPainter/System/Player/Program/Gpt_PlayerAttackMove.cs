@@ -29,14 +29,20 @@ public class Gpt_PlayerAttackMove : MonoBehaviour
 
     void StartDashAttack()
     {
+        playerUtillity.LookAnalogpadDirction();
+
         Vector3 force = dashAttackSpeed * playerUtillity.GetAnalogpadMove();
         rigidbody.AddForce(force, ForceMode.VelocityChange);
     }
 
     void StartNormalAttack()
     {
+        playerUtillity.LookAnalogpadDirction();
+
         Vector3 force = normalAttackSpeed * playerUtillity.GetAnalogpadMove();
         rigidbody.AddForce(force, ForceMode.VelocityChange);
+
+
     }
 
 
