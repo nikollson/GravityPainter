@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour {
 
     /* コンボ数関連 */
     public Text[] comboText = new Text[3];
+    public RawImage[] comboTimeBar = new RawImage[3];
 
     // 初期化関数
     void Start () {
@@ -54,6 +55,12 @@ public class UIManager : MonoBehaviour {
     // コンボ数更新関数
     void ComboUpdate()
     {
+        // コンボ残り時間
+        //comboTimeBar[0].transform.localScale = new Vector3(playerScript.state.comboTime / playerScript.state.comboTimeMax, 1, 1);
+        //comboTimeBar[1].transform.localScale = new Vector3(playerScript.state.comboTime / playerScript.state.comboTimeMax, 1, 1);
+        //comboTimeBar[2].transform.localScale = new Vector3(playerScript.state.comboTime / playerScript.state.comboTimeMax, 1, 1);
+
+        // コンボ数
         comboText[0].text = "15" + " Combo!";
         comboText[1].text = "55" + " Combo!";
         comboText[2].text = "12" + " Combo!";
