@@ -17,6 +17,9 @@ public class UIManager : MonoBehaviour {
     public RawImage inkImg;
     public RawImage inkBarImg;
 
+    /* コンボ数関連 */
+    public Text[] comboText = new Text[3];
+
     // 初期化関数
     void Start () {
         playerScript = player.GetComponent<Gpt_Player>();
@@ -30,7 +33,9 @@ public class UIManager : MonoBehaviour {
         HPUpdate();
         // インクゲージ更新関数
         InkUpdate();
-	}
+        // コンボ数更新関数
+        ComboUpdate();
+    }
 
     // HP更新関数
     void HPUpdate() {
@@ -40,11 +45,20 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    float aaa = 1.0f;
-
     // インクゲージ更新関数
     void InkUpdate()
     {
         inkImg.transform.localScale = new Vector3(playerScript.state.Ink / playerScript.state.inkMax, 1, 1);
+    }
+
+    // コンボ数更新関数
+    void ComboUpdate()
+    {
+        comboText[0].text = "15" + " Combo!";
+        comboText[1].text = "55" + " Combo!";
+        comboText[2].text = "12" + " Combo!";
+        //comboText[0].text = playerScript.state.BlueCombo.ToString() + "Combo!";
+        //comboText[1].text = playerScript.state.YellowCombo.ToString() + "Combo!";
+        //comboText[2].text = playerScript.state.RedCombo.ToString() + "Combo!";
     }
 }
