@@ -43,6 +43,8 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
                 
             }
         }
+
+        Debug.Log(num);
     }
 
     public void AddEnemyList(Gpt_Enemy Enemy)
@@ -55,6 +57,13 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
     {
         EnemyList.Remove(Enemy);
         num--;
+
+        
+    }
+
+    public int ListIndex(Gpt_Enemy Enemy)
+    {
+        return EnemyList.IndexOf(Enemy);
     }
 
 }
