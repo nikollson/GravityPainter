@@ -1,13 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class Gpt_EnemyMove : MonoBehaviour {
     
-    public float enemySpeed = 5.0f;
+    //走行スピード
+    public float enemySpeed;
+    //加速
+    public float enemyAccelerate;
+    private float enemyTemp;
+    
+    //プレイヤー取得
+    private GameObject player;
+
+    public float searchArea;
+
     public new Rigidbody rigidbody;
 
     private CharacterController Character;
-    public float friction = 0.6f;
+    //public float friction = 0.6f;
 
     private Vector3 enemyVector = new Vector3();
     Transform myTransform;
@@ -15,15 +26,39 @@ public class Gpt_EnemyMove : MonoBehaviour {
     float GRAVITY = 9.8f;
     private float gravity;
 
+    private bool hasGravity=false;
 
     //移動回転角
-    private float moveAngle;
+    private float moveAngle=-1;
+    //移動時間(最小)
+    public float moveTimeMin;
+    //移動時間(最大)
+    public float moveTimeMax;
+    //停止時間(最小)
+    public float stopTimeMin;
+    //停止時間(最小)
+    public float stopTimeMax;
+
+    //移動時間
+    private float moveTime;
+    //停止時間
+    private float stopTime;
+
+    //移動係数
+    private float move=0;
+    //停止係数
+    private float stop=0;
+
+    //移動スイッチ
+    private bool isWalked=false;
+    //起動スイッチ
+    private bool isMoved = false;
 
     // Use this for initialization
     void Start()
     {
         Character = GetComponent<CharacterController>();
-
+        player = GameObject.Find("Player");
         myTransform = transform;
         enemyVector= new Vector3(0, 0, 0);
     }
@@ -31,33 +66,96 @@ public class Gpt_EnemyMove : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        //始めて地面に着いたときに移動
         if (Character.isGrounded)
         {
+            if(!isMoved){
+                isWalked = true;
+                isMoved = true;
+            }
+            gravity = 0;
         }
         else
         {
             gravity -= GRAVITY * Time.deltaTime;
         }
 
-        moveAngle += 0.01f;
-        Vector3 testvec = AngleToVector(moveAngle);
-        //EnemyMove.SetVecter(testvec);
-
 
         Vector3 enemyMove;
+                
+        //移動
+        //重力判定時は移動処理は行わない
+        if (!hasGravity)
+        {
+            if (isWalked)
+            {
+                if (moveAngle == -1)
+                {
+                    moveAngle = Random.Range(0, 361);
+                    moveTime = Random.Range(moveTimeMin, moveTimeMax);
+                    stopTime = Random.Range(stopTimeMin, stopTimeMax);
 
-        enemyMove.x= enemyVector.x * enemySpeed;
-        enemyMove.y =gravity;
-        enemyMove.z = enemyVector.z * enemySpeed;
-        // 移動
+                }
+                move += 0.1f;
+                Vector3 moveVec = AngleToVector(moveAngle);
+
+                //索敵処理
+                if (Vector3.Distance(player.transform.position, this.transform.position) < searchArea)
+                {
+                    moveVec = player.transform.position - this.transform.position;
+                    moveVec = moveVec.normalized;
+                    move = 0;
+                }
+                
+                //移動処理
+                if (move < moveTime)
+                {
+                    enemyTemp += enemyAccelerate;
+                    enemyTemp = enemyTemp < enemySpeed ? enemyTemp : enemySpeed;
+                    enemyMove.x = moveVec.x * enemyTemp;
+                    enemyMove.y = gravity;
+                    enemyMove.z = moveVec.z * enemyTemp;
+                    Character.Move(enemyMove * Time.deltaTime);
+                }
+                //停止処理
+                else
+                {
+                    stop += 0.1f;
+
+                    enemyTemp -= enemyAccelerate;
+                    enemyTemp = enemyTemp > 0 ? enemyTemp : 0;
+                    enemyMove.x = moveVec.x * enemyTemp;
+                    enemyMove.y = gravity;
+                    enemyMove.z = moveVec.z * enemyTemp;
+                    Character.Move(enemyMove * Time.deltaTime);
+
+
+                    if (stop > stopTime)
+                    {
+                        move = 0;
+                        stop = 0;
+                        moveAngle = -1;
+                        enemyTemp = 0;
+                    }
+                }
+                float angle = Mathf.Atan2(enemyMove.z, enemyMove.x);
+                ////移動方向に回転
+                this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle), 0));
+
+            }
+            else
+            {
+                //空中時は停止
+                enemyMove.x = 0;
+                enemyMove.y = gravity;
+                enemyMove.z = 0;
+                Character.Move(enemyMove * Time.deltaTime);
+            }
+
+        }
         
-
-        Character.Move(enemyMove * Time.deltaTime);
-        gravity = enemyMove.y;
         //移動方向の取得
-        float angle = Mathf.Atan2(enemyMove.z, enemyMove.x);
-        //移動方向に回転
-        this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle), 0));
+        
         
     }
 
@@ -93,4 +191,10 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
         return new Vector3(x, 0, z);
     }
+
+    public void IsGravity()
+    {
+        hasGravity =true;
+    }
+
 }

@@ -6,6 +6,8 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
 
     private List<Gpt_Enemy> EnemyList = new List<Gpt_Enemy>();
 
+    public float gravityArea;
+
     private static int num=0;
 	// Use this for initialization
 	void Start () {
@@ -22,9 +24,9 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
             {
                 if (j == i) continue;
 
-                if(EnemyList[i].GetColor()== EnemyList[j].GetColor())
+                if(EnemyList[i].GetColor()!=0&&EnemyList[i].GetColor()== EnemyList[j].GetColor())
                 {
-                    if (Vector3.Distance(EnemyList[i].transform.position, EnemyList[j].transform.position) < 10.0f)
+                    if (Vector3.Distance(EnemyList[i].transform.position, EnemyList[j].transform.position) < gravityArea)
                     {
                         //i番目へのベクトル
                         Vector3 objVec1 = EnemyList[i].transform.position - EnemyList[j].transform.position;

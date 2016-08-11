@@ -12,7 +12,7 @@ public class Gpt_Enemy : MonoBehaviour {
     private CharacterController Character;
 
 
-    private float gravity=0.13f;
+    public float gravity=0.13f;
     private bool gravityFlag;
     public int hitPoint = 1;
     float test;
@@ -24,9 +24,9 @@ public class Gpt_Enemy : MonoBehaviour {
         ManegerObject = GameObject.Find("GravityManeger");
         EnemyGravityManeger = ManegerObject.GetComponent<Gpt_EnemyGravityManeger>();
         EnemyGravityManeger.AddEnemyList(this);
-        Speed(2f);
+        //Speed(2f);
         EnemyMove.SetVecter(this.transform.forward);
-        int temp= Random.Range(1, 4); 
+        int temp= Random.Range(0, 3); 
         EnemyColor.SetColor(temp);
         
         Character = this.GetComponent<CharacterController>();
@@ -55,6 +55,8 @@ public class Gpt_Enemy : MonoBehaviour {
         rigid.isKinematic = false;
         rigid.useGravity = true;
         rigid.AddForce(-gravityVec * gravity, ForceMode.VelocityChange);
+
+        EnemyMove.IsGravity();
     }
 
     public int GetColor()
