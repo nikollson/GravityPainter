@@ -24,6 +24,10 @@ public class Gpt_PlayerState : MonoBehaviour
     public int BlueCombo { get { return blueCombo.Combo; } }
     public int YellowCombo { get { return yellowCombo.Combo; } }
 
+    public float RedComboRestTimePer { get { return redCombo.RestTime; } }
+    public float BlueComboRestTimePer { get { return blueCombo.RestTime; } }
+    public float YellowComboRestTimePer { get { return yellowCombo.RestTime; } }
+
     public bool IsFeever { get; private set; }
 
     public bool IsMuteki { get { return mutekiCount < mutekiTime; } }
@@ -110,6 +114,7 @@ public class Gpt_PlayerState : MonoBehaviour
     {
         ComboControlSetting setting;
         public int Combo { get; private set; }
+        public float RestTime { get { return Combo == 0 ? 0 : 1 - Mathf.Min(1.0f, Mathf.Max(0.0f, comboTimeCount / setting.comboCutTime)); } }
         float comboTimeCount = 0;
 
         public ComboControl(ComboControlSetting setting)
