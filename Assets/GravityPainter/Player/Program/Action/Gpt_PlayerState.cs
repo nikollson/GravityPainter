@@ -15,6 +15,8 @@ public class Gpt_PlayerState : MonoBehaviour
     ComboControl redCombo, blueCombo, yellowCombo;
     float mutekiCount = 0;
 
+    public GameObject specialEnemy;
+
     // プロパティ
     public int HP { get; private set; }
     public float Feever { get; private set; }
