@@ -103,6 +103,9 @@ public class Gpt_Input : MonoBehaviour
             Move = new Vector2(Input.GetAxis(xKey), Input.GetAxis(yKey));
             CamMove = new Vector2(Input.GetAxis(camXKey), Input.GetAxis(camYKey));
 
+            Move = Move.normalized;
+            CamMove = CamMove.normalized;
+
             MovePush = Input.GetButton(movePushKey);
             CameraPush = Input.GetButton(cameraPushKey);
 
