@@ -7,22 +7,28 @@ public class Gpt_PlayerColor : MonoBehaviour
     public Material blueMaterial;
     public Material yellowMaterial;
 
-    public Renderer renderer;
+    public Renderer[] renderers;
 
     public Gpt_InkColor startColor = Gpt_InkColor.RED;
     public Gpt_InkColor Color { get; private set; }
 
     void Start()
     {
-        Color = startColor;
+        SetColor(startColor);
     }
 
     public void SetColor(Gpt_InkColor color)
     {
         Color = color;
-        if (color == Gpt_InkColor.RED) renderer.sharedMaterial = redMaterial;
-        if (color == Gpt_InkColor.BLUE) renderer.sharedMaterial = blueMaterial;
-        if (color == Gpt_InkColor.YELLOW) renderer.sharedMaterial = yellowMaterial;
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            Renderer renderer = renderers[i];
+            if (color == Gpt_InkColor.RED) renderer.sharedMaterial = redMaterial;
+            if (color == Gpt_InkColor.BLUE) renderer.sharedMaterial = blueMaterial;
+            if (color == Gpt_InkColor.YELLOW) renderer.sharedMaterial = yellowMaterial;
+        }
+
     }
 
     public void SetNextColor()

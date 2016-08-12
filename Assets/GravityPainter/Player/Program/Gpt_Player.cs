@@ -11,7 +11,6 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerJump playerJump;
     public Gpt_PlayerAttackMove playerAttack;
     public Gpt_PlayerAttackState playerAttackState;
-    public Gpt_PlayerBodyColor playerBodyColor;
     public Gpt_PlayerWait playerWait;
     public Gpt_PlayerAir playerAir;
     public Gpt_PlayerState state;
