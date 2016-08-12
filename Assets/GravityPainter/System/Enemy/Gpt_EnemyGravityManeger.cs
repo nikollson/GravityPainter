@@ -10,14 +10,16 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
     private List<Vector3> ExplodePosition = new List<Vector3>();
 
     public float gravityArea;
-	// Use this for initialization
+    // Use this for initialization
+
+    float temp;
 	void Start () {
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
+        
         //距離判定
         for (int i = 0; i < EnemyList.Count; i++)
         {
@@ -49,6 +51,20 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
 
         //Debug.Log(EnemyList.Count);
     }
+
+    //爆発処理
+    public void IsExplode()
+    {
+        for (int i = 0; i < EnemyList.Count; i++)
+        {
+            if (EnemyList[i].GetGravity())
+            {
+                EnemyList[i].IsExplode();
+            }
+
+        }
+    }
+
 
     public void AddEnemyList(Gpt_Enemy Enemy)
     {
