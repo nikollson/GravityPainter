@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Gpt_PlayerState : MonoBehaviour
 {
@@ -87,6 +88,9 @@ public class Gpt_PlayerState : MonoBehaviour
         yellowCombo.Update();
 
         mutekiCount += Time.deltaTime;
+
+
+        if (HP == 0) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void MakeSpecialEnemy(ComboControl comboControl)
