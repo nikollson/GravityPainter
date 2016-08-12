@@ -39,7 +39,7 @@ public class Gpt_Enemy : MonoBehaviour {
         EnemyGravityManeger.AddEnemyList(this);
         //Speed(2f);
         EnemyMove.SetVecter(this.transform.forward);
-        int temp= Random.Range(0, 1); 
+        int temp= Random.Range(1, 2); 
         EnemyColor.SetColor(temp);
         
         Character = this.GetComponent<CharacterController>();
@@ -59,8 +59,7 @@ public class Gpt_Enemy : MonoBehaviour {
                 for (int aIndex = 0; aIndex < collision.contacts.Length; ++aIndex)
                 {
                     Vector3 trans = collision.contacts[aIndex].point;
-                    Instantiate(exploder, trans, Quaternion.identity);
-
+                    //Instantiate(exploder, trans, Quaternion.identity);
 
                 }
             }
@@ -133,5 +132,12 @@ public class Gpt_Enemy : MonoBehaviour {
     public int GetColor()
     {
         return EnemyColor.GetColor();
+    }
+
+    //
+    public bool GetGravity()
+    {
+        //重力フラグ確認
+        return gravityFlag;
     }
 }
