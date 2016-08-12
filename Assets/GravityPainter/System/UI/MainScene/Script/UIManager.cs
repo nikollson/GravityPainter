@@ -46,6 +46,7 @@ public class UIManager : MonoBehaviour {
         }
     }
 
+
     // インクゲージ更新関数
     void InkUpdate()
     {
@@ -61,11 +62,8 @@ public class UIManager : MonoBehaviour {
         //comboTimeBar[2].transform.localScale = new Vector3(playerScript.state.comboTime / playerScript.state.comboTimeMax, 1, 1);
 
         // コンボ数
-        comboText[0].text = "15" + " Combo!";
-        comboText[1].text = "55" + " Combo!";
-        comboText[2].text = "12" + " Combo!";
-        //comboText[0].text = playerScript.state.BlueCombo.ToString() + "Combo!";
-        //comboText[1].text = playerScript.state.YellowCombo.ToString() + "Combo!";
-        //comboText[2].text = playerScript.state.RedCombo.ToString() + "Combo!";
+        comboText[0].text = playerScript.state.BlueCombo.ToString() + "Combo!";
+        comboText[1].text = playerScript.state.YellowCombo.ToString() + "Combo!";
+        comboText[2].text = playerScript.state.RedCombo.ToString() + "Combo!";
     }
 }
