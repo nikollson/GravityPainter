@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Gpt_PlayerUtillity : MonoBehaviour
 {
-
+    public Gpt_EnemyGravityManeger gravityManager;
     public Gpt_Camera camera;
     public HitManager footCollider;
     public float ignoreFootColliderTime = 0.1f;
