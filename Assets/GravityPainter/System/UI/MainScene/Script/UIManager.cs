@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour {
 
     /* HP関連 */
     public RawImage[] hpImgs = new RawImage[12];
-    Vector3[] hpVecs = new Vector3[12];     // 初期位置
+    Vector3[] hpVecs = new Vector3[12];                         // 初期位置
     Vector3 notDrawPos = new Vector3(-10000,-10000,-10000);     // 非描画座標
 
     /* インクゲージ関連 */
@@ -72,13 +72,13 @@ public class UIManager : MonoBehaviour {
     void ComboUpdate()
     {
         // コンボ残り時間
-        //comboTimeBar[0].transform.localScale = new Vector3(playerScript.state.comboTime / playerScript.state.comboTimeMax, 1, 1);
-        //comboTimeBar[1].transform.localScale = new Vector3(playerScript.state.comboTime / playerScript.state.comboTimeMax, 1, 1);
-        //comboTimeBar[2].transform.localScale = new Vector3(playerScript.state.comboTime / playerScript.state.comboTimeMax, 1, 1);
+        comboTimeBar[0].transform.localScale = new Vector3(playerScript.state.BlueComboRestTimePer, 1, 1);
+        comboTimeBar[1].transform.localScale = new Vector3(playerScript.state.YellowComboRestTimePer, 1, 1);
+        comboTimeBar[2].transform.localScale = new Vector3(playerScript.state.RedComboRestTimePer, 1, 1);
 
         // コンボ数
-        comboText[0].text = playerScript.state.BlueCombo.ToString() + "Combo!";
-        comboText[1].text = playerScript.state.YellowCombo.ToString() + "Combo!";
-        comboText[2].text = playerScript.state.RedCombo.ToString() + "Combo!";
+        comboText[0].text = playerScript.state.BlueCombo.ToString() + " Combo!";
+        comboText[1].text = playerScript.state.YellowCombo.ToString() + " Combo!";
+        comboText[2].text = playerScript.state.RedCombo.ToString() + " Combo!";
     }
 }
