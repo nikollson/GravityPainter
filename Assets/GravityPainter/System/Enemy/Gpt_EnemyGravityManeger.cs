@@ -6,9 +6,10 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
 
     private List<Gpt_Enemy> EnemyList = new List<Gpt_Enemy>();
 
-    public float gravityArea;
+    private List<Gpt_Exploder> ExplodeList = new List<Gpt_Exploder>();
+    private List<Vector3> ExplodePosition = new List<Vector3>();
 
-    private static int num=0;
+    public float gravityArea;
 	// Use this for initialization
 	void Start () {
 
@@ -18,9 +19,9 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
 	void Update () {
 
         //距離判定
-        for (int i = 0; i < num; i++)
+        for (int i = 0; i < EnemyList.Count; i++)
         {
-            for (int j = i; j < num; j++)
+            for (int j = i; j < EnemyList.Count; j++)
             {
                 if (j == i) continue;
 
@@ -42,21 +43,21 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
                 }
                 
             }
+
+            //接触判定
         }
 
-        Debug.Log(num);
+        //Debug.Log(EnemyList.Count);
     }
 
     public void AddEnemyList(Gpt_Enemy Enemy)
     {
         EnemyList.Add(Enemy);
-        num++;
     }
 
     public void RemoveEnemyList(Gpt_Enemy Enemy)
     {
         EnemyList.Remove(Enemy);
-        num--;
 
         
     }
@@ -64,6 +65,28 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
     public int ListIndex(Gpt_Enemy Enemy)
     {
         return EnemyList.IndexOf(Enemy);
+    }
+
+    //爆発オブジェクト追加
+    public void AddExplodeList(Gpt_Exploder Exploder)
+    {
+        ExplodeList.Add(Exploder);
+    }
+
+    //爆発オブジェクト削除
+    public void RemoveExplodeList(Gpt_Exploder Exploder)
+    {
+        ExplodeList.Remove(Exploder);
+    }
+
+    public void AddExplodePosition(Vector3 position)
+    {
+        ExplodePosition.Add(position);
+    }
+
+    public void RemoveExplodePosition(Vector3 position)
+    {
+        ExplodePosition.Remove(position);
     }
 
 }
