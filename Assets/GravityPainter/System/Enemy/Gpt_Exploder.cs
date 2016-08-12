@@ -49,13 +49,13 @@ public class Gpt_Exploder : MonoBehaviour {
             {
                 if (z_max_index != i)
                 {
-                    Object.Destroy(collision.gameObject);
+                    //Object.Destroy(collision.gameObject);
                 }
             }
 
             if(z_max_index!=-1)
             {
-                Object.Destroy(this.gameObject);
+                //Object.Destroy(this.gameObject);
             }
         }
     }
