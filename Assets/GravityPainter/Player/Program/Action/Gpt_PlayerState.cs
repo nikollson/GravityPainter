@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 public class Gpt_PlayerState : MonoBehaviour
 {
     public Gpt_PlayerColor playerColor;
+    public Gpt_PlayerInkManage playerInkManage;
 
     public int HPMax = 12;
-    public float inkMax = 1;
     public float feeverMax = 1;
     public float mutekiTime = 1.0f;
     
@@ -18,7 +18,8 @@ public class Gpt_PlayerState : MonoBehaviour
     // プロパティ
     public int HP { get; private set; }
     public float Feever { get; private set; }
-    public float Ink { get; private set; }
+    public float Ink { get { return playerInkManage.RestInk; } }
+    public float inkMax { get { return playerInkManage.inkMax; } }
     
     public int RedCombo { get { return redCombo.Combo; } }
     public int BlueCombo { get { return blueCombo.Combo; } }
@@ -44,8 +45,6 @@ public class Gpt_PlayerState : MonoBehaviour
             mutekiCount = 0;
         }
     }
-    public void AddInk(float value) { Ink = floatValueLimit(0f, inkMax, Ink + value); }
-    public void AddInkConsume(float value) { AddInk(-value); }
     public void AddFeever(float value) { Feever = floatValueLimit(0f, feeverMax, Feever + value); }
 
     public void StartFeever() { IsFeever = true; }
@@ -70,7 +69,7 @@ public class Gpt_PlayerState : MonoBehaviour
     public void MaxStatusSet()
     {
         HP = HPMax;
-        Ink = inkMax;
+        playerInkManage.MaxSet();
     }
     
     void Start()
@@ -102,9 +101,24 @@ public class Gpt_PlayerState : MonoBehaviour
         comboControl.ResetCombo();
     }
 
-    
+    public float GetDetonateEnemyPoint(Gpt_InkColor color)
+    {
+        if (color == Gpt_InkColor.RED) return redCombo.Combo;
+        if (color == Gpt_InkColor.BLUE) return blueCombo.Combo;
+        if (color == Gpt_InkColor.YELLOW) return yellowCombo.Combo;
+        return 0.0f;
+    }
+
+    public void Detonate()
+    {
+        redCombo.ResetCombo();
+        blueCombo.ResetCombo();
+        yellowCombo.ResetCombo();
+    }
+
+
     // implement class
-    
+
     [System.Serializable]
     public class ComboControlSetting
     {
