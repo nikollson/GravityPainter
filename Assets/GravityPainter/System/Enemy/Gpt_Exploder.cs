@@ -19,10 +19,11 @@ public class Gpt_Exploder : MonoBehaviour {
 
 	}
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collision collision)
     {
         if (collision.gameObject.tag == "GravityZone")
         {
+            Debug.Log("aa");
             List<Vector3> Center = new List<Vector3>();
             Center.Add(this.gameObject.transform.position);
 
@@ -83,5 +84,10 @@ public class Gpt_Exploder : MonoBehaviour {
     public void SetDestroy()
     {
         Object.Destroy(this.gameObject);
+    }
+
+    void OnDestroy()
+    {
+        EnemyGravityManeger.RemoveExplodeList(this);
     }
 }

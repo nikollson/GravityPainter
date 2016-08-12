@@ -19,6 +19,8 @@ public class Gpt_Enemy : MonoBehaviour {
     public int hitPoint = 1;
     float test;
 
+    //爆発物オブジェクト
+    public GameObject exploder;
     //爆発フラグ
     private bool isExplode;
 
@@ -30,18 +32,43 @@ public class Gpt_Enemy : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
         //シーン上にあるGravityManegerを自動取得する。（プレハブから一つ生成する。）
         ManegerObject = GameObject.Find("GravityManeger");
         EnemyGravityManeger = ManegerObject.GetComponent<Gpt_EnemyGravityManeger>();
         EnemyGravityManeger.AddEnemyList(this);
         //Speed(2f);
         EnemyMove.SetVecter(this.transform.forward);
-        int temp= Random.Range(1, 3); 
+        int temp= Random.Range(0, 1); 
         EnemyColor.SetColor(temp);
         
         Character = this.GetComponent<CharacterController>();
         Debug.Log(EnemyGravityManeger.ListIndex(this));
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        
+        //重力フラグ時、敵同士の接触で爆発オブジェクト生成
+        if (gravityFlag)
+        {
+            
+            if (collision.gameObject.tag == "Enemy")
+            {
+                Debug.Log("aaaa");
+                for (int aIndex = 0; aIndex < collision.contacts.Length; ++aIndex)
+                {
+                    Vector3 trans = collision.contacts[aIndex].point;
+                    Instantiate(exploder, trans, Quaternion.identity);
+
+
+                }
+            }
+        }
+    }
+
+
+
 
     float temp;
     // Update is called once per frame
@@ -49,7 +76,7 @@ public class Gpt_Enemy : MonoBehaviour {
 
         temp+=0.1f;
         if (temp > 10f) {
-            IsExplode();
+            //IsExplode();
         }
         
     }

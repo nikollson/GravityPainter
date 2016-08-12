@@ -47,7 +47,7 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
             //接触判定
         }
 
-        Debug.Log(EnemyList.Count);
+        //Debug.Log(EnemyList.Count);
     }
 
     public void AddEnemyList(Gpt_Enemy Enemy)
