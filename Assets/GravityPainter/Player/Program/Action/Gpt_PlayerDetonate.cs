@@ -23,6 +23,7 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
     {
         inputFrame_log = inputFrame;
         detonateCount = 0;
+        detonateDone = false;
     }
 
 
