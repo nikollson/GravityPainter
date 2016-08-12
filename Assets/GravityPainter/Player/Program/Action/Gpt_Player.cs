@@ -19,6 +19,7 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_TrailControl trailControl;
     public Gpt_PlayerSkill playerSkill;
     public Gpt_PlayerDetonate playerDetonate;
+    public Gpt_PlayerInkManage playerInkManage;
 
     // プレイヤーの状態管理
     public enum MODE { WAIT, RUN, ATTACK, ROT1, ROT2, SKILL, JUMP, FEEVER, AIR, DETONATE };
@@ -51,9 +52,9 @@ public class Gpt_Player : MonoBehaviour
 
 
     bool CanStartMove() { return playerUtillity.HasAnalogpadMove(); }
-    bool CanStartAttack() { return Gpt_Input.Attack && playerAttack.CanFirstAttack(Gpt_Input.AttackStartFrame); }
-    bool CanStartDetonate() { return Gpt_Input.Detonate && playerDetonate.CanStartDetonate(Gpt_Input.DetonateStartFrame); }
-    bool CanStartSkill() { return Gpt_Input.Skill && playerSkill.CanStartSkill(Gpt_Input.SkillStartFrame); }
+    bool CanStartAttack() { return Gpt_Input.Attack && playerInkManage.CanUseAttack() && playerAttack.CanFirstAttack(Gpt_Input.AttackStartFrame); }
+    bool CanStartDetonate() { return Gpt_Input.Detonate && playerInkManage.CanUseDetonate() && playerDetonate.CanStartDetonate(Gpt_Input.DetonateStartFrame); }
+    bool CanStartSkill() { return Gpt_Input.Skill && playerInkManage.CanUseSkill() && playerSkill.CanStartSkill(Gpt_Input.SkillStartFrame); }
     bool CanStartJump() { return Gpt_Input.Jump && playerJump.CanStartJump(Gpt_Input.JumpStartFrame); }
 
     void UpdateMode_StartRun()
@@ -78,6 +79,7 @@ public class Gpt_Player : MonoBehaviour
         playerAttack.StartAttack(mode, Gpt_Input.AttackStartFrame);
         AttackDirection = dir;
         trailControl.StartTrail(playerColor.Color);
+        playerInkManage.UseAttak();
     }
     void UpdateMode_StartAir()
     {
@@ -89,11 +91,13 @@ public class Gpt_Player : MonoBehaviour
     {
         Mode = MODE.SKILL;
         playerSkill.StartSkill(Gpt_Input.SkillStartFrame, state.PlayerColor);
+        playerInkManage.UseSkill();
     }
     void UpdateMode_StartDetonate()
     {
         Mode = MODE.DETONATE;
         playerDetonate.StartDetonate(Gpt_Input.DetonateStartFrame);
+        playerInkManage.UseDetonate();
     }
 
 
