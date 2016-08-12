@@ -36,7 +36,7 @@ public class Gpt_Enemy : MonoBehaviour {
         EnemyGravityManeger.AddEnemyList(this);
         //Speed(2f);
         EnemyMove.SetVecter(this.transform.forward);
-        int temp= Random.Range(1, 2); 
+        int temp= Random.Range(1, 3); 
         EnemyColor.SetColor(temp);
         
         Character = this.GetComponent<CharacterController>();
