@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Gpt_Camera : MonoBehaviour
 {
-    /* プレイヤー情報系s */
+    /* プレイヤー情報系 */
     public GameObject player;           // プレイヤー情報
     public float distance = 5.0f;       // プレイヤーとの距離
 
@@ -17,6 +17,7 @@ public class Gpt_Camera : MonoBehaviour
     public float rotX = 0.0f;           // 左右回転値
     public float rotSpeedX = 7.0f;      // 左右回転速度
     public float slowRotTime = 1.0f;    // 左右回転の余韻時間
+    float reqEndRotXCnt_AndFlg;         // 回転リクエストが終わってからの経過時間兼フラグ(余韻に使用)
     bool oldCameraRotXFlg;              // 左右回転制御が行われたかどうか(前のフレームにて)
     bool cameraRotXFlg;                 // 左右回転制御が行われたかどうか(このフレームにて)
     float moveXVal;                     // 左右回転量
@@ -24,8 +25,8 @@ public class Gpt_Camera : MonoBehaviour
 
     /* 視点反転 */
     bool turnFlg;                       // 視点反転中かどうか
+    bool turnRightFlg;                  // 視点反転開始時の向きが右向きであるかどうか
     float targetRot;                    // 視点反転時の目標rot値
-    float reqEndRotXCnt_AndFlg;         // 回転リクエストが終わってからの経過時間兼フラグ
     public float turnXSpd = 10.0f;      // 回転速度
     bool oldStickPushFlg = false;       // スティック押し込み情報(前のフレームにて)
     bool stickPushFlg = false;          // スティック押し込み情報(このフレームにて)
@@ -107,19 +108,20 @@ public class Gpt_Camera : MonoBehaviour
         if (stickPushFlg && !oldStickPushFlg && !turnFlg)
         {
             turnFlg = true;
-            targetRot = (180.0f - player.transform.eulerAngles.y) * (Mathf.PI / 180.0f);
+            if (targetRot < rotX) turnRightFlg = true;
+            else turnRightFlg = false;
+            targetRot = ((180.0f - player.transform.eulerAngles.y) % 360) * (Mathf.PI / 180.0f);
         }
 
         // 振りかえり処理
         if (turnFlg)
         {
-            if ((Mathf.Abs(targetRot - rotX) % Mathf.PI) > 0.1f)
+            if (targetRot < rotX) rotX -= Time.deltaTime * turnXSpd;
+            else if (targetRot > rotX) rotX += Time.deltaTime * turnXSpd;
+            if((turnRightFlg && targetRot > rotX) || (!turnRightFlg && targetRot < rotX))
             {
-                // 回転方向を決める
-                if (targetRot - rotX > 0.0f) rotX += Time.deltaTime * turnXSpd;
-                else rotX -= Time.deltaTime * turnXSpd;
+                turnFlg = false;
             }
-            else turnFlg = false;
         }
     }
 
