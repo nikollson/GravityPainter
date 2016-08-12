@@ -12,6 +12,8 @@ public class Gpt_PlayerAnimator : MonoBehaviour {
         animator.SetBool("IsAttackingRight", player.Mode == Gpt_Player.MODE.ATTACK && player.AttackDirection == Gpt_Player.ATTACK_DIRECTION.RIGHT);
         animator.SetBool("IsAttackingLeft", player.Mode == Gpt_Player.MODE.ATTACK && player.AttackDirection == Gpt_Player.ATTACK_DIRECTION.LEFT);
         animator.SetBool("IsAttacking", player.Mode == Gpt_Player.MODE.ATTACK);
+        animator.SetBool("IsJumping", player.Mode == Gpt_Player.MODE.AIR);
+        animator.SetBool("IsDetonating", player.Mode == Gpt_Player.MODE.DETONATE);
     }
 
     public void UpdateDelta()
