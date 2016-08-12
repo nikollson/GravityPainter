@@ -1,4 +1,6 @@
-﻿
+﻿// 課題1.振りかえりを滑らかに
+// 課題2.GTA5のカメラのように、プレイヤーの背後にそれとなく周っていくように
+
 using UnityEngine;
 using System.Collections;
 
@@ -28,6 +30,7 @@ public class Gpt_Camera : MonoBehaviour
     bool turnRightFlg;                  // 視点反転開始時の向きが右向きであるかどうか
     float targetRot;                    // 視点反転時の目標rot値
     public float turnXSpd = 10.0f;      // 回転速度
+    float turnVal;                      // 振りかえり量を計算
     bool oldStickPushFlg = false;       // スティック押し込み情報(前のフレームにて)
     bool stickPushFlg = false;          // スティック押し込み情報(このフレームにて)
 
@@ -108,20 +111,24 @@ public class Gpt_Camera : MonoBehaviour
         if (stickPushFlg && !oldStickPushFlg && !turnFlg)
         {
             turnFlg = true;
+            // 方向を取得しておく
             if (targetRot < rotX) turnRightFlg = true;
             else turnRightFlg = false;
+
+            // 視点反転時の目標rot値を計算
             targetRot = ((180.0f - player.transform.eulerAngles.y) % 360) * (Mathf.PI / 180.0f);
+            // 振りかえり量を取得しておく
+            turnVal = Mathf.Abs(Mathf.Abs(targetRot % Mathf.PI) - Mathf.Abs(rotX % Mathf.PI));
         }
 
         // 振りかえり処理
         if (turnFlg)
         {
-            if (targetRot < rotX) rotX -= Time.deltaTime * turnXSpd;
-            else if (targetRot > rotX) rotX += Time.deltaTime * turnXSpd;
-            if((turnRightFlg && targetRot > rotX) || (!turnRightFlg && targetRot < rotX))
-            {
-                turnFlg = false;
-            }
+            // 振りかえり
+            if (targetRot < rotX) rotX -= Time.deltaTime * turnXSpd * turnVal;
+            else if (targetRot > rotX) rotX += Time.deltaTime * turnXSpd * turnVal;
+            // 停止
+            if ((turnRightFlg && targetRot > rotX) || (!turnRightFlg && targetRot < rotX)) turnFlg = false;
         }
     }
 
