@@ -62,11 +62,18 @@ public class Gpt_PlayerState : MonoBehaviour
     public void AddRainbowCombo() { Debug.Log("RaibowColorComboとは?"); }
 
 
+    public void MaxStatusSet()
+    {
+        HP = HPMax;
+        Ink = inkMax;
+    }
+    
     void Start()
     {
         redCombo = new ComboControl(comboSetting);
         blueCombo = new ComboControl(comboSetting);
         yellowCombo = new ComboControl(comboSetting);
+        MaxStatusSet();
     }
 
     void Update()
