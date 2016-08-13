@@ -102,7 +102,7 @@ public class Gpt_Enemy : MonoBehaviour {
         Speed(0);
         rigid.isKinematic = false;
         rigid.useGravity = true;
-        
+        EnemyAttack.StopAttack();
 
         if(!isExplode){
             rigid.AddForce(-gravityVec * gravity, ForceMode.VelocityChange);
