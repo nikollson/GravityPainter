@@ -6,6 +6,7 @@ public class Gpt_PlayerInkManage : MonoBehaviour
 
 
     public float inkMax = 1;
+    public float inkStart = 0.33f;
 
     public float attack = 0.03f;
     public float skill = 0.1f;
@@ -22,10 +23,9 @@ public class Gpt_PlayerInkManage : MonoBehaviour
 
     void Start()
     {
-        MaxSet();
+        RestInk = inkStart;
     }
-
-    public void MaxSet() { RestInk = inkMax; }
+    
     public void AddInk(float value) { RestInk = Mathf.Min(inkMax, Mathf.Max(0, RestInk + value)); }
     public void ConsumeInk(float value) { AddInk(-value); }
 

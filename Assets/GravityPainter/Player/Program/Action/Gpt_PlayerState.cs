@@ -71,7 +71,6 @@ public class Gpt_PlayerState : MonoBehaviour
     public void MaxStatusSet()
     {
         HP = HPMax;
-        playerInkManage.MaxSet();
     }
     
     void Start()
