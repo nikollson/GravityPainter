@@ -4,14 +4,17 @@ using System.Collections;
 
 public class Gpt_EnemyMove : MonoBehaviour {
 
-    //雑魚パターン(0:近接 1:遠隔)
-    public int enemyPattern;
+
+    public Gpt_EnemyAttack EnemyAttack;
     //走行スピード
     public float enemySpeed;
     //加速
     public float enemyAccelerate;
     private float enemyTemp;
-    
+
+    //雑魚パターン(0:近接 1:遠隔)
+    private int enemyPattern;
+
     //プレイヤー取得
     private GameObject player;
 
@@ -59,6 +62,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
     private bool isWalked=false;
     //起動スイッチ
     private bool isMoved = false;
+   
 
     // Use this for initialization
     void Start()
@@ -105,6 +109,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 move += 0.1f;
                 Vector3 moveVec = AngleToVector(moveAngle);
 
+                
                 //索敵処理
                 if (Vector3.Distance(player.transform.position, this.transform.position) < searchArea)
                 {
@@ -112,16 +117,24 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     moveVec = moveVec.normalized;
                     move = 0;
                 }
-                
+
+                float angle = Mathf.Atan2(moveVec.z, moveVec.x);
+                ////移動方向に回転
+                this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle)+90, 0));
                 //移動処理
                 if (move < moveTime)
                 {
                     enemyTemp += enemyAccelerate;
                     enemyTemp = enemyTemp < enemySpeed ? enemyTemp : enemySpeed;
                     //遠隔攻撃の射程に入った時
-                    if (enemyPattern == 1 && Vector3.Distance(player.transform.position, this.transform.position) < attackArea)
+                    if (Vector3.Distance(player.transform.position, this.transform.position) < attackArea)
                     {
                         enemyTemp = 0.1f;
+                        EnemyAttack.IsAttack();
+                    }
+                    else
+                    {
+                        EnemyAttack.StopAttack();
                     }
 
                     enemyMove.x = moveVec.x * enemyTemp;
@@ -150,10 +163,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         enemyTemp = 0;
                     }
                 }
-                float angle = Mathf.Atan2(enemyMove.z, enemyMove.x);
-                ////移動方向に回転
-                this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle), 0));
-
+                
             }
             else
             {
@@ -209,4 +219,9 @@ public class Gpt_EnemyMove : MonoBehaviour {
         hasGravity =true;
     }
 
+    public void SetEnemyPattern(int pattern)
+    {
+        //0:近接 1:遠隔
+        enemyPattern = pattern;
+    }
 }
