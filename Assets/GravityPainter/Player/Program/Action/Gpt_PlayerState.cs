@@ -26,6 +26,7 @@ public class Gpt_PlayerState : MonoBehaviour
     public int RedCombo { get { return redCombo.Combo; } }
     public int BlueCombo { get { return blueCombo.Combo; } }
     public int YellowCombo { get { return yellowCombo.Combo; } }
+    public int Combo { get { return redCombo.Combo + blueCombo.Combo + yellowCombo.Combo; } }
 
     public float RedComboRestTimePer { get { return redCombo.RestTime; } }
     public float BlueComboRestTimePer { get { return blueCombo.RestTime; } }
