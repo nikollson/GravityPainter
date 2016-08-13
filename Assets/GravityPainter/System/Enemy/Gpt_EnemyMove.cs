@@ -105,6 +105,11 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 move += 0.1f;
                 Vector3 moveVec = AngleToVector(moveAngle);
 
+                float angle = Mathf.Atan2(moveVec.z, moveVec.x);
+                ////移動方向に回転
+                this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle), 0));
+
+
                 //索敵処理
                 if (Vector3.Distance(player.transform.position, this.transform.position) < searchArea)
                 {
@@ -112,7 +117,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     moveVec = moveVec.normalized;
                     move = 0;
                 }
-                
+                               
+
                 //移動処理
                 if (move < moveTime)
                 {
@@ -150,10 +156,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         enemyTemp = 0;
                     }
                 }
-                float angle = Mathf.Atan2(enemyMove.z, enemyMove.x);
-                ////移動方向に回転
-                this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle), 0));
-
+                
             }
             else
             {
