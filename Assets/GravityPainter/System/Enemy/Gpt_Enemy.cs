@@ -5,12 +5,15 @@ public class Gpt_Enemy : MonoBehaviour {
 
     public Gpt_EnemyMove EnemyMove;
     public Gpt_EnemyColor EnemyColor;
+    public Gpt_EnemyAttack EnemyAttack;
     private GameObject ManegerObject;
     public Rigidbody rigid;
     private Gpt_EnemyGravityManeger EnemyGravityManeger;
 
     private CharacterController Character;
 
+    //雑魚パターン(0:近接 1:遠隔)
+    public int enemyPattern=0;
     //重力エネルギー
     public float gravity=0.13f;
 
@@ -38,6 +41,8 @@ public class Gpt_Enemy : MonoBehaviour {
         EnemyGravityManeger = ManegerObject.GetComponent<Gpt_EnemyGravityManeger>();
         EnemyGravityManeger.AddEnemyList(this);
         //Speed(2f);
+        EnemyAttack.SetEnemyPattern(enemyPattern);
+        EnemyMove.SetEnemyPattern(enemyPattern);
         EnemyMove.SetVecter(this.transform.forward);
         int temp= Random.Range(0, 1); 
         EnemyColor.SetColor(temp);
