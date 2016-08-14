@@ -1,0 +1,354 @@
+fileFormatVersion: 2
+guid: aa2d480f29a8c1e49bd0dfd9f7d4babc
+timeCreated: 1471093908
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: All_joint
+    100002: //RootNode
+    100004: chara_model:bracelet_l
+    100006: chara_model:bracelet_r
+    100008: chara_model:brush
+    100010: chara_model:chara1
+    100012: chara_model:hair1
+    100014: chara_model:hair2
+    100016: chara_model:hair3
+    100018: chara_model:magnet
+    100020: chara_model:pCylinder1
+    100022: chara_model:pCylinder2
+    100024: ikHandle1
+    100026: ikHandle2
+    100028: ikHandle3
+    100030: ikHandle4
+    100032: joint4
+    100034: joint41
+    100036: joint42
+    100038: joint43
+    100040: joint44
+    100042: joint48
+    100044: joint49
+    100046: joint5
+    100048: joint50
+    100050: joint51
+    100052: joint52
+    100054: joint53
+    100056: joint54
+    100058: L_ankle
+    100060: L_elbow
+    100062: L_foot
+    100064: L_foot_a
+    100066: L_hand
+    100068: L_hand_a
+    100070: L_Instep
+    100072: L_knee
+    100074: L_shoulder
+    100076: L_thumb
+    100078: L_wrist
+    100080: necklace
+    100082: necklace_2
+    100084: necklace_a
+    100086: nurbsCircle1
+    100088: nurbsCircle10
+    100090: nurbsCircle11
+    100092: nurbsCircle12
+    100094: nurbsCircle2
+    100096: nurbsCircle3
+    100098: nurbsCircle4
+    100100: nurbsCircle5
+    100102: nurbsCircle7
+    100104: nurbsCircle8
+    100106: nurbsCircle9
+    100108: R_foot
+    100110: thumb_a
+    100112: Upperbody
+    100114: Upperbody_2
+    400000: All_joint
+    400002: //RootNode
+    400004: chara_model:bracelet_l
+    400006: chara_model:bracelet_r
+    400008: chara_model:brush
+    400010: chara_model:chara1
+    400012: chara_model:hair1
+    400014: chara_model:hair2
+    400016: chara_model:hair3
+    400018: chara_model:magnet
+    400020: chara_model:pCylinder1
+    400022: chara_model:pCylinder2
+    400024: ikHandle1
+    400026: ikHandle2
+    400028: ikHandle3
+    400030: ikHandle4
+    400032: joint4
+    400034: joint41
+    400036: joint42
+    400038: joint43
+    400040: joint44
+    400042: joint48
+    400044: joint49
+    400046: joint5
+    400048: joint50
+    400050: joint51
+    400052: joint52
+    400054: joint53
+    400056: joint54
+    400058: L_ankle
+    400060: L_elbow
+    400062: L_foot
+    400064: L_foot_a
+    400066: L_hand
+    400068: L_hand_a
+    400070: L_Instep
+    400072: L_knee
+    400074: L_shoulder
+    400076: L_thumb
+    400078: L_wrist
+    400080: necklace
+    400082: necklace_2
+    400084: necklace_a
+    400086: nurbsCircle1
+    400088: nurbsCircle10
+    400090: nurbsCircle11
+    400092: nurbsCircle12
+    400094: nurbsCircle2
+    400096: nurbsCircle3
+    400098: nurbsCircle4
+    400100: nurbsCircle5
+    400102: nurbsCircle7
+    400104: nurbsCircle8
+    400106: nurbsCircle9
+    400108: R_foot
+    400110: thumb_a
+    400112: Upperbody
+    400114: Upperbody_2
+    2300000: chara_model:brush
+    3300000: chara_model:brush
+    4300000: chara_model:chara1
+    4300002: chara_model:hair1
+    4300004: chara_model:bracelet_r
+    4300006: chara_model:bracelet_l
+    4300008: chara_model:brush
+    4300010: chara_model:hair2
+    4300012: chara_model:hair3
+    4300014: chara_model:magnet
+    4300016: chara_model:pCylinder1
+    4300018: chara_model:pCylinder2
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: chara_model:bracelet_l
+    13700002: chara_model:bracelet_r
+    13700004: chara_model:chara1
+    13700006: chara_model:hair1
+    13700008: chara_model:hair2
+    13700010: chara_model:hair3
+    13700012: chara_model:magnet
+    13700014: chara_model:pCylinder1
+    13700016: chara_model:pCylinder2
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 50
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: All_joint
+        weight: 1
+      - path: All_joint/L_foot
+        weight: 1
+      - path: All_joint/L_foot/L_knee
+        weight: 1
+      - path: All_joint/L_foot/L_knee/L_ankle
+        weight: 1
+      - path: All_joint/L_foot/L_knee/L_ankle/L_Instep
+        weight: 1
+      - path: All_joint/L_foot/L_knee/L_ankle/L_Instep/L_foot_a
+        weight: 1
+      - path: All_joint/nurbsCircle7
+        weight: 1
+      - path: All_joint/nurbsCircle7/joint4
+        weight: 1
+      - path: All_joint/nurbsCircle7/joint4/joint5
+        weight: 1
+      - path: All_joint/R_foot
+        weight: 1
+      - path: All_joint/R_foot/joint41
+        weight: 1
+      - path: All_joint/R_foot/joint41/joint42
+        weight: 1
+      - path: All_joint/R_foot/joint41/joint42/joint43
+        weight: 1
+      - path: All_joint/R_foot/joint41/joint42/joint43/joint44
+        weight: 1
+      - path: All_joint/Upperbody
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/joint48
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/joint48/joint49
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/joint48/joint49/joint50
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/joint48/joint49/joint50/joint51
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/joint48/joint49/joint50/joint51/joint52
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/joint48/joint49/joint50/joint53
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/joint48/joint49/joint50/joint53/joint54
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/L_shoulder
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/L_shoulder/L_elbow
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/L_shoulder/L_elbow/L_wrist
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/L_shoulder/L_elbow/L_wrist/L_hand
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/L_shoulder/L_elbow/L_wrist/L_hand/L_hand_a
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/L_shoulder/L_elbow/L_wrist/L_thumb
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/L_shoulder/L_elbow/L_wrist/L_thumb/thumb_a
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/necklace
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/necklace/necklace_2
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_2/necklace/necklace_2/necklace_a
+        weight: 1
+      - path: chara_model:bracelet_l
+        weight: 1
+      - path: chara_model:bracelet_r
+        weight: 1
+      - path: chara_model:brush
+        weight: 1
+      - path: chara_model:chara1
+        weight: 1
+      - path: chara_model:hair1
+        weight: 1
+      - path: chara_model:hair2
+        weight: 1
+      - path: chara_model:hair3
+        weight: 1
+      - path: chara_model:magnet
+        weight: 1
+      - path: chara_model:pCylinder1
+        weight: 1
+      - path: chara_model:pCylinder2
+        weight: 1
+      - path: nurbsCircle1
+        weight: 1
+      - path: nurbsCircle2
+        weight: 1
+      - path: nurbsCircle3
+        weight: 1
+      - path: nurbsCircle4
+        weight: 1
+      - path: nurbsCircle8
+        weight: 1
+      - path: nurbsCircle8/ikHandle2
+        weight: 1
+      - path: nurbsCircle9
+        weight: 1
+      - path: nurbsCircle9/ikHandle1
+        weight: 1
+      - path: nurbsCircle10
+        weight: 1
+      - path: nurbsCircle10/ikHandle3
+        weight: 1
+      - path: nurbsCircle11
+        weight: 1
+      - path: nurbsCircle11/ikHandle4
+        weight: 1
+      - path: nurbsCircle12
+        weight: 1
+      - path: nurbsCircle12/nurbsCircle5
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
