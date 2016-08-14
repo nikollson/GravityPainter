@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour {
+public class Gpt_UIManager : MonoBehaviour {
 
     /* プレイヤー関連情報 */
     public GameObject player;
