@@ -23,8 +23,7 @@ public class Gpt_UIManager : MonoBehaviour {
     Vector3 inkDrawPos;
 
     /* コンボ数関連 */
-    public Text[] comboText = new Text[3];
-    public RawImage[] comboTimeBar = new RawImage[3];
+    public Text comboText;
 
     // 初期化関数
     void Start () {
@@ -92,14 +91,25 @@ public class Gpt_UIManager : MonoBehaviour {
     // コンボ数更新関数
     void ComboUpdate()
     {
-        // コンボ残り時間
-        comboTimeBar[0].transform.localScale = new Vector3(playerScript.state.BlueComboRestTimePer, 1, 1);
-        comboTimeBar[1].transform.localScale = new Vector3(playerScript.state.YellowComboRestTimePer, 1, 1);
-        comboTimeBar[2].transform.localScale = new Vector3(playerScript.state.RedComboRestTimePer, 1, 1);
+        // コンボ数表示
+        //comboText.text = playerScript.state.Combo.ToString();
+        comboText.text = "75";
 
-        // コンボ数
-        comboText[0].text = playerScript.state.BlueCombo.ToString() + " Combo!";
-        comboText[1].text = playerScript.state.YellowCombo.ToString() + " Combo!";
-        comboText[2].text = playerScript.state.RedCombo.ToString() + " Combo!";
+
+
+
+
+
+
+
+        //// コンボ残り時間
+        //comboTimeBar[0].transform.localScale = new Vector3(playerScript.state.Combo, 1, 1);
+        //comboTimeBar[1].transform.localScale = new Vector3(playerScript.state.YellowComboRestTimePer, 1, 1);
+        //comboTimeBar[2].transform.localScale = new Vector3(playerScript.state.RedComboRestTimePer, 1, 1);
+
+        //// コンボ数
+        //comboText[0].text = playerScript.state.BlueCombo.ToString() + " Combo!";
+        //comboText[1].text = playerScript.state.YellowCombo.ToString() + " Combo!";
+        //comboText[2].text = playerScript.state.RedCombo.ToString() + " Combo!";
     }
 }
