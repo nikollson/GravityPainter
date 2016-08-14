@@ -14,7 +14,7 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
 
     float temp;
 	void Start () {
-
+        Application.targetFrameRate = 30; //30FPSに設定
 	}
 	
 	// Update is called once per frame
