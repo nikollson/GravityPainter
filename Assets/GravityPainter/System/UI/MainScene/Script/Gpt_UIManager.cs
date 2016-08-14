@@ -105,9 +105,8 @@ public class Gpt_UIManager : MonoBehaviour {
         }
         // 必要な分だけ表示領域に持っていく
         for (int i = comboBar.Length-1; i >= 0; i--)
-        //for (int i = 0; i < comboBar.Length; i++)
         {
-            if (playerScript.state.BlueComboRestTimePer > 1.0f-(float)i / (float)comboBar.Length) comboBar[i].transform.position = comboBarDrawPos[i];
+            if (playerScript.state.BlueComboRestTimePer > 1.0f - (float)i / (float)comboBar.Length) comboBar[i].transform.position = comboBarDrawPos[i];
             else break;
         }
     }
