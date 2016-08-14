@@ -5,7 +5,7 @@ public class Gpt_PlayerRun : MonoBehaviour
 {
     public Gpt_PlayerUtillity playerUtillity;
     public new Rigidbody rigidbody;
-    public float targetSpeed = 2.0f;
+    public float targetPower = 2.0f;
     public float friction = 0.4f;
 
 
@@ -28,8 +28,8 @@ public class Gpt_PlayerRun : MonoBehaviour
         */
 
         Vector3 analogPadMove = playerUtillity.GetAnalogpadMove();
-        Vector3 power = targetSpeed * analogPadMove - friction * rigidbody.velocity;
-        rigidbody.AddForce(power, ForceMode.VelocityChange);
+        Vector3 power = targetPower * analogPadMove - friction * rigidbody.velocity;
+        rigidbody.AddForce(power, ForceMode.Acceleration);
 
         playerUtillity.LookAnalogpadDirction();
     }

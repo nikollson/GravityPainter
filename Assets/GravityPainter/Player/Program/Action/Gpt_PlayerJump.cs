@@ -25,7 +25,8 @@ public class Gpt_PlayerJump : MonoBehaviour {
     {
         jumpCount = 0;
         Vector3 speedDownXZPower = -1 * speedDownXZ * (rigidbody.velocity - new Vector3(0, rigidbody.velocity.y, 0));
-        rigidbody.AddForce(jumpForce + speedDownXZPower, ForceMode.VelocityChange);
+        Vector3 speedDownYPower = -1 * new Vector3(0, rigidbody.velocity.y, 0);
+        rigidbody.AddForce(jumpForce + speedDownXZPower + speedDownYPower, ForceMode.VelocityChange);
         jumpPushFrame_log = JumpPushFrame;
     }
 
