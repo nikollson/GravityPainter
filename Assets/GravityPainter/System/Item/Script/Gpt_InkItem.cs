@@ -4,13 +4,15 @@ using System.Collections;
 public class Gpt_InkItem : MonoBehaviour {
 
     GameObject player;
+    Gpt_Player playerScript;
     public float upMovePower = 0.5f;
     float spd = 0.1f;       // 速度
     public float addAcceleration = 0.01f;       // 加速度変数
 
     void Start () {
         player = GameObject.FindGameObjectWithTag("Player");
-	}
+        playerScript = player.GetComponent<Gpt_Player>();
+    }
 	
 	void Update () {
         // プレイヤーの方向へ移動する
@@ -39,6 +41,13 @@ public class Gpt_InkItem : MonoBehaviour {
         if (collider.gameObject.CompareTag("Player"))
         {
             Destroy(this.gameObject);
+
+            // プレイヤーインク回復処理
+            //playerScript.state.Ink++;
+            // エフェクト出現処理
+            //Instantiate();
+            // 音
+            //PlaySound();
         }
     }
 
