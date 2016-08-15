@@ -21,18 +21,30 @@ public class Gpt_Camera : MonoBehaviour
     /* 左右回転系 */
     public float rotXZ = 0.0f;          // 左右回転値
     public float ROTXZ_SPD = 2.0f;      // 左右回転速度
+    // 加速関連
     public float addFirstXZ = 0.25f;    // 左右加速初期値
     public float addSpdXZ = 0.03f;      // 左右加速度の足す速さ
     float addCntXZ = 0.0f;              // 左右加速してからのカウント及び加速度(addFirstXZ～1.0f)
+    // 停止関連
+    float stopCntXZ = 0.0f;             // 停止した瞬間に1.0fになり0.0fまで減っていくカウンタ
+    float stopMoveXZ;                   // 停止時のXZ移動方向
+    public float addStopTimeXZ = 3.0f;  // 停止までの時間倍率(小さいほど長くなる)
+    public float stopSpdXZ = 0.005f;    // 停止速度
 
     /* 上下回転系 */
     public float rotY = 30.0f;          // 上下回転値
     public float ROTY_SPD = 30.0f;      // 上下回転速度
+    // 加速関連
     public float addFirstY = 0.5f;      // 上下加速初期値
     public float addSpdY = 0.05f;       // 上下加速度の足す速さ
     float addCntY = 0.0f;               // 上下加速してからのカウント及び加速度(addFirst～1.0f)
     public float MAX_ROTY = 50.0f;      // 最大回転値Y
     public float MIN_ROTY = 5.0f;       // 最小回転値Y
+    // 停止関連
+    float stopCntY = 0.0f;              // 停止した瞬間に1.0fになり0.0fまで減っていくカウンタ
+    float stopMoveY;                    // 停止時のXZ移動方向
+    public float addStopTimeY = 3.0f;   // 停止までの時間倍率(小さいほど長くなる)
+    public float stopSpdY = 0.05f;      // 停止速度
 
     // -------------------------------------------------- 大元関数 -------------------------------------------------- //
 
@@ -98,6 +110,21 @@ public class Gpt_Camera : MonoBehaviour
         if (addCntXZ >= addFirstXZ && addCntXZ + addSpdXZ <= 1.0f) addCntXZ += addSpdXZ;
         // スティックの傾きに応じて回転
         rotXZ -= nowCamMoveX  * addCntXZ * ROTXZ_SPD * Time.deltaTime;
+
+        // スティックが停止した瞬間であれば1フレーム前の移動方向を保存して加速度を初期化
+        if (oldCamMoveX != 0.0f && nowCamMoveX == 0.0f)
+        {
+            stopMoveXZ = oldCamMoveX;
+            stopCntXZ = 1.0f;
+        }
+        // 停止していない状態であればゆっくり停止する
+        if (stopCntXZ > 0.0f) stopCntXZ -= addStopTimeXZ * Time.deltaTime;
+        if (stopCntXZ < 0.0f) stopCntXZ = 0.0f;
+        // stopCntが0.0fよりも大きければ余韻回転
+        else
+        {
+            rotXZ -= stopCntXZ * stopMoveXZ * stopSpdXZ;
+        }
     }
 
     // 上下回転関数
@@ -109,6 +136,22 @@ public class Gpt_Camera : MonoBehaviour
         if (addCntY >= addFirstY && addCntY + addSpdY <= 1.0f) addCntY += addSpdY;
         // スティックの傾きに応じて回転
         rotY += nowCamMoveY * addCntY * ROTY_SPD * Time.deltaTime;
+
+        // スティックが停止した瞬間であれば1フレーム前の移動方向を保存して加速度を初期化
+        if (oldCamMoveY != 0.0f && nowCamMoveY == 0.0f)
+        {
+            stopMoveY = oldCamMoveY;
+            stopCntY = 1.0f;
+        }
+        // 停止していない状態であればゆっくり停止する
+        if (stopCntY > 0.0f) stopCntY -= addStopTimeY * Time.deltaTime;
+        if (stopCntY < 0.0f) stopCntY = 0.0f;
+        // stopCntが0.0fよりも大きければ余韻回転
+        else
+        {
+            rotY += stopCntY * stopMoveY * stopSpdY;
+        }
+
         // 限界回転値を超えたら戻す
         if (rotY > MAX_ROTY) rotY = MAX_ROTY;
         if (rotY < MIN_ROTY) rotY = MIN_ROTY;
