@@ -18,6 +18,10 @@ public class Gpt_Camera : MonoBehaviour
     public float distanceXZ = 5.0f;     // プレイヤーとの距離倍率XZ
     public float distanceY = 5.0f;      // プレイヤーとの距離倍率Y
 
+    /* 視点反転系 */
+    bool turnFlg = false;               // 視点反転中かどうか
+    float targetRot;                    // 目標rot値
+
     /* 左右回転系 */
     public float rotXZ = 0.0f;          // 左右回転値
     public float ROTXZ_SPD = 2.0f;      // 左右回転速度
@@ -78,6 +82,8 @@ public class Gpt_Camera : MonoBehaviour
     // 回転を決定する関数
     void Update_Rotation()
     {
+        // 振りかえり処理
+        Turn();
         // 左右回転
         Rotation_XZ();
         // 上下回転
@@ -100,6 +106,35 @@ public class Gpt_Camera : MonoBehaviour
     }
 
     // -------------------------------------------------- 回転系関数 -------------------------------------------------- //
+
+    // 視点反転関数
+    void Turn()
+    {
+        // 視点反転中でない時に、スティックが押し込まれた瞬間であればフラグを立てる
+        if (!turnFlg && !oldStickPush && nowStickPush)
+        {
+            turnFlg = true;
+            if (player.transform.eulerAngles.y >= 0.0f && player.transform.eulerAngles.y < 180.0f)
+            {
+                targetRot = player.transform.eulerAngles.y + 180.0f;
+            }
+            else if(player.transform.eulerAngles.y >= 180.0f && player.transform.eulerAngles.y <= 360.0f)
+            {
+                targetRot = player.transform.eulerAngles.y - 180.0f;
+            }
+            else
+            {
+                Debug.Log("◆◆ 視点反転中にエラーが発生しました ◆◆");
+            }
+        }
+
+        // フラグが立っていたら視点反転する
+        if (turnFlg)
+        {
+            rotXZ = (Mathf.PI * 2) - targetRot * (Mathf.PI / 180.0f);
+            turnFlg = false;
+        }
+    }
 
     // 左右回転関数
     void Rotation_XZ()
