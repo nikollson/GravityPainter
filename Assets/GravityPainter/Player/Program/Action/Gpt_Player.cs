@@ -10,6 +10,7 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerRun playerRun;
     public Gpt_PlayerJump playerJump;
     public Gpt_PlayerAttackMove playerAttack;
+    public Gpt_PlayerAttackRotate playerAttackRotate;
     public Gpt_PlayerAttackState playerAttackState;
     public Gpt_PlayerWait playerWait;
     public Gpt_PlayerAir playerAir;
@@ -22,7 +23,7 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerInkManage playerInkManage;
 
     // プレイヤーの状態管理
-    public enum MODE { WAIT, RUN, ATTACK, ROT1, ROT2, SKILL, JUMP, FEEVER, AIR, DETONATE };
+    public enum MODE { WAIT, RUN, ATTACK, ROTATE, SKILL, JUMP, FEEVER, AIR, DETONATE };
     public enum ATTACK_DIRECTION { RIGHT, LEFT };
     public MODE Mode { get; private set; }
     public ATTACK_DIRECTION AttackDirection { get; private set; }
@@ -42,6 +43,7 @@ public class Gpt_Player : MonoBehaviour
         if (Mode == MODE.AIR) UpdateMode_Air();
         if (Mode == MODE.SKILL) UpdateMode_Skill();
         if (Mode == MODE.DETONATE) UpdateMode_Detonate();
+        if (Mode == MODE.ROTATE) UpdateMode_Rotate();
     }
 
     void UpdateColor()
@@ -54,7 +56,7 @@ public class Gpt_Player : MonoBehaviour
     bool CanStartMove() { return playerUtillity.HasAnalogpadMove(); }
     bool CanStartAttack() { return Gpt_Input.Attack && playerInkManage.CanUseAttack() && playerAttack.CanFirstAttack(Gpt_Input.AttackStartFrame); }
     bool CanStartDetonate() { return Gpt_Input.Detonate && playerInkManage.CanUseDetonate() && playerDetonate.CanStartDetonate(Gpt_Input.DetonateStartFrame); }
-    bool CanStartSkill() { return Gpt_Input.Skill && playerInkManage.CanUseSkill() && playerSkill.CanStartSkill(Gpt_Input.SkillStartFrame); }
+    bool CanStartSkill() { return Gpt_Input.Skill && playerInkManage.CanUseSkill(state.PlayerColor) && playerSkill.CanStartSkill(Gpt_Input.SkillStartFrame); }
     bool CanStartJump() { return Gpt_Input.Jump && playerJump.CanStartJump(Gpt_Input.JumpStartFrame); }
 
     void UpdateMode_StartRun()
@@ -90,13 +92,18 @@ public class Gpt_Player : MonoBehaviour
     {
         Mode = MODE.SKILL;
         playerSkill.StartSkill(Gpt_Input.SkillStartFrame, state.PlayerColor);
-        playerInkManage.UseSkill();
+        playerInkManage.UseSkill(state.PlayerColor);
     }
     void UpdateMode_StartDetonate()
     {
         Mode = MODE.DETONATE;
         playerDetonate.StartDetonate(Gpt_Input.DetonateStartFrame);
         playerInkManage.UseDetonate();
+    }
+    void UpdateMode_StartRotate()
+    {
+        Mode = MODE.ROTATE;
+        playerAttackRotate.StartRotate();
     }
 
 
@@ -161,6 +168,8 @@ public class Gpt_Player : MonoBehaviour
         else if (playerAttack.IsAttackEnd())
         {
             endAttack = true;
+            //UpdateMode_StartRotate();
+
             if (!CanStartMove()) UpdateMode_StartWait();
             else if (CanStartMove()) UpdateMode_StartRun();
         }
@@ -169,6 +178,31 @@ public class Gpt_Player : MonoBehaviour
         {
             playerAttack.EndAttack();
             trailControl.EndTrail();
+        }
+    }
+
+    void UpdateMode_Rotate()
+    {
+        playerAttackRotate.UpdateRotate();
+
+        bool endRotate = false;
+
+        if (playerAttackRotate.CanStartAttack() && CanStartAttack())
+        {
+            endRotate = true;
+            UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.ROTATE, ATTACK_DIRECTION.RIGHT);
+        }
+        else if (playerAttackRotate.IsEnd())
+        {
+            endRotate = true;
+            if (!CanStartMove()) UpdateMode_StartWait();
+            else if (CanStartMove()) UpdateMode_StartRun();
+        }
+
+
+        if (endRotate)
+        {
+            playerAttackRotate.EndRotate();
         }
     }
 
@@ -207,10 +241,18 @@ public class Gpt_Player : MonoBehaviour
     void UpdateMode_Skill()
     {
         playerSkill.UpdateSkill();
+        playerInkManage.UseSkillParSec(playerSkill.Color);
 
         bool endSkill = false;
 
+        //Debug.Log(Time.frameCount+" "+ playerSkill.IsEndSkill() + " " + playerInkManage.CanContinueSkill(playerSkill.Color)+" "+ playerSkill.CanEndSkill(Gpt_Input.Skill, Gpt_Input.SkillStartFrame));
+
         if (playerSkill.IsEndSkill())
+        {
+            endSkill = true;
+            UpdateMode_StartWait();
+        }
+        else if (playerSkill.CanEndSkill(Gpt_Input.Skill, Gpt_Input.SkillStartFrame))
         {
             endSkill = true;
             UpdateMode_StartWait();
