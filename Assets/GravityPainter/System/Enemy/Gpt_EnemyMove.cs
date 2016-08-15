@@ -113,7 +113,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 //索敵処理
                 if (Vector3.Distance(player.transform.position, this.transform.position) < searchArea)
                 {
-                    moveVec = player.transform.position - this.transform.position;
+                    moveVec = Vector3.Slerp(moveVec, player.transform.position - this.transform.position, 0.75f);
+                    //moveVec = player.transform.position - this.transform.position;
                     moveVec = moveVec.normalized;
                     move = 0;
                 }

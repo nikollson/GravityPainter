@@ -20,11 +20,15 @@ public class Gpt_Enemy : MonoBehaviour {
 
     //重力フラグ
     private bool gravityFlag;
+    //接触フラグ
+    private bool touchFlag;
+
     public int hitPoint = 1;
     float test;
 
     //爆発物オブジェクト
     public GameObject exploder;
+    private Vector3 exploderPosition;
     //爆発フラグ
     private bool isExplode;
 
@@ -64,22 +68,36 @@ public class Gpt_Enemy : MonoBehaviour {
     {
         
         //重力フラグ時、敵同士の接触で爆発オブジェクト生成
-        if (gravityFlag)
+        if (gravityFlag&&!touchFlag)
         {
             
             if (collision.gameObject.tag == "Enemy")
             {
+                
                 for (int aIndex = 0; aIndex < collision.contacts.Length; ++aIndex)
                 {
-                    Vector3 trans = collision.contacts[aIndex].point;
-                    //Instantiate(exploder, trans, Quaternion.identity);
-
+                    //自分の相手の座標からどちらかにのみ爆発オブジェクト生成
+                    if (this.transform.position.x * this.transform.position.z > collision.gameObject.transform.position.x * collision.gameObject.transform.position.z)
+                    {
+                        Vector3 trans = collision.contacts[aIndex].point;
+                        Instantiate(exploder, trans, Quaternion.identity);
+                        touchFlag = true;
+                    }
                 }
+                
             }
+
         }
     }
 
-
+    void OnTriggerStay(Collider collision)
+    {
+        if (collision.gameObject.tag == "GravityZone")
+        {
+            Debug.Log(this.transform.position);
+            exploderPosition=collision.gameObject.transform.position;
+        }
+    }
 
 
     float temp;
@@ -153,19 +171,21 @@ public class Gpt_Enemy : MonoBehaviour {
             motionTime1 += 0.1f;
             motionTime2 += 0.1f;
             //collider.isTrigger=true;
-            rigid.AddForce(-gravityVec * 15f, ForceMode.VelocityChange);
+            Vector3 exVec = ( exploderPosition - this.transform.position ).normalized;
+            rigid.AddForce(exVec * 3f, ForceMode.VelocityChange);
+            //this.transform.position = exploderPosition;
             if (motionTime1 < 3f)
             {
-                
-                gravityVec.y = 0f;
-                var vec = Quaternion.Euler(0f, 90f, 0f) * gravityVec;
+
+                //gravityVec.y = 0f;
+                var vec = Quaternion.Euler(0f, 90f, 0f) * exVec;
                 rigid.AddForce(vec * 2f, ForceMode.VelocityChange);
 
             }
-            else if(motionTime2>6f)
-            {
-                //rigid.AddForce(gravityVec * 4f, ForceMode.VelocityChange);
-            }
+            //else if(motionTime2>6f)
+            //{
+            //    //rigid.AddForce(gravityVec * 4f, ForceMode.VelocityChange);
+            //}
             
 
             //}
