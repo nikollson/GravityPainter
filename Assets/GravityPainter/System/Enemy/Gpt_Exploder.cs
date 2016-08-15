@@ -9,11 +9,23 @@ public class Gpt_Exploder : MonoBehaviour {
     private int scale=1;
     private Gpt_Exploder targetExploder;
 
+    public GameObject Explosion_red;
+    public GameObject Explosion_blue;
+    public GameObject Explosion_yellow;
+
     public Rigidbody rigid;
     //バグ防止
     private float bug_time;
 
     private bool isExplode;
+
+    //爆発後フラグ
+    private bool isAfterExplode;
+
+    //死亡フラグ
+    private bool isDestroy;
+    //色設定
+    private int color;
 
     // Use this for initialization
     void Start() {
@@ -28,7 +40,33 @@ public class Gpt_Exploder : MonoBehaviour {
 
         if (isExplode)
         {
-            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.01f, this.transform.position.z);
+            if (!isAfterExplode)
+            {
+                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.06f, this.transform.position.z);
+
+            } else if (!isDestroy)
+            {
+                switch (color)
+                {
+                    case 1:
+                        Instantiate(Explosion_red, this.transform.position, Quaternion.identity);
+                        isDestroy = true;
+                        break;
+                    case 2:
+                        Instantiate(Explosion_blue, this.transform.position, Quaternion.identity);
+                        isDestroy = true;
+                        break;
+                    case 3:
+                        Instantiate(Explosion_yellow, this.transform.position, Quaternion.identity);
+                        isDestroy = true;
+                        break;
+                }
+            }
+        }
+
+        if (isDestroy)
+        {
+            SetDestroy();
         }
 	}
 
@@ -102,7 +140,7 @@ public class Gpt_Exploder : MonoBehaviour {
 
     public void SetDestroy()
     {
-        Object.Destroy(this.gameObject);
+        Object.Destroy(this.gameObject,6f);
     }
 
     public int GetScale()
@@ -117,5 +155,15 @@ public class Gpt_Exploder : MonoBehaviour {
     void OnDestroy()
     {
         //EnemyGravityManeger.RemoveExplodeList(this);
+    }
+
+    public void setColor(int setcolor)
+    {
+        color = setcolor;
+    }
+
+    public void IsAfterExplode()
+    {
+        isAfterExplode = true;
     }
 }
