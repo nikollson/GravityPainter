@@ -19,7 +19,6 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
         //距離判定
         for (int i = 0; i < EnemyList.Count; i++)
         {
@@ -55,6 +54,11 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
     //爆発処理
     public void IsExplode()
     {
+        for (int i = 0; i < ExplodeList.Count; i++)
+        {
+            ExplodeList[i].IsExplode();
+        }
+
         for (int i = 0; i < EnemyList.Count; i++)
         {
             if (EnemyList[i].GetGravity())
@@ -64,7 +68,6 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
 
         }
     }
-
 
     public void AddEnemyList(Gpt_Enemy Enemy)
     {
