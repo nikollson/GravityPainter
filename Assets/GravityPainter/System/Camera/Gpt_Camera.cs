@@ -28,7 +28,7 @@ public class Gpt_Camera : MonoBehaviour
 
     /* 左右回転系 */
     public float rotXZ = 0.0f;          // 左右回転値
-    public float ROTXZ_SPD = 2.0f;      // 左右回転速度
+    public float ROTXZ_SPD = 3.0f;      // 左右回転速度
     // 加速関連
     public float addFirstXZ = 0.25f;    // 左右加速初期値
     public float addSpdXZ = 0.03f;      // 左右加速度の足す速さ
@@ -87,7 +87,7 @@ public class Gpt_Camera : MonoBehaviour
     void Update_Rotation()
     {
         // 振りかえり処理
-        Turn();
+        //Turn();
         // 左右回転
         Rotation_XZ();
         // 上下回転
@@ -163,21 +163,22 @@ public class Gpt_Camera : MonoBehaviour
         // フラグが立っていたら視点反転する
         if (turnFlg)
         {
-            turnCnt++;
             if (rightTurnFlg)
             {
-                rotXZ += moveVal;
+                rotXZ += Time.deltaTime;
             }
             else
             {
-                rotXZ -= moveVal;
+                rotXZ -= Time.deltaTime;
             }
-
-            turnFlg = false;
+            if(Mathf.Abs(rotXZ - targetRot) < 0.1f)
+            {
+                turnFlg = false;
+            }
         }
 
-        Debug.Log("firstCamPosRot: " + firstCamPosRot);
-        Debug.Log("tgt: " + targetRot);
+        //Debug.Log("firstCamPosRot: " + firstCamPosRot);
+        //Debug.Log("tgt: " + targetRot);
     }
 
     // 左右回転関数
