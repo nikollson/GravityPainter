@@ -20,7 +20,11 @@ public class Gpt_Camera : MonoBehaviour
 
     /* 視点反転系 */
     bool turnFlg = false;               // 視点反転中かどうか
+    float firstCamPosRot;               // 最初のカメラ位置
     float targetRot;                    // 目標rot値
+    bool rightTurnFlg;                  // 右向きに回転するかどうか
+    float moveVal;                      // 移動量
+    int turnCnt;                        // ターンカウンタ
 
     /* 左右回転系 */
     public float rotXZ = 0.0f;          // 左右回転値
@@ -114,26 +118,66 @@ public class Gpt_Camera : MonoBehaviour
         if (!turnFlg && !oldStickPush && nowStickPush)
         {
             turnFlg = true;
+            turnCnt = 0;
+
             if (player.transform.eulerAngles.y >= 0.0f && player.transform.eulerAngles.y < 180.0f)
             {
                 targetRot = player.transform.eulerAngles.y + 180.0f;
+                targetRot = (Mathf.PI * 2) - (targetRot * Mathf.PI / 180.0f);
             }
             else if(player.transform.eulerAngles.y >= 180.0f && player.transform.eulerAngles.y <= 360.0f)
             {
                 targetRot = player.transform.eulerAngles.y - 180.0f;
+                targetRot = (Mathf.PI * 2) - (targetRot * Mathf.PI / 180.0f);
             }
             else
             {
                 Debug.Log("◆◆ 視点反転中にエラーが発生しました ◆◆");
+            }
+
+            // カメラの座標を保存
+            firstCamPosRot = rotXZ % (Mathf.PI * 2);
+            if (firstCamPosRot < 0.0f) firstCamPosRot = (Mathf.PI * 2) + firstCamPosRot;
+            // どちらの向きで回転するかを決定
+            if (firstCamPosRot > targetRot)
+            {
+                moveVal = firstCamPosRot - targetRot;
+                if(moveVal < Mathf.PI) rightTurnFlg = false;
+                else rightTurnFlg = true;
+                moveVal %= Mathf.PI;
+            }
+            else if (targetRot > firstCamPosRot)
+            {
+                moveVal = targetRot - firstCamPosRot;
+                if (moveVal < Mathf.PI) rightTurnFlg = true;
+                else rightTurnFlg = false;
+                moveVal %= Mathf.PI;
+            }
+            else
+            {
+                turnFlg = false;
+                return;
             }
         }
 
         // フラグが立っていたら視点反転する
         if (turnFlg)
         {
-            rotXZ = (Mathf.PI * 2) - targetRot * (Mathf.PI / 180.0f);
+            turnCnt++;
+            if (rightTurnFlg)
+            {
+                rotXZ += moveVal;
+            }
+            else
+            {
+                rotXZ -= moveVal;
+            }
+
             turnFlg = false;
         }
+
+        Debug.Log("firstCamPosRot: " + firstCamPosRot);
+        Debug.Log("tgt: " + targetRot);
     }
 
     // 左右回転関数
@@ -191,7 +235,6 @@ public class Gpt_Camera : MonoBehaviour
         if (rotY > MAX_ROTY) rotY = MAX_ROTY;
         if (rotY < MIN_ROTY) rotY = MIN_ROTY;
     }
-
 
     // -------------------------------------------------- 補佐関数 -------------------------------------------------- //
 
