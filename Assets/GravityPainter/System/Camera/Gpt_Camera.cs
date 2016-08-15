@@ -15,22 +15,22 @@ public class Gpt_Camera : MonoBehaviour
 
     /* プレイヤー情報系 */
     public GameObject player;           // プレイヤー情報
-    public float distanceXZ = 5.0f;       // プレイヤーとの距離倍率XZ
-    public float distanceY = 5.0f;       // プレイヤーとの距離倍率Y
+    public float distanceXZ = 5.0f;     // プレイヤーとの距離倍率XZ
+    public float distanceY = 5.0f;      // プレイヤーとの距離倍率Y
 
     /* 左右回転系 */
-    public float rotXZ = 0.0f;           // 左右回転値
-    public float ROTXZ_SPD = 2.0f;       // 左右回転速度
-    public float addFirstXZ = 0.25f;      // 左右加速初期値
-    public float addSpdXZ = 0.03f;     // 左右加速度の足す速さ
-    float addCntXZ = 0.0f;        // 左右加速してからのカウント及び加速度(addFirstXZ～1.0f)
+    public float rotXZ = 0.0f;          // 左右回転値
+    public float ROTXZ_SPD = 2.0f;      // 左右回転速度
+    public float addFirstXZ = 0.25f;    // 左右加速初期値
+    public float addSpdXZ = 0.03f;      // 左右加速度の足す速さ
+    float addCntXZ = 0.0f;              // 左右加速してからのカウント及び加速度(addFirstXZ～1.0f)
 
     /* 上下回転系 */
     public float rotY = 30.0f;          // 上下回転値
-    public float ROTY_SPD = 30.0f;       // 上下回転速度
+    public float ROTY_SPD = 30.0f;      // 上下回転速度
     public float addFirstY = 0.5f;      // 上下加速初期値
-    public float addSpdY = 0.05f;     // 上下加速度の足す速さ
-    float addCntY = 0.0f;        // 上下加速してからのカウント及び加速度(addFirst～1.0f)
+    public float addSpdY = 0.05f;       // 上下加速度の足す速さ
+    float addCntY = 0.0f;               // 上下加速してからのカウント及び加速度(addFirst～1.0f)
     public float MAX_ROTY = 50.0f;      // 最大回転値Y
     public float MIN_ROTY = 5.0f;       // 最小回転値Y
 
@@ -109,7 +109,6 @@ public class Gpt_Camera : MonoBehaviour
         if (addCntY >= addFirstY && addCntY + addSpdY <= 1.0f) addCntY += addSpdY;
         // スティックの傾きに応じて回転
         rotY += nowCamMoveY * addCntY * ROTY_SPD * Time.deltaTime;
-
         // 限界回転値を超えたら戻す
         if (rotY > MAX_ROTY) rotY = MAX_ROTY;
         if (rotY < MIN_ROTY) rotY = MIN_ROTY;
