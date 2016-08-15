@@ -1,0 +1,350 @@
+fileFormatVersion: 2
+guid: 4d8c5e97b4f00724c9ea5a7439840aa1
+timeCreated: 1471096311
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: chara_model:bracelet_l
+    100004: chara_model:bracelet_r
+    100006: chara_model:brush
+    100008: chara_model:chara1
+    100010: chara_model:hair1
+    100012: chara_model:hair2
+    100014: chara_model:hair3
+    100016: chara_model:magnet
+    100018: chara_model:pCylinder1
+    100020: chara_model:pCylinder2
+    100022: ikHandle1
+    100024: ikHandle2
+    100026: ikHandle3
+    100028: ikHandle4
+    100030: joint1
+    100032: joint14
+    100034: joint15
+    100036: joint16
+    100038: joint17
+    100040: joint18
+    100042: joint2
+    100044: joint29
+    100046: joint3
+    100048: joint30
+    100050: joint31
+    100052: joint32
+    100054: joint4
+    100056: joint40
+    100058: joint41
+    100060: joint42
+    100062: joint43
+    100064: joint44
+    100066: joint45
+    100068: joint46
+    100070: joint47
+    100072: joint48
+    100074: joint49
+    100076: joint5
+    100078: joint50
+    100080: joint51
+    100082: joint52
+    100084: joint53
+    100086: joint54
+    100088: joint6
+    100090: joint7
+    100092: joint8
+    100094: nurbsCircle1
+    100096: nurbsCircle10
+    100098: nurbsCircle11
+    100100: nurbsCircle2
+    100102: nurbsCircle3
+    100104: nurbsCircle4
+    100106: nurbsCircle5
+    100108: nurbsCircle6
+    100110: nurbsCircle8
+    100112: nurbsCircle9
+    400000: //RootNode
+    400002: chara_model:bracelet_l
+    400004: chara_model:bracelet_r
+    400006: chara_model:brush
+    400008: chara_model:chara1
+    400010: chara_model:hair1
+    400012: chara_model:hair2
+    400014: chara_model:hair3
+    400016: chara_model:magnet
+    400018: chara_model:pCylinder1
+    400020: chara_model:pCylinder2
+    400022: ikHandle1
+    400024: ikHandle2
+    400026: ikHandle3
+    400028: ikHandle4
+    400030: joint1
+    400032: joint14
+    400034: joint15
+    400036: joint16
+    400038: joint17
+    400040: joint18
+    400042: joint2
+    400044: joint29
+    400046: joint3
+    400048: joint30
+    400050: joint31
+    400052: joint32
+    400054: joint4
+    400056: joint40
+    400058: joint41
+    400060: joint42
+    400062: joint43
+    400064: joint44
+    400066: joint45
+    400068: joint46
+    400070: joint47
+    400072: joint48
+    400074: joint49
+    400076: joint5
+    400078: joint50
+    400080: joint51
+    400082: joint52
+    400084: joint53
+    400086: joint54
+    400088: joint6
+    400090: joint7
+    400092: joint8
+    400094: nurbsCircle1
+    400096: nurbsCircle10
+    400098: nurbsCircle11
+    400100: nurbsCircle2
+    400102: nurbsCircle3
+    400104: nurbsCircle4
+    400106: nurbsCircle5
+    400108: nurbsCircle6
+    400110: nurbsCircle8
+    400112: nurbsCircle9
+    2300000: chara_model:brush
+    3300000: chara_model:brush
+    4300000: chara_model:chara1
+    4300002: chara_model:bracelet_r
+    4300004: chara_model:hair1
+    4300006: chara_model:bracelet_l
+    4300008: chara_model:brush
+    4300010: chara_model:hair2
+    4300012: chara_model:hair3
+    4300014: chara_model:magnet
+    4300016: chara_model:pCylinder1
+    4300018: chara_model:pCylinder2
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: chara_model:bracelet_l
+    13700002: chara_model:bracelet_r
+    13700004: chara_model:chara1
+    13700006: chara_model:hair1
+    13700008: chara_model:hair2
+    13700010: chara_model:hair3
+    13700012: chara_model:magnet
+    13700014: chara_model:pCylinder1
+    13700016: chara_model:pCylinder2
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: chara_model:bracelet_l
+        weight: 1
+      - path: chara_model:bracelet_r
+        weight: 1
+      - path: chara_model:brush
+        weight: 1
+      - path: chara_model:chara1
+        weight: 1
+      - path: chara_model:hair1
+        weight: 1
+      - path: chara_model:hair2
+        weight: 1
+      - path: chara_model:hair3
+        weight: 1
+      - path: chara_model:magnet
+        weight: 1
+      - path: chara_model:pCylinder1
+        weight: 1
+      - path: chara_model:pCylinder2
+        weight: 1
+      - path: joint1
+        weight: 1
+      - path: joint1/joint2
+        weight: 1
+      - path: joint1/joint2/joint3
+        weight: 1
+      - path: joint1/joint2/joint3/joint4
+        weight: 1
+      - path: joint1/joint2/joint3/joint4/joint5
+        weight: 1
+      - path: joint1/joint2/joint3/joint6
+        weight: 1
+      - path: joint1/joint2/joint3/joint6/joint7
+        weight: 1
+      - path: joint1/joint2/joint3/joint6/joint7/joint8
+        weight: 1
+      - path: joint1/joint2/joint3/joint6/joint7/joint8/joint29
+        weight: 1
+      - path: joint1/joint2/joint3/joint6/joint7/joint8/joint29/joint30
+        weight: 1
+      - path: joint1/joint2/joint3/joint6/joint7/joint8/joint31
+        weight: 1
+      - path: joint1/joint2/joint3/joint6/joint7/joint8/joint31/joint32
+        weight: 1
+      - path: joint1/joint2/joint3/joint45
+        weight: 1
+      - path: joint1/joint2/joint3/joint45/joint46
+        weight: 1
+      - path: joint1/joint2/joint3/joint45/joint46/joint47
+        weight: 1
+      - path: joint1/joint2/joint3/joint48
+        weight: 1
+      - path: joint1/joint2/joint3/joint48/joint49
+        weight: 1
+      - path: joint1/joint2/joint3/joint48/joint49/joint50
+        weight: 1
+      - path: joint1/joint2/joint3/joint48/joint49/joint50/joint51
+        weight: 1
+      - path: joint1/joint2/joint3/joint48/joint49/joint50/joint51/joint52
+        weight: 1
+      - path: joint1/joint2/joint3/joint48/joint49/joint50/joint53
+        weight: 1
+      - path: joint1/joint2/joint3/joint48/joint49/joint50/joint53/joint54
+        weight: 1
+      - path: joint1/joint14
+        weight: 1
+      - path: joint1/joint14/joint15
+        weight: 1
+      - path: joint1/joint14/joint15/joint16
+        weight: 1
+      - path: joint1/joint14/joint15/joint16/joint17
+        weight: 1
+      - path: joint1/joint14/joint15/joint16/joint17/joint18
+        weight: 1
+      - path: joint1/joint40
+        weight: 1
+      - path: joint1/joint40/joint41
+        weight: 1
+      - path: joint1/joint40/joint41/joint42
+        weight: 1
+      - path: joint1/joint40/joint41/joint42/joint43
+        weight: 1
+      - path: joint1/joint40/joint41/joint42/joint43/joint44
+        weight: 1
+      - path: nurbsCircle1
+        weight: 1
+      - path: nurbsCircle2
+        weight: 1
+      - path: nurbsCircle3
+        weight: 1
+      - path: nurbsCircle4
+        weight: 1
+      - path: nurbsCircle5
+        weight: 1
+      - path: nurbsCircle6
+        weight: 1
+      - path: nurbsCircle8
+        weight: 1
+      - path: nurbsCircle8/ikHandle2
+        weight: 1
+      - path: nurbsCircle9
+        weight: 1
+      - path: nurbsCircle9/ikHandle1
+        weight: 1
+      - path: nurbsCircle10
+        weight: 1
+      - path: nurbsCircle10/ikHandle3
+        weight: 1
+      - path: nurbsCircle11
+        weight: 1
+      - path: nurbsCircle11/ikHandle4
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -12,6 +12,7 @@ public class Gpt_PlayerUtillity : MonoBehaviour
     void Update()
     {
         ignoreFootColliderCount += Time.deltaTime;
+
     }
 
     public Vector3 GetAnalogpadMove()
