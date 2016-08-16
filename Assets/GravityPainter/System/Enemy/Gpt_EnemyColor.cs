@@ -5,7 +5,7 @@ public class Gpt_EnemyColor : MonoBehaviour {
 
     //Color 0=無色,1=赤,2=青,3=黄,4=紫,5=オレンジ,6=緑,
     private int Color = 0;
-    private Renderer renderer;
+    public Renderer renderer;
 
     public Material[] _material;
 
