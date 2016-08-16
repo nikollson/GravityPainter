@@ -142,6 +142,10 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         EnemyAttack.StopAttack();
                     }
 
+                    if (isAbyss)
+                    {
+                        enemyTemp = 0;
+                    }
                     enemyMove.x = moveVec.x * enemyTemp;
                     enemyMove.y = gravity;
                     enemyMove.z = moveVec.z * enemyTemp;
@@ -154,10 +158,6 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
                     enemyTemp -= enemyAccelerate;
                     enemyTemp = enemyTemp > 0 ? enemyTemp : 0;
-                    if (isAbyss)
-                    {
-                        enemyTemp = 0;
-                    }
                     enemyMove.x = moveVec.x * enemyTemp;
                     enemyMove.y = gravity;
                     enemyMove.z = moveVec.z * enemyTemp;
