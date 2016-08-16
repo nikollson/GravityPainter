@@ -18,9 +18,11 @@ public class Gpt_YukaManager : MonoBehaviour {
 
     public ReadTileSetting setting;
 
+    public Gpt_YukaParts[] yukaParts;
+
     void Start()
     {
-
+        yukaParts = this.transform.GetComponentsInChildren<Gpt_YukaParts>();
     }
     
     public void DoExplode(int color, Vector3 point, float radius)
@@ -34,7 +36,10 @@ public class Gpt_YukaManager : MonoBehaviour {
     }
     public void DoExplode(Gpt_InkColor color ,Vector3 point, float radius)
     {
-        Debug.Log("Explode したやねん");
+        foreach(var a in yukaParts)
+        {
+            a.DoExplode(color, point, radius);
+        }
     }
 
 
@@ -123,11 +128,13 @@ public class Gpt_YukaManager : MonoBehaviour {
 
         var yukaParts = yukaPartsObject.GetComponent<Gpt_YukaParts>();
 
-        if (mode == ReadTileSetting.Mode.White) yukaParts.SetColor(Gpt_InkColor.NONE);
-        if (mode == ReadTileSetting.Mode.Red || mode == ReadTileSetting.Mode.RedPattern) yukaParts.SetColor(Gpt_InkColor.RED);
-        if (mode == ReadTileSetting.Mode.Blue || mode == ReadTileSetting.Mode.BluePattern) yukaParts.SetColor(Gpt_InkColor.BLUE);
-        if (mode == ReadTileSetting.Mode.Yellow || mode == ReadTileSetting.Mode.YellowPattern) yukaParts.SetColor(Gpt_InkColor.YELLOW);
-        
+        Gpt_YukaParts.YukaColor nextColor = Gpt_YukaParts.YukaColor.WHITE;
+        if (mode == ReadTileSetting.Mode.Red || mode == ReadTileSetting.Mode.RedPattern) nextColor = Gpt_YukaParts.YukaColor.RED;
+        if (mode == ReadTileSetting.Mode.Blue || mode == ReadTileSetting.Mode.BluePattern) nextColor = Gpt_YukaParts.YukaColor.BLUE;
+        if (mode == ReadTileSetting.Mode.Yellow || mode == ReadTileSetting.Mode.YellowPattern) nextColor = Gpt_YukaParts.YukaColor.YELLOW;
+        yukaParts.SetColor(nextColor);
+        yukaParts.firstColor = nextColor;
+
         bool isPattern = false;
         isPattern |= mode == ReadTileSetting.Mode.RedPattern;
         isPattern |= mode == ReadTileSetting.Mode.BluePattern;
