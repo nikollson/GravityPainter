@@ -77,22 +77,18 @@ public class Gpt_Enemy : MonoBehaviour {
             
             if (collision.gameObject.tag == "Enemy")
             {
-                
-                for (int aIndex = 0; aIndex < collision.contacts.Length; ++aIndex)
+                Debug.Log("Enemy");
+                //自分の相手の座標からどちらかにのみ爆発オブジェクト生成
+                if (this.transform.position.x * this.transform.position.z > collision.gameObject.transform.position.x * collision.gameObject.transform.position.z)
                 {
-                    //自分の相手の座標からどちらかにのみ爆発オブジェクト生成
-                    if (this.transform.position.x * this.transform.position.z > collision.gameObject.transform.position.x * collision.gameObject.transform.position.z)
-                    {
-                        // インスタンス生成
-                                               
-                        Vector3 trans = collision.contacts[aIndex].point;
-                        GameObject gameObj = Instantiate(exploder, trans, Quaternion.identity) as GameObject;
-                        Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
-                        targetExploder.setColor(GetColor());
-                        touchFlag = true;
-                    }
+                    // インスタンス生成
+                    Vector3 trans = collision.gameObject.transform.position;
+                    GameObject gameObj = Instantiate(exploder, trans, Quaternion.identity) as GameObject;
+                    Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
+                    targetExploder.setColor(GetColor());
+                    touchFlag = true;
                 }
-                
+
             }
 
         }
@@ -190,7 +186,7 @@ public class Gpt_Enemy : MonoBehaviour {
         if(!isExplode){
             Speed(0);
             //始めは小刻みに震える
-            if (gravityTime < 3f)
+            if (gravityTime < 2f)
             {
                 float x_temp = Random.Range(-0.15f, 0.15f);
                 float z_temp = Random.Range(-0.15f, 0.15f);
@@ -269,5 +265,11 @@ public class Gpt_Enemy : MonoBehaviour {
     {
         //重力フラグ確認
         return gravityFlag;
+    }
+
+    public bool GetTouch()
+    {
+        //重力フラグ確認
+        return touchFlag;
     }
 }

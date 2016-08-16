@@ -66,7 +66,7 @@ public class Gpt_Exploder : MonoBehaviour {
 
         if (isDestroy)
         {
-            SetDestroy();
+            SetDelayDestroy();
         }
 	}
 
@@ -81,8 +81,8 @@ public class Gpt_Exploder : MonoBehaviour {
             if (this.transform.position.x * this.transform.position.y * this.transform.position.z >
                     collision.gameObject.transform.position.x* collision.gameObject.transform.position.y * collision.gameObject.transform.position.z)
             {
-                Vector3 median = medianPosition(this.transform.position, collision.gameObject.transform.position);
-                SetPosition(median);
+                //Vector3 median = medianPosition(this.transform.position, collision.gameObject.transform.position);
+                //SetPosition(median);
                 targetExploder.SetDestroy();
             }
             else
@@ -95,7 +95,8 @@ public class Gpt_Exploder : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            if (!isExplode)
+            Gpt_Enemy targetEnemy = collision.gameObject.GetComponent<Gpt_Enemy>();
+            if (!isExplode&&targetEnemy.GetTouch())
             {
                 SetPosition(collision.gameObject.transform.position);
             }
@@ -138,9 +139,14 @@ public class Gpt_Exploder : MonoBehaviour {
         this.gameObject.transform.position = position;
     }
 
+    public void SetDelayDestroy()
+    {
+        Object.Destroy(this.gameObject, 6f);
+    }
+    
     public void SetDestroy()
     {
-        Object.Destroy(this.gameObject,6f);
+        Object.Destroy(this.gameObject);
     }
 
     public int GetScale()

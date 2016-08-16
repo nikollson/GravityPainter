@@ -62,6 +62,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
     private bool isWalked=false;
     //起動スイッチ
     private bool isMoved = false;
+
+    private bool isAbyss = false;
    
 
     // Use this for initialization
@@ -150,6 +152,10 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
                     enemyTemp -= enemyAccelerate;
                     enemyTemp = enemyTemp > 0 ? enemyTemp : 0;
+                    if (isAbyss)
+                    {
+                        enemyTemp = 0;
+                    }
                     enemyMove.x = moveVec.x * enemyTemp;
                     enemyMove.y = gravity;
                     enemyMove.z = moveVec.z * enemyTemp;
@@ -192,6 +198,18 @@ public class Gpt_EnemyMove : MonoBehaviour {
     public void SetSpeed(float setSpeed)
     {
         enemySpeed = setSpeed;
+    }
+
+    //淵で止まる処理
+    public void IsAbyss()
+    {
+        isAbyss = true;
+    }
+
+    //淵で止まらない処理
+    public void IsAbyssFalse()
+    {
+        isAbyss = false;
     }
 
     //移動方向の取得
