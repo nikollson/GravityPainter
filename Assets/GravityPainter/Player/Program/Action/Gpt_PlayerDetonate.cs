@@ -48,7 +48,8 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
     void DoDetonate()
     {
         detonateDone = true;
-        playerUtillity.gravityManager.IsExplode();
+        //playerUtillity.gravityManager.IsExplode();
+        playerUtillity.gravityManager.IsExplodeColor((int)playerState.PlayerColor);
 
         float enemyPointSum = 0;
         enemyPointSum += playerState.GetDetonateEnemyPoint(Gpt_InkColor.RED);
@@ -57,6 +58,11 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
 
         playerInkManage.DoDetonateHeal(enemyPointSum);
         playerState.Detonate();
+
+        /*
+        var script = FindObjectOfType<Gpt_YukaManager>();
+        script.DoExplode(playerState.PlayerColor, this.transform.position, 3);
+        */
     }
 
     public void UpdateDetonate()
@@ -66,7 +72,10 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
         Vector3 force = -1 * friction * (rigidbody.velocity - new Vector3(0, rigidbody.velocity.y, 0));
         rigidbody.AddForce(force, ForceMode.Acceleration);
 
-        if (CanDetonate()) DoDetonate();
+        if (CanDetonate())
+        {
+            DoDetonate();            
+        }
 
     }
 
