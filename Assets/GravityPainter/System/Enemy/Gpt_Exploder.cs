@@ -22,10 +22,17 @@ public class Gpt_Exploder : MonoBehaviour {
     //爆発後フラグ
     private bool isAfterExplode;
 
+    //爆発モーションフラグ1
+    private bool isExplodeMotion1;
+
     //死亡フラグ
     private bool isDestroy;
     //色設定
     private int color;
+
+    //爆発内の敵の数
+    private int enemyNum;
+    private int preserveEnemyNum;
 
     // Use this for initialization
     void Start() {
@@ -38,14 +45,27 @@ public class Gpt_Exploder : MonoBehaviour {
 	void Update () {
         bug_time += 0.1f;
 
+        //Debug.Log("before:"+enemyNum);
+        enemyNum = preserveEnemyNum;
+        preserveEnemyNum=0;
+        //Debug.Log("after:"+enemyNum);
+
         if (isExplode)
         {
             if (!isAfterExplode)
             {
-                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.06f, this.transform.position.z);
+                //爆発モーション（上昇）
+                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.08f, this.transform.position.z);
+                
+                //爆発モーション（下降）
+                if (isExplodeMotion1)
+                {
+                    this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 0.72f, this.transform.position.z);
+                }
 
             } else if (!isDestroy)
             {
+                
                 switch (color)
                 {
                     case 1:
@@ -66,7 +86,8 @@ public class Gpt_Exploder : MonoBehaviour {
 
         if (isDestroy)
         {
-            SetDestroy();
+            
+            SetDelayDestroy();
         }
 	}
 
@@ -78,16 +99,30 @@ public class Gpt_Exploder : MonoBehaviour {
             //Debug.Log(targetExploder.transform.position);
             //自分と相手を削除し、中間の間に新しい爆発オブジェクトを作成
             //自分の相手の座標からどちらかにのみ爆発オブジェクト生成
-            if (this.transform.position.x * this.transform.position.y * this.transform.position.z >
-                    collision.gameObject.transform.position.x* collision.gameObject.transform.position.y * collision.gameObject.transform.position.z)
+            if (targetExploder.GetColor()==color)
             {
-                Vector3 median = medianPosition(this.transform.position, collision.gameObject.transform.position);
-                SetPosition(median);
-                targetExploder.SetDestroy();
-            }
-            else
-            {
-                SetDestroy();
+                float Debug_A = this.transform.position.x * this.transform.position.y * this.transform.position.z;
+                float Debug_B = collision.gameObject.transform.position.x * collision.gameObject.transform.position.y * collision.gameObject.transform.position.z;
+                if (this.transform.position.x * this.transform.position.y * this.transform.position.z >
+                    collision.gameObject.transform.position.x * collision.gameObject.transform.position.y * collision.gameObject.transform.position.z)
+                {
+                    //Vector3 median = medianPosition(this.transform.position, collision.gameObject.transform.position);
+                    //SetPosition(median);
+
+                    //Debug.Log("1ax:" + this.transform.position.x + "y:" + this.transform.position.y + "z:" + this.transform.position.z);
+                    //Debug.Log("1bx:" + collision.gameObject.transform.position.x + "y:" + collision.gameObject.transform.position.y + "z:" + collision.gameObject.transform.position.z);
+                    //Debug.Log("1a:" + Debug_A);
+                    //Debug.Log("1b:" + Debug_B);
+                    targetExploder.SetDestroy();
+                }
+                else
+                {
+                    //Debug.Log("2ax:" + this.transform.position.x + "y:" + this.transform.position.y + "z:" + this.transform.position.z);
+                    //Debug.Log("2bx:" + collision.gameObject.transform.position.x + "y:" + collision.gameObject.transform.position.y + "z:" + collision.gameObject.transform.position.z);
+                    //Debug.Log("2a:"+Debug_A);
+                    //Debug.Log("2b:"+Debug_B);
+                    SetDestroy();
+                }
             }
         }
     }
@@ -95,9 +130,14 @@ public class Gpt_Exploder : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            if (!isExplode)
+            Gpt_Enemy targetEnemy = collision.gameObject.GetComponent<Gpt_Enemy>();
+            if (!isExplode&&targetEnemy.GetTouch()&&targetEnemy.GetColor()==color)
             {
-                SetPosition(collision.gameObject.transform.position);
+                //座標が同じになるバグ回避
+                float bug = Random.Range(0, 0.1f);
+                Vector3 bugVec = new Vector3(bug, bug, bug);
+                SetPosition(collision.gameObject.transform.position+bugVec);
+                preserveEnemyNum++;
             }
         }
     }
@@ -138,9 +178,15 @@ public class Gpt_Exploder : MonoBehaviour {
         this.gameObject.transform.position = position;
     }
 
+    public void SetDelayDestroy()
+    {
+        Object.Destroy(this.gameObject, 6f);
+    }
+    
     public void SetDestroy()
     {
-        Object.Destroy(this.gameObject,6f);
+
+        Object.Destroy(this.gameObject);
     }
 
     public int GetScale()
@@ -154,16 +200,31 @@ public class Gpt_Exploder : MonoBehaviour {
 
     void OnDestroy()
     {
-        //EnemyGravityManeger.RemoveExplodeList(this);
+        EnemyGravityManeger.RemoveExplodeList(this);
     }
 
-    public void setColor(int setcolor)
+    public void SetColor(int setcolor)
     {
         color = setcolor;
+    }
+
+    public int GetColor()
+    {
+        return color;
     }
 
     public void IsAfterExplode()
     {
         isAfterExplode = true;
+    }
+
+    public void IsExplodeMotion1()
+    {
+        isExplodeMotion1 = true;
+    }
+
+    public int GetEnemyNum()
+    {
+        return enemyNum;
     }
 }

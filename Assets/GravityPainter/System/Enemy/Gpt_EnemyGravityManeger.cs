@@ -69,6 +69,32 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
         }
     }
 
+    public void IsExplodeColor(int color)
+    {
+        for (int i = 0; i < ExplodeList.Count; i++)
+        {
+            //該当の色のみ爆発
+            if (color == ExplodeList[i].GetColor())
+            {
+                ExplodeList[i].IsExplode();
+            }
+            
+        }
+
+        for (int i = 0; i < EnemyList.Count; i++)
+        {
+            //該当の色のみ爆発
+            if (color == EnemyList[i].GetColor())
+            {
+                if (EnemyList[i].GetGravity())
+                {
+                    EnemyList[i].IsExplode();
+                }
+            }
+        }
+    }
+
+
     public void AddEnemyList(Gpt_Enemy Enemy)
     {
         EnemyList.Add(Enemy);
