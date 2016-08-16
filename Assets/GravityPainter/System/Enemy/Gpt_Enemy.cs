@@ -43,8 +43,11 @@ public class Gpt_Enemy : MonoBehaviour {
     private float motionTime1 ;
     private float motionTime2 ;
 
+    //一時的にひきつけ時の座標とベクトルを保存
     private float preserveX;
     private float preserveZ;
+
+    private Vector3 preserveVec;
 
     private GameObject getExploder;
 
@@ -77,22 +80,18 @@ public class Gpt_Enemy : MonoBehaviour {
             
             if (collision.gameObject.tag == "Enemy")
             {
-                
-                for (int aIndex = 0; aIndex < collision.contacts.Length; ++aIndex)
+                Debug.Log("Enemy");
+                //自分の相手の座標からどちらかにのみ爆発オブジェクト生成
+                if (this.transform.position.x * this.transform.position.z > collision.gameObject.transform.position.x * collision.gameObject.transform.position.z)
                 {
-                    //自分の相手の座標からどちらかにのみ爆発オブジェクト生成
-                    if (this.transform.position.x * this.transform.position.z > collision.gameObject.transform.position.x * collision.gameObject.transform.position.z)
-                    {
-                        // インスタンス生成
-                                               
-                        Vector3 trans = collision.contacts[aIndex].point;
-                        GameObject gameObj = Instantiate(exploder, trans, Quaternion.identity) as GameObject;
-                        Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
-                        targetExploder.setColor(GetColor());
-                        touchFlag = true;
-                    }
+                    // インスタンス生成
+                    Vector3 trans = collision.gameObject.transform.position;
+                    GameObject gameObj = Instantiate(exploder, trans, Quaternion.identity) as GameObject;
+                    Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
+                    targetExploder.SetColor(GetColor());
+                    touchFlag = true;
                 }
-                
+
             }
 
         }
@@ -102,8 +101,14 @@ public class Gpt_Enemy : MonoBehaviour {
     {
         if (collision.gameObject.tag == "GravityZone")
         {
-            exploderPosition=collision.gameObject.transform.position;
-            getExploder = collision.gameObject;
+            Gpt_Exploder targetExploder=collision.gameObject.GetComponent<Gpt_Exploder>();
+            //Debug.Log(targetExploder.transform.position);
+            if (targetExploder.GetColor() ==GetColor())
+            {
+                exploderPosition = collision.gameObject.transform.position;
+                getExploder = collision.gameObject;
+            }
+            
         }
     }
 
@@ -119,6 +124,7 @@ public class Gpt_Enemy : MonoBehaviour {
         if (gravityFlag)
         {
             gravityTime += 0.1f;
+            rigid.AddForce(-preserveVec * gravity/100, ForceMode.VelocityChange);
         }
 
         //爆発モーション
@@ -147,6 +153,8 @@ public class Gpt_Enemy : MonoBehaviour {
             else if(motionTime1 <6f){
                 rigid.isKinematic = true;
                 this.transform.position = Vector3.Lerp(this.transform.position, exploderPosition, 0.2f);
+                Gpt_Exploder explodeScript = getExploder.GetComponent<Gpt_Exploder>();
+                explodeScript.IsExplodeMotion1();
             }else if(motionTime1 < 8f)
             {
                 motionTime2 += 0.2f;
@@ -182,6 +190,7 @@ public class Gpt_Enemy : MonoBehaviour {
             //x,z座標保存
             preserveX = this.transform.position.x;
             preserveZ = this.transform.position.z;
+            preserveVec = gravityVec;
             EnemyAttack.StopAttack();
         }
 
@@ -190,8 +199,12 @@ public class Gpt_Enemy : MonoBehaviour {
         if(!isExplode){
             Speed(0);
             //始めは小刻みに震える
-            if (gravityTime < 3f)
+            if (gravityTime < 2f)
             {
+                Character.enabled = false;
+
+                rigid.isKinematic = false;
+                rigid.useGravity = true;
                 float x_temp = Random.Range(-0.15f, 0.15f);
                 float z_temp = Random.Range(-0.15f, 0.15f);
                 this.transform.position=new Vector3(preserveX+x_temp,this.transform.position.y,
@@ -199,10 +212,7 @@ public class Gpt_Enemy : MonoBehaviour {
             }
             else
             {
-                Character.enabled = false;
                 
-                rigid.isKinematic = false;
-                rigid.useGravity = true;
                 if (EnemyAttack != null)
                 {
                     EnemyAttack.StopAttack();
@@ -269,5 +279,11 @@ public class Gpt_Enemy : MonoBehaviour {
     {
         //重力フラグ確認
         return gravityFlag;
+    }
+
+    public bool GetTouch()
+    {
+        //重力フラグ確認
+        return touchFlag;
     }
 }
