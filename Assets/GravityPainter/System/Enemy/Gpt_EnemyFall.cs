@@ -11,7 +11,7 @@ public class Gpt_EnemyFall : MonoBehaviour {
 
     void OnTriggerEnter(Collider coll)
     {
-        if (coll.tag == "FallCheck") {
+        if (coll.tag == "FallChecker") {
             Object.Destroy(this.gameObject);
         }
     }
