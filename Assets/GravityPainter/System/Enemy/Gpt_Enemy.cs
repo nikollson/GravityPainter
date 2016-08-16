@@ -53,6 +53,10 @@ public class Gpt_Enemy : MonoBehaviour {
 
     public Collider coll;
 
+    //復活の時間
+    public float revivalTime=15f;
+    private float revivalCount;
+
     // Use this for initialization
     void Start () {
 
@@ -138,6 +142,7 @@ public class Gpt_Enemy : MonoBehaviour {
                 exploderPosition = getExploder.transform.position;
             }
             motionTime1 += 0.1f;
+            revivalCount += 0.1f;
             
             //collider.isTrigger=true;
             Vector3 exVec = (exploderPosition - this.transform.position).normalized;
@@ -157,6 +162,8 @@ public class Gpt_Enemy : MonoBehaviour {
                 explodeScript.IsExplodeMotion1();
             }else if(motionTime1 < 8f)
             {
+                //色を戻す
+                SetColor(0);
                 motionTime2 += 0.2f;
                 coll.enabled = true;
                 rigid.useGravity = true;
@@ -168,8 +175,31 @@ public class Gpt_Enemy : MonoBehaviour {
                     Gpt_Exploder explodeScript = getExploder.GetComponent<Gpt_Exploder>();
                     explodeScript.IsAfterExplode();
                 }
-                
-                
+
+
+            }
+            else
+            {
+                coll.enabled = true;
+                rigid.useGravity = true;
+                rigid.isKinematic = false;
+                if (revivalCount > revivalTime)
+                {
+                    //復活時に初期化
+                    hitPoint--;
+                    if (hitPoint <= 0)
+                    {
+                        EnemyDestroy();
+                    }
+                    isExplode = false;
+                    gravityFlag = false;
+                    coll.enabled = false;
+                    Character.enabled = true;
+                    rigid.isKinematic = true;
+                    rigid.useGravity = false;
+                    EnemyMove.IsGravityFalse();
+                    EnemyMove.SetPreserveSpeed();
+                }
             }
         }
     }
@@ -266,7 +296,16 @@ public class Gpt_Enemy : MonoBehaviour {
     public void IsExplode()
     {
         isExplode = true;
+    }
+
+    public void EnemyDestroy()
+    {
         Object.Destroy(this.gameObject, 5f);
+    }
+
+    public void SetColor(int setColor)
+    {
+        EnemyColor.SetColor(setColor);
     }
 
     public int GetColor()
