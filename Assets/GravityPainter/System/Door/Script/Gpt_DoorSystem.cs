@@ -26,6 +26,8 @@ public class Gpt_DoorSystem : MonoBehaviour {
 
             case State.CLOSE:
 
+                //
+
                 break;
 
             case State.OPENING:
@@ -41,6 +43,8 @@ public class Gpt_DoorSystem : MonoBehaviour {
                     break;
 
             case State.OPEN:
+
+                //
 
                 break;
         }
