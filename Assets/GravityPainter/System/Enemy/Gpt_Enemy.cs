@@ -85,7 +85,7 @@ public class Gpt_Enemy : MonoBehaviour {
                     Vector3 trans = collision.gameObject.transform.position;
                     GameObject gameObj = Instantiate(exploder, trans, Quaternion.identity) as GameObject;
                     Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
-                    targetExploder.setColor(GetColor());
+                    targetExploder.SetColor(GetColor());
                     touchFlag = true;
                 }
 
@@ -98,8 +98,14 @@ public class Gpt_Enemy : MonoBehaviour {
     {
         if (collision.gameObject.tag == "GravityZone")
         {
-            exploderPosition=collision.gameObject.transform.position;
-            getExploder = collision.gameObject;
+            Gpt_Exploder targetExploder=collision.gameObject.GetComponent<Gpt_Exploder>();
+            //Debug.Log(targetExploder.transform.position);
+            if (targetExploder.GetColor() ==GetColor())
+            {
+                exploderPosition = collision.gameObject.transform.position;
+                getExploder = collision.gameObject;
+            }
+            
         }
     }
 
