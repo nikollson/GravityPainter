@@ -24,6 +24,7 @@ public class Gpt_EnemyGravity : MonoBehaviour {
     {
         if (col.gameObject.tag =="GravityZone")
         {
+            
             //if (EnemyColor.GetColor()==col.)
             //{
 

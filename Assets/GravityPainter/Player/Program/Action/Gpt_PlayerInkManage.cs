@@ -3,13 +3,12 @@ using System.Collections;
 
 public class Gpt_PlayerInkManage : MonoBehaviour
 {
-
+    public Gpt_PlayerSkill playerSkill;
 
     public float inkMax = 1;
     public float inkStart = 0.33f;
 
     public float attack = 0.03f;
-    public float skill = 0.1f;
     public float detonate = 0.1f;
 
     public float autoHealPar = 0.5f;
@@ -30,12 +29,33 @@ public class Gpt_PlayerInkManage : MonoBehaviour
     public void ConsumeInk(float value) { AddInk(-value); }
 
     public bool CanUseAttack() { return RestInk >= attack; }
-    public bool CanUseSkill() { return RestInk >= skill; }
+    public bool CanUseSkill(Gpt_InkColor color) { return RestInk >= GetInkAmount(color); }
     public bool CanUseDetonate() { return RestInk >= detonate; }
 
     public void UseAttak() { ConsumeInk(attack); }
-    public void UseSkill() { ConsumeInk(skill); }
+    public void UseSkill(Gpt_InkColor color) { ConsumeInk(GetInkAmount(color)); }
     public void UseDetonate() { ConsumeInk(detonate); }
+
+
+    public void UseSkillParSec(Gpt_InkColor color)
+    {
+        ConsumeInk(GetInkAmountParSec(color) * Time.deltaTime);
+    }
+
+    public bool CanContinueSkill(Gpt_InkColor color)
+    {
+        return RestInk > GetInkAmountParSec(color);
+    }
+
+    float GetInkAmount(Gpt_InkColor color)
+    {
+        return playerSkill.GetUseInk(color);
+    }
+
+    float GetInkAmountParSec(Gpt_InkColor color)
+    {
+        return playerSkill.GetUseInkParsSec(color);
+    }
 
     public void DoDetonateHeal(float enemyPoint)
     {

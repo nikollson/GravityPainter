@@ -31,20 +31,20 @@ public class Gpt_PlayerSkill : MonoBehaviour
         skillCount = 0;
         Color = color;
 
-        if (color == Gpt_InkColor.RED) currentSkill = redSkill;
-        if (color == Gpt_InkColor.BLUE) currentSkill = redSkill;
-        if (color == Gpt_InkColor.YELLOW) currentSkill = redSkill;
-        if (color == Gpt_InkColor.RAINBOW) currentSkill = rainbowSkill;
-
-        skillTime = currentSkill.time;
+        currentSkill = GetColorSkill(color);
+        
         currentSkill.Init(rigidbody, playerUtillity);
-
         currentSkill.Start();
     }
 
     public bool IsEndSkill()
     {
-        return skillTime < skillCount;
+        return currentSkill.IsEnd();
+    }
+
+    public bool CanEndSkill(bool hasInput, int inputFrame)
+    {
+        return (!hasInput || inputFrame!=inputFrame_log) && currentSkill.CanEnd();
     }
 
     public void EndSkill()
@@ -61,21 +61,49 @@ public class Gpt_PlayerSkill : MonoBehaviour
         currentSkill.Update();
     }
 
+    public float GetUseInk(Gpt_InkColor color)
+    {
+        return GetColorSkill(color).useInk;
+    }
+
+    public float GetUseInkParsSec(Gpt_InkColor color)
+    {
+        return GetColorSkill(color).useInkParSec;
+    }
+
+    SkillBase GetColorSkill(Gpt_InkColor color)
+    {
+        if (color == Gpt_InkColor.RED) return redSkill;
+        if (color == Gpt_InkColor.BLUE) return redSkill;
+        if (color == Gpt_InkColor.YELLOW) return redSkill;
+        if (color == Gpt_InkColor.RAINBOW) return rainbowSkill;
+        return redSkill;
+    }
+
 
     [System.Serializable]
     public class RedSkill : SkillBase
     {
+
+        public float endTime = 1.0f;
+        public float canEndTime = 0.2f;
+
         public float friction = 200;
         public float startVelocity = 5;
         public float accelPower = 500;
+
+        float count = 0;
 
         public override void Start()
         {
             Vector3 force = startVelocity * playerUtillity.GetAnalogpadMove() - rigidbody.velocity;
             rigidbody.AddForce(force, ForceMode.VelocityChange);
+            count = 0;
         }
         public override void Update()
         {
+            count += Time.deltaTime;
+
             Vector3 dir = playerUtillity.HasAnalogpadMove() ? playerUtillity.GetAnalogpadMove() : rigidbody.transform.forward;
             Vector3 force = accelPower * dir - friction * (rigidbody.velocity - new Vector3(0, rigidbody.velocity.y, 0));
             rigidbody.AddForce(force, ForceMode.Acceleration);
@@ -85,6 +113,16 @@ public class Gpt_PlayerSkill : MonoBehaviour
         public override void End()
         {
 
+        }
+
+        public override bool CanEnd()
+        {
+            return count > canEndTime;
+        }
+
+        public override bool IsEnd()
+        {
+            return count > endTime;
         }
     }
 
@@ -124,10 +162,11 @@ public class Gpt_PlayerSkill : MonoBehaviour
     [System.Serializable]
     public class SkillBase
     {
-        public float time = 1.0f;
-
         protected Rigidbody rigidbody;
         protected Gpt_PlayerUtillity playerUtillity;
+        
+        public float useInk = 0.04f;
+        public float useInkParSec = 0;
 
         public void Init(Rigidbody rigidbody, Gpt_PlayerUtillity playerUtillity)
         {
@@ -137,5 +176,7 @@ public class Gpt_PlayerSkill : MonoBehaviour
         public virtual void Start() { }
         public virtual void Update() { }
         public virtual void End() { }
+        public virtual bool CanEnd() { return true; }
+        public virtual bool IsEnd() { return true; }
     }
 }
