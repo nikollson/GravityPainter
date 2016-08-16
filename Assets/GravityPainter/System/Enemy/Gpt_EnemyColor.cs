@@ -11,6 +11,12 @@ public class Gpt_EnemyColor : MonoBehaviour {
 
     public Material[] _material;
 
+    private bool isDamage;
+
+    //点滅間隔
+    private int damageTime = 4;
+    private int damageCount;
+
     // Use this for initialization
     void Start () {
 
@@ -19,7 +25,30 @@ public class Gpt_EnemyColor : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        damageCount++;
+        if (isDamage)
+        {
+            if (damageCount % damageTime == 0)
+            {
+                renderer.enabled = false;
+                rendererFootR.enabled = false;
+                rendererFootL.enabled = false;
+            }
+            else
+            {
+                renderer.enabled = true;
+                rendererFootR.enabled = true;
+                rendererFootL.enabled = true;
+            }
 
+        }
+        else
+        {
+            renderer.enabled = true;
+            rendererFootR.enabled = true;
+            rendererFootL.enabled = true;
+
+        }
 	}
 
     public void SetColor(int setColor)
@@ -35,5 +64,15 @@ public class Gpt_EnemyColor : MonoBehaviour {
     {
         return Color;
 
+    }
+    //点滅処理
+    public void IsDamage()
+    {
+        isDamage = true;
+    }
+
+    public void IsDamageFalse()
+    {
+        isDamage = false;
     }
 }
