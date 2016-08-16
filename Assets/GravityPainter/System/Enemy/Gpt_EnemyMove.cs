@@ -112,7 +112,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 }
                 move += 0.1f;
                 Vector3 moveVec = AngleToVector(moveAngle);
-                Debug.Log("walked");
+                //Debug.Log("walked");
                 
                 //索敵処理
                 if (Vector3.Distance(player.transform.position, this.transform.position) < searchArea)

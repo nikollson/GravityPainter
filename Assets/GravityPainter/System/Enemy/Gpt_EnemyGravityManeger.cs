@@ -67,7 +67,11 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
         //敵が一定値に満ちたらドアが開く
         if (isFloor && enemyNumCount >= enemyNum)
         {
-            doorSystem.OpenDoor();
+            if (doorSystem != null)
+            {
+                doorSystem.OpenDoor();
+            }
+            
         }
 
         //Debug.Log(EnemyList.Count);

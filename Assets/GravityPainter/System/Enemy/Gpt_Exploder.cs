@@ -9,6 +9,8 @@ public class Gpt_Exploder : MonoBehaviour {
     private int scale=1;
     private Gpt_Exploder targetExploder;
 
+    public Gpt_YukaManager YukaManager;
+    public float explodeArea=20f;
     public GameObject Explosion_red;
     public GameObject Explosion_blue;
     public GameObject Explosion_yellow;
@@ -70,14 +72,17 @@ public class Gpt_Exploder : MonoBehaviour {
                 {
                     case 1:
                         Instantiate(Explosion_red, this.transform.position, Quaternion.identity);
+                        YukaManager.DoExplode(color, this.transform.position, explodeArea);
                         isDestroy = true;
                         break;
                     case 2:
                         Instantiate(Explosion_blue, this.transform.position, Quaternion.identity);
+                        YukaManager.DoExplode(color, this.transform.position, explodeArea);
                         isDestroy = true;
                         break;
                     case 3:
                         Instantiate(Explosion_yellow, this.transform.position, Quaternion.identity);
+                        YukaManager.DoExplode(color, this.transform.position, explodeArea);
                         isDestroy = true;
                         break;
                 }
