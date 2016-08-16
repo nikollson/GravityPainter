@@ -72,7 +72,7 @@ public class Gpt_Enemy : MonoBehaviour {
         EnemyColor.SetColor(temp);
         
         Character = this.GetComponent<CharacterController>();
-        Debug.Log(EnemyGravityManeger.ListIndex(this));
+        //Debug.Log(EnemyGravityManeger.ListIndex(this));
     }
 
     void OnCollisionEnter(Collision collision)
@@ -189,16 +189,25 @@ public class Gpt_Enemy : MonoBehaviour {
                     hitPoint--;
                     if (hitPoint <= 0)
                     {
-                        EnemyDestroy();
+                        EnemyDestroy(0f);
                     }
-                    isExplode = false;
-                    gravityFlag = false;
-                    coll.enabled = false;
-                    Character.enabled = true;
-                    rigid.isKinematic = true;
-                    rigid.useGravity = false;
-                    EnemyMove.IsGravityFalse();
-                    EnemyMove.SetPreserveSpeed();
+                    else
+                    {
+                        isExplode = false;
+                        gravityFlag = false;
+                        coll.enabled = true;
+                        Character.enabled = true;
+                        rigid.isKinematic = true;
+                        rigid.useGravity = false;
+                        EnemyMove.IsGravityFalse();
+                        EnemyMove.SetPreserveSpeed();
+                        gravityTime = 0;
+                        touchFlag = false;
+                        motionTime1 = 0;
+                        motionTime2 = 0;
+                        revivalCount = 0;
+                    }
+                   
                 }
             }
         }
@@ -223,7 +232,7 @@ public class Gpt_Enemy : MonoBehaviour {
             preserveVec = gravityVec;
             EnemyAttack.StopAttack();
         }
-
+        //Debug.Log("Gravity");
         gravityFlag = true;
 
         if(!isExplode){
@@ -298,9 +307,9 @@ public class Gpt_Enemy : MonoBehaviour {
         isExplode = true;
     }
 
-    public void EnemyDestroy()
+    public void EnemyDestroy(float delay)
     {
-        Object.Destroy(this.gameObject, 5f);
+        Object.Destroy(this.gameObject, delay);
     }
 
     public void SetColor(int setColor)

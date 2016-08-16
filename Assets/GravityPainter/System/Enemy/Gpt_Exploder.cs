@@ -6,10 +6,11 @@ public class Gpt_Exploder : MonoBehaviour {
 
     private Gpt_EnemyGravityManeger EnemyGravityManeger;
     private GameObject ManegerObject;
+    private GameObject YukaManegerObject;
     private int scale=1;
     private Gpt_Exploder targetExploder;
 
-    public Gpt_YukaManager YukaManager;
+    private Gpt_YukaManager YukaManager;
     public float explodeArea=20f;
     public GameObject Explosion_red;
     public GameObject Explosion_blue;
@@ -39,6 +40,8 @@ public class Gpt_Exploder : MonoBehaviour {
     // Use this for initialization
     void Start() {
         ManegerObject = GameObject.Find("GravityManeger");
+        YukaManegerObject = GameObject.Find("YukaManager");
+        YukaManager = YukaManegerObject.GetComponent<Gpt_YukaManager>();
         EnemyGravityManeger = ManegerObject.GetComponent<Gpt_EnemyGravityManeger>();
         EnemyGravityManeger.AddExplodeList(this);
         bug_time = Random.Range(0, 4f); 
@@ -92,7 +95,7 @@ public class Gpt_Exploder : MonoBehaviour {
         if (isDestroy)
         {
             
-            SetDelayDestroy();
+            SetDelayDestroy(0f);
         }
 	}
 
@@ -183,9 +186,9 @@ public class Gpt_Exploder : MonoBehaviour {
         this.gameObject.transform.position = position;
     }
 
-    public void SetDelayDestroy()
+    public void SetDelayDestroy(float delay)
     {
-        Object.Destroy(this.gameObject, 6f);
+        Object.Destroy(this.gameObject, delay);
     }
     
     public void SetDestroy()
