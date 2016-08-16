@@ -10,46 +10,14 @@ public class Gpt_YukaParts : MonoBehaviour {
     public YukaColor firstColor;
     public Mode changeMode;
     public YukaColor[] colorLoop;
-
-    public MaterialSetting materialSetting;
-
+    
     private Gpt_YukaBox[] yukaBoxes;
 
     Gpt_InkColor currentColor;
 
-    void Start()
-    {
-        LoadYukaBoxes();
-        SetFirstColor();
-    }
-
-    void SetFirstColor()
-    {
-        SetColor(firstColor);
-    }
-
     void LoadYukaBoxes()
     {
         yukaBoxes = transform.GetComponentsInChildren<Gpt_YukaBox>();
-    }
-
-    public void SetColor(YukaColor yukaColor)
-    {
-        SetColor(yukaColorToInkColor(yukaColor));
-    }
-
-    public void SetColor(Gpt_InkColor color)
-    {
-        if (yukaBoxes == null) LoadYukaBoxes();
-        currentColor = color;
-
-        foreach(var a in yukaBoxes)
-        {
-            if (color == Gpt_InkColor.RED) a.SetColor(materialSetting.red);
-            else if (color == Gpt_InkColor.BLUE) a.SetColor(materialSetting.blue);
-            else if (color == Gpt_InkColor.YELLOW) a.SetColor(materialSetting.yellow);
-            else a.SetColor(materialSetting.white);
-        }
     }
 
     Gpt_InkColor yukaColorToInkColor(YukaColor yukaColor)
@@ -60,24 +28,14 @@ public class Gpt_YukaParts : MonoBehaviour {
         return Gpt_InkColor.NONE;
     }
 
-    public void DoExplode(Gpt_InkColor color, Vector3 point, float radius)
+    public Gpt_YukaBox[] GetYukaBoxes()
     {
-        bool hit = false;
-        foreach(var a in yukaBoxes)
-        {
-            if ((a.transform.position - point).magnitude < radius) hit = true;
-        }
-
-        if(hit && color == currentColor)
-        {
-            this.transform.position -= new Vector3(0, 1, 0);
-        }
+        if (yukaBoxes == null || yukaBoxes.Length == 0) LoadYukaBoxes();
+        return yukaBoxes;
     }
 
-
-    [System.Serializable]
-    public class MaterialSetting
+    public Gpt_InkColor GetFirstColor()
     {
-        public Material white, red, blue, yellow;
+        return yukaColorToInkColor(firstColor);
     }
 }
