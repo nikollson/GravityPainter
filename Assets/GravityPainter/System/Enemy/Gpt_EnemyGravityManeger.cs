@@ -11,14 +11,30 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
 
     public float gravityArea;
     // Use this for initialization
+    public Gpt_DoorSystem doorSystem;
+
+    private bool isFloor;
 
     float temp;
+
+    //何体敵を倒してクリア
+    public int enemyNum;
+    private int enemyNumCount;
+
 	void Start () {
         Application.targetFrameRate = 30; //30FPSに設定
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+        //敵が一人以上いた時にカウントスタート
+        if (EnemyList.Count > 0)
+        {
+            isFloor=true;
+        }
+
+        
         //距離判定
         for (int i = 0; i < EnemyList.Count; i++)
         {
@@ -46,6 +62,12 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
             }
 
             //接触判定
+        }
+
+        //敵が一定値に満ちたらドアが開く
+        if (isFloor && enemyNumCount >= enemyNum)
+        {
+            doorSystem.OpenDoor();
         }
 
         //Debug.Log(EnemyList.Count);
@@ -103,8 +125,8 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
     public void RemoveEnemyList(Gpt_Enemy Enemy)
     {
         EnemyList.Remove(Enemy);
-
-        
+        //フロアで倒した敵を加算
+        enemyNumCount++;
     }
 
     public int ListIndex(Gpt_Enemy Enemy)
