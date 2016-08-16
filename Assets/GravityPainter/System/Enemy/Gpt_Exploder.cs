@@ -37,6 +37,12 @@ public class Gpt_Exploder : MonoBehaviour {
     private int enemyNum;
     private int preserveEnemyNum;
 
+    //重力フラグ
+    private bool isGravity;
+
+    //爆発起動後のエネミーの数
+    private int explodeEnemyNum;
+
     // Use this for initialization
     void Start() {
         ManegerObject = GameObject.Find("GravityManeger");
@@ -51,9 +57,8 @@ public class Gpt_Exploder : MonoBehaviour {
         bug_time += 0.1f;
 
         //Debug.Log("before:"+enemyNum);
-        enemyNum = preserveEnemyNum;
-        preserveEnemyNum=0;
-        //Debug.Log("after:"+enemyNum);
+
+        
 
         if (isExplode)
         {
@@ -76,16 +81,19 @@ public class Gpt_Exploder : MonoBehaviour {
                     case 1:
                         Instantiate(Explosion_red, this.transform.position, Quaternion.identity);
                         YukaManager.DoExplode(color, this.transform.position, explodeArea);
+                        EnemyGravityManeger.IsExplodeWave();//爆風ダメージ
                         isDestroy = true;
                         break;
                     case 2:
                         Instantiate(Explosion_blue, this.transform.position, Quaternion.identity);
                         YukaManager.DoExplode(color, this.transform.position, explodeArea);
+                        EnemyGravityManeger.IsExplodeWave();
                         isDestroy = true;
                         break;
                     case 3:
                         Instantiate(Explosion_yellow, this.transform.position, Quaternion.identity);
                         YukaManager.DoExplode(color, this.transform.position, explodeArea);
+                        EnemyGravityManeger.IsExplodeWave();
                         isDestroy = true;
                         break;
                 }
@@ -97,6 +105,18 @@ public class Gpt_Exploder : MonoBehaviour {
             
             SetDelayDestroy(0f);
         }
+
+        //爆発オブジェクト内に敵がいなかったら削除
+        enemyNum = preserveEnemyNum;
+        if (enemyNum == 0 && isGravity)
+        {
+            if (!isExplode&&explodeEnemyNum==0) SetDestroy();
+        }
+        preserveEnemyNum = 0;
+
+        Debug.Log("after:" + enemyNum);
+
+        isGravity = true;
 	}
 
     void OnTriggerEnter(Collider collision)
@@ -147,6 +167,12 @@ public class Gpt_Exploder : MonoBehaviour {
                 SetPosition(collision.gameObject.transform.position+bugVec);
                 preserveEnemyNum++;
             }
+            else if (targetEnemy.GetColor() == color)//はがれる処理関係
+            {
+                preserveEnemyNum++;
+            }
+
+            
         }
     }
 
@@ -178,6 +204,8 @@ public class Gpt_Exploder : MonoBehaviour {
 
     public void IsExplode()
     {
+        //爆発前にエネミーの数を記録
+        explodeEnemyNum = preserveEnemyNum;
         isExplode = true;
     }
 

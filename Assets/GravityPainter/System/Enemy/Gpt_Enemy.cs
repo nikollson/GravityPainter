@@ -53,9 +53,19 @@ public class Gpt_Enemy : MonoBehaviour {
 
     public Collider coll;
 
-    //復活の時間
+    //復活(爆発してから)の時間（15fで約3秒）
     public float revivalTime=15f;
     private float revivalCount;
+
+    //復活(固まってから)の時間 (30fで約20秒)
+    public float firmTime = 30f;
+    private float firmCount;
+
+    //爆風ダメージ時の点滅時間
+    private float damageTime = 7f;
+    private float damageCount;
+    //爆風ダメージ時の点滅フラグ
+    private bool damageFlag;
 
     // Use this for initialization
     void Start () {
@@ -129,6 +139,23 @@ public class Gpt_Enemy : MonoBehaviour {
         {
             gravityTime += 0.1f;
             rigid.AddForce(-preserveVec * gravity/100, ForceMode.VelocityChange);
+
+            firmCount += 0.1f;
+            if (firmCount > firmTime&&!isExplode)
+            {
+                EnemyReset();
+                SetColor(0);
+            }
+        }
+        else if (damageFlag)//爆風の点滅処理
+        {
+            damageCount+=0.1f;
+            EnemyColor.IsDamage();
+            if (damageCount > damageTime)
+            {
+                EnemyColor.IsDamageFalse();
+                damageFlag=false;
+            }
         }
 
         //爆発モーション
@@ -170,6 +197,7 @@ public class Gpt_Enemy : MonoBehaviour {
                 rigid.isKinematic = false;
                 exVec.y = -1f+motionTime2;
                 rigid.AddForce(-exVec * 3f, ForceMode.VelocityChange);
+                
                 if (getExploder != null)
                 {
                     Gpt_Exploder explodeScript = getExploder.GetComponent<Gpt_Exploder>();
@@ -180,6 +208,7 @@ public class Gpt_Enemy : MonoBehaviour {
             }
             else
             {
+                EnemyColor.IsDamage();
                 coll.enabled = true;
                 rigid.useGravity = true;
                 rigid.isKinematic = false;
@@ -187,29 +216,29 @@ public class Gpt_Enemy : MonoBehaviour {
                 {
                     //復活時に初期化
                     hitPoint--;
+                    //HP0で死亡
                     if (hitPoint <= 0)
                     {
                         EnemyDestroy(0f);
                     }
                     else
                     {
-                        isExplode = false;
-                        gravityFlag = false;
-                        coll.enabled = true;
-                        Character.enabled = true;
-                        rigid.isKinematic = true;
-                        rigid.useGravity = false;
-                        EnemyMove.IsGravityFalse();
-                        EnemyMove.SetPreserveSpeed();
-                        gravityTime = 0;
-                        touchFlag = false;
-                        motionTime1 = 0;
-                        motionTime2 = 0;
-                        revivalCount = 0;
+                        EnemyColor.IsDamageFalse();
+                        EnemyReset();
                     }
                    
                 }
             }
+        }
+
+        //爆風での死亡判定
+        if (hitPoint<=0)
+        {
+            Speed(0);
+            EnemyDestroy(2f);
+            EnemyMove.IsGravity();
+            this.transform.Rotate(this.transform.up, temp * 2f);
+
         }
     }
     
@@ -331,7 +360,31 @@ public class Gpt_Enemy : MonoBehaviour {
 
     public bool GetTouch()
     {
-        //重力フラグ確認
         return touchFlag;
+    }
+
+    public void EnemyReset()
+    {
+        isExplode = false;
+        gravityFlag = false;
+        coll.enabled = true;
+        Character.enabled = true;
+        rigid.isKinematic = true;
+        rigid.useGravity = false;
+        EnemyMove.IsGravityFalse();
+        EnemyMove.SetPreserveSpeed();
+        gravityTime = 0;
+        touchFlag = false;
+        motionTime1 = 0;
+        motionTime2 = 0;
+        revivalCount = 0;
+        firmCount = 0;
+    }
+
+    //爆風のダメージ
+    public void ExplodeDamage(int damage)
+    {
+        hitPoint -= damage;
+        damageFlag = true;
     }
 }
