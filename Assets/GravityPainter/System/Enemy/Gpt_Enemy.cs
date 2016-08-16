@@ -43,11 +43,8 @@ public class Gpt_Enemy : MonoBehaviour {
     private float motionTime1 ;
     private float motionTime2 ;
 
-    //一時的にひきつけ時の座標とベクトルを保存
     private float preserveX;
     private float preserveZ;
-
-    private Vector3 preserveVec;
 
     private GameObject getExploder;
 
@@ -124,7 +121,6 @@ public class Gpt_Enemy : MonoBehaviour {
         if (gravityFlag)
         {
             gravityTime += 0.1f;
-            rigid.AddForce(-preserveVec * gravity/100, ForceMode.VelocityChange);
         }
 
         //爆発モーション
@@ -153,8 +149,6 @@ public class Gpt_Enemy : MonoBehaviour {
             else if(motionTime1 <6f){
                 rigid.isKinematic = true;
                 this.transform.position = Vector3.Lerp(this.transform.position, exploderPosition, 0.2f);
-                Gpt_Exploder explodeScript = getExploder.GetComponent<Gpt_Exploder>();
-                explodeScript.IsExplodeMotion1();
             }else if(motionTime1 < 8f)
             {
                 motionTime2 += 0.2f;
@@ -190,7 +184,6 @@ public class Gpt_Enemy : MonoBehaviour {
             //x,z座標保存
             preserveX = this.transform.position.x;
             preserveZ = this.transform.position.z;
-            preserveVec = gravityVec;
             EnemyAttack.StopAttack();
         }
 
@@ -201,10 +194,6 @@ public class Gpt_Enemy : MonoBehaviour {
             //始めは小刻みに震える
             if (gravityTime < 2f)
             {
-                Character.enabled = false;
-
-                rigid.isKinematic = false;
-                rigid.useGravity = true;
                 float x_temp = Random.Range(-0.15f, 0.15f);
                 float z_temp = Random.Range(-0.15f, 0.15f);
                 this.transform.position=new Vector3(preserveX+x_temp,this.transform.position.y,
@@ -212,7 +201,10 @@ public class Gpt_Enemy : MonoBehaviour {
             }
             else
             {
+                Character.enabled = false;
                 
+                rigid.isKinematic = false;
+                rigid.useGravity = true;
                 if (EnemyAttack != null)
                 {
                     EnemyAttack.StopAttack();

@@ -22,17 +22,10 @@ public class Gpt_Exploder : MonoBehaviour {
     //爆発後フラグ
     private bool isAfterExplode;
 
-    //爆発モーションフラグ1
-    private bool isExplodeMotion1;
-
     //死亡フラグ
     private bool isDestroy;
     //色設定
     private int color;
-
-    //爆発内の敵の数
-    private int enemyNum;
-    private int preserveEnemyNum;
 
     // Use this for initialization
     void Start() {
@@ -45,27 +38,14 @@ public class Gpt_Exploder : MonoBehaviour {
 	void Update () {
         bug_time += 0.1f;
 
-        //Debug.Log("before:"+enemyNum);
-        enemyNum = preserveEnemyNum;
-        preserveEnemyNum=0;
-        //Debug.Log("after:"+enemyNum);
-
         if (isExplode)
         {
             if (!isAfterExplode)
             {
-                //爆発モーション（上昇）
-                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.08f, this.transform.position.z);
-                
-                //爆発モーション（下降）
-                if (isExplodeMotion1)
-                {
-                    this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 0.72f, this.transform.position.z);
-                }
+                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.06f, this.transform.position.z);
 
             } else if (!isDestroy)
             {
-                
                 switch (color)
                 {
                     case 1:
@@ -109,18 +89,18 @@ public class Gpt_Exploder : MonoBehaviour {
                     //Vector3 median = medianPosition(this.transform.position, collision.gameObject.transform.position);
                     //SetPosition(median);
 
-                    //Debug.Log("1ax:" + this.transform.position.x + "y:" + this.transform.position.y + "z:" + this.transform.position.z);
-                    //Debug.Log("1bx:" + collision.gameObject.transform.position.x + "y:" + collision.gameObject.transform.position.y + "z:" + collision.gameObject.transform.position.z);
-                    //Debug.Log("1a:" + Debug_A);
-                    //Debug.Log("1b:" + Debug_B);
+                    Debug.Log("1ax:" + this.transform.position.x + "y:" + this.transform.position.y + "z:" + this.transform.position.z);
+                    Debug.Log("1bx:" + collision.gameObject.transform.position.x + "y:" + collision.gameObject.transform.position.y + "z:" + collision.gameObject.transform.position.z);
+                    Debug.Log("1a:" + Debug_A);
+                    Debug.Log("1b:" + Debug_B);
                     targetExploder.SetDestroy();
                 }
                 else
                 {
-                    //Debug.Log("2ax:" + this.transform.position.x + "y:" + this.transform.position.y + "z:" + this.transform.position.z);
-                    //Debug.Log("2bx:" + collision.gameObject.transform.position.x + "y:" + collision.gameObject.transform.position.y + "z:" + collision.gameObject.transform.position.z);
-                    //Debug.Log("2a:"+Debug_A);
-                    //Debug.Log("2b:"+Debug_B);
+                    Debug.Log("2ax:" + this.transform.position.x + "y:" + this.transform.position.y + "z:" + this.transform.position.z);
+                    Debug.Log("2bx:" + collision.gameObject.transform.position.x + "y:" + collision.gameObject.transform.position.y + "z:" + collision.gameObject.transform.position.z);
+                    Debug.Log("2a:"+Debug_A);
+                    Debug.Log("2b:"+Debug_B);
                     SetDestroy();
                 }
             }
@@ -137,7 +117,6 @@ public class Gpt_Exploder : MonoBehaviour {
                 float bug = Random.Range(0, 0.1f);
                 Vector3 bugVec = new Vector3(bug, bug, bug);
                 SetPosition(collision.gameObject.transform.position+bugVec);
-                preserveEnemyNum++;
             }
         }
     }
@@ -216,15 +195,5 @@ public class Gpt_Exploder : MonoBehaviour {
     public void IsAfterExplode()
     {
         isAfterExplode = true;
-    }
-
-    public void IsExplodeMotion1()
-    {
-        isExplodeMotion1 = true;
-    }
-
-    public int GetEnemyNum()
-    {
-        return enemyNum;
     }
 }
