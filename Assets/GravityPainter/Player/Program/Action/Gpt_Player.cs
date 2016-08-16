@@ -53,6 +53,14 @@ public class Gpt_Player : MonoBehaviour
     }
 
 
+
+    public void DoRespawn(Vector3 position)
+    {
+        this.transform.position = position;
+        state.DoRespawn(true);
+    }
+
+
     bool CanStartMove() { return playerUtillity.HasAnalogpadMove(); }
     bool CanStartAttack() { return Gpt_Input.Attack && playerInkManage.CanUseAttack() && playerAttack.CanFirstAttack(Gpt_Input.AttackStartFrame); }
     bool CanStartDetonate() { return Gpt_Input.Detonate && playerInkManage.CanUseDetonate() && playerDetonate.CanStartDetonate(Gpt_Input.DetonateStartFrame); }
