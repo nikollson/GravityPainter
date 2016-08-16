@@ -78,14 +78,14 @@ public class Gpt_YukaManager : MonoBehaviour {
         Transform parent = setting.allTileParent;
         ReadTileSetting.Mode[,] colors = GetTilesMode();
 
-        for(int i = 0; i < colors.GetLength(0); i++)
+        for (int i = 0; i < colors.GetLength(0); i++)
         {
-            for(int j = 0; j < colors.GetLength(1); j++)
+            for (int j = 0; j < colors.GetLength(1); j++)
             {
                 if (colors[i, j] != ReadTileSetting.Mode.Hole)
                 {
                     ReadTileSetting.Mode startMode = colors[i, j];
-                    
+
                     GameObject yukaParts = (GameObject)Instantiate(setting.partsPrefab, parent);
 
                     Queue<Q> que = new Queue<Q>();
@@ -103,12 +103,13 @@ public class Gpt_YukaManager : MonoBehaviour {
 
                         var obj = (GameObject)Instantiate(setting.basePrefab, yukaParts.transform);
                         obj.transform.localPosition = new Vector3(-u.i * tileSize, 0, u.j * tileSize);
-                        obj.transform.localScale = new Vector3(tileSize, obj.transform.localScale.y, tileSize);
+                        Vector3 moto = obj.transform.localScale;
+                        obj.transform.localScale = new Vector3(moto.x * tileSize, moto.y, moto.z * tileSize);
 
                         int[] dx = { 1, 0, -1, 0 };
                         int[] dy = { 0, 1, 0, -1 };
 
-                        for(int p = 0; p < 4; p++)
+                        for (int p = 0; p < 4; p++)
                         {
                             que.Enqueue(new Q(u.i + dx[p], u.j + dy[p]));
                         }
