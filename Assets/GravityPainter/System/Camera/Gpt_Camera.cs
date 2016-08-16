@@ -87,7 +87,7 @@ public class Gpt_Camera : MonoBehaviour
     void Update_Rotation()
     {
         // 振りかえり処理
-        //Turn();
+        Turn();
         // 左右回転
         Rotation_XZ();
         // 上下回転
@@ -158,6 +158,10 @@ public class Gpt_Camera : MonoBehaviour
                 turnFlg = false;
                 return;
             }
+
+            // todo
+            rotXZ = targetRot;
+            turnFlg = false;
         }
 
         // フラグが立っていたら視点反転する
