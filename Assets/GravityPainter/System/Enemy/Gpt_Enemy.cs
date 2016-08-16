@@ -61,6 +61,12 @@ public class Gpt_Enemy : MonoBehaviour {
     public float firmTime = 30f;
     private float firmCount;
 
+    //爆風ダメージ時の点滅時間
+    private float damageTime = 7f;
+    private float damageCount;
+    //爆風ダメージ時の点滅フラグ
+    private bool damageFlag;
+
     // Use this for initialization
     void Start () {
 
@@ -141,6 +147,16 @@ public class Gpt_Enemy : MonoBehaviour {
                 SetColor(0);
             }
         }
+        else if (damageFlag)//爆風の点滅処理
+        {
+            damageCount+=0.1f;
+            EnemyColor.IsDamage();
+            if (damageCount > damageTime)
+            {
+                EnemyColor.IsDamageFalse();
+                damageFlag=false;
+            }
+        }
 
         //爆発モーション
         if (isExplode)
@@ -213,6 +229,16 @@ public class Gpt_Enemy : MonoBehaviour {
                    
                 }
             }
+        }
+
+        //爆風での死亡判定
+        if (hitPoint<=0)
+        {
+            Speed(0);
+            EnemyDestroy(2f);
+            EnemyMove.IsGravity();
+            this.transform.Rotate(this.transform.up, temp * 2f);
+
         }
     }
     
@@ -334,7 +360,6 @@ public class Gpt_Enemy : MonoBehaviour {
 
     public bool GetTouch()
     {
-        //重力フラグ確認
         return touchFlag;
     }
 
@@ -354,5 +379,12 @@ public class Gpt_Enemy : MonoBehaviour {
         motionTime2 = 0;
         revivalCount = 0;
         firmCount = 0;
+    }
+
+    //爆風のダメージ
+    public void ExplodeDamage(int damage)
+    {
+        hitPoint -= damage;
+        damageFlag = true;
     }
 }

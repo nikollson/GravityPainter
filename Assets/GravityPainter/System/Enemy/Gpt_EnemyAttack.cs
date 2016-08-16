@@ -32,6 +32,7 @@ public class Gpt_EnemyAttack : MonoBehaviour {
         {
             if (enemyPattern == 0)
             {
+                Debug.Log("atacck");
                 motionTime1 += 2f;
                 
                 if(motionTime1 >= 45||motionTime2>=1)
@@ -39,7 +40,7 @@ public class Gpt_EnemyAttack : MonoBehaviour {
                     motionTime2 += 1f;
                     motionTime1 -= 40f;
                 }
-                transform.Rotate(transform.up, motionTime1);
+                this.transform.Rotate(this.transform.up, 212);
                 
             }
             else if (enemyPattern == 1)

@@ -134,6 +134,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     //遠隔攻撃の射程に入った時
                     if (Vector3.Distance(player.transform.position, this.transform.position) < attackArea)
                     {
+                        //Debug.Log("attack");
                         enemyTemp = 0.1f;
                         EnemyAttack.IsAttack();
                     }

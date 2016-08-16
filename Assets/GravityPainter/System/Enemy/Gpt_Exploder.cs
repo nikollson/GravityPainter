@@ -81,16 +81,19 @@ public class Gpt_Exploder : MonoBehaviour {
                     case 1:
                         Instantiate(Explosion_red, this.transform.position, Quaternion.identity);
                         YukaManager.DoExplode(color, this.transform.position, explodeArea);
+                        EnemyGravityManeger.IsExplodeWave();//爆風ダメージ
                         isDestroy = true;
                         break;
                     case 2:
                         Instantiate(Explosion_blue, this.transform.position, Quaternion.identity);
                         YukaManager.DoExplode(color, this.transform.position, explodeArea);
+                        EnemyGravityManeger.IsExplodeWave();
                         isDestroy = true;
                         break;
                     case 3:
                         Instantiate(Explosion_yellow, this.transform.position, Quaternion.identity);
                         YukaManager.DoExplode(color, this.transform.position, explodeArea);
+                        EnemyGravityManeger.IsExplodeWave();
                         isDestroy = true;
                         break;
                 }
