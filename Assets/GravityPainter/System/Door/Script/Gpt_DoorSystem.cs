@@ -6,6 +6,7 @@ using System.Collections;
 public class Gpt_DoorSystem : MonoBehaviour {
 
     public GameObject[] doorObj = new GameObject[2];
+    AudioSource se;
 
     enum State
     {
@@ -15,11 +16,12 @@ public class Gpt_DoorSystem : MonoBehaviour {
     }
     State state;
     const float MOVE_DOOR_VAL = -4.0f;       // ドア移動範囲
-    public float ROT_SPD = 10.0f;       // ドア回転速度
+    public float ROT_SPD = 30.0f;       // ドア回転速度
 
     void Start () {
-        state = State.OPENING;
-	}
+        state = State.CLOSE;
+        se = this.GetComponent<AudioSource>();
+    }
 	
 	void Update () {
 
@@ -66,9 +68,9 @@ public class Gpt_DoorSystem : MonoBehaviour {
         }
     }
 
-
     public void OpenDoor()
     {
         state = State.OPENING;
+        se.Play();
     }
 }
