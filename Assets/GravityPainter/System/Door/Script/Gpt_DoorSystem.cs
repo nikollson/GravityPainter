@@ -17,7 +17,7 @@ public class Gpt_DoorSystem : MonoBehaviour {
     const float MOVE_DOOR_VAL = -4.0f;       // ドア移動範囲
 
     void Start () {
-        state = State.OPENING;
+        state = State.CLOSE;
 	}
 	
 	void Update () {
