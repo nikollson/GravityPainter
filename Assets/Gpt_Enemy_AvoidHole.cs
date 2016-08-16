@@ -11,19 +11,23 @@ public class Gpt_Enemy_AvoidHole : MonoBehaviour {
     }
 
     void Update () {
-        //moveScript.IsAbyssFalse();
 
-        // 当たっていない、つまり前に穴がある
-        if (!collFlg) {
-            moveScript.SetSpeed(0.0f);
+        if (!collFlg)
+        {
+            // 当たっていない、つまり前に穴がある際の処理
+            moveScript.IsAbyss();
+        }
+        else {
+            // 当たっている、つまり前に穴がない際の処理
+            moveScript.IsAbyssFalse();
         }
 
         collFlg = false;
     }
 
+    // Update関数より先に呼ばれる
     void OnTriggerStay(Collider coll)
     {
-        moveScript.SetSpeed(5.0f);
         collFlg = true;
     }
 }
