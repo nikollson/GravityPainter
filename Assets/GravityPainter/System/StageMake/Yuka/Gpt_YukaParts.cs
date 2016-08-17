@@ -10,14 +10,61 @@ public class Gpt_YukaParts : MonoBehaviour {
     public YukaColor firstColor;
     public Mode changeMode;
     public YukaColor[] colorLoop;
-
-    public MaterialSetting materialSetting;
-
+    
     private Gpt_YukaBox[] yukaBoxes;
+
+    private Gpt_InkColor[] colorSeq;
+
+    Gpt_InkColor currentColor;
+    int changeFrame_log = 0;
+    int colorSeqID = 0;
 
     void Start()
     {
-        LoadYukaBoxes();
+        SetColorSequence();
+    }
+
+    void SetColorSequence()
+    {
+        if(changeMode == Mode.CONST)
+        {
+            colorSeq = new Gpt_InkColor[] { yukaColorToInkColor(firstColor) };
+        }
+        if(changeMode == Mode.LOOP)
+        {
+            colorSeq = new Gpt_InkColor[colorLoop.Length];
+            for (int i = 0; i < colorSeq.Length; i++) colorSeq[i] = yukaColorToInkColor(colorLoop[i]);
+        }
+        if(changeMode == Mode.RANDOM)
+        {
+            colorSeq = new Gpt_InkColor[20];
+            for(int i = 0; i < colorSeq.Length; i++)
+            {
+                int rand = Random.Range(0, 3);
+                Gpt_InkColor color = Gpt_InkColor.NONE;
+                if (rand == 0) color = Gpt_InkColor.RED;
+                if (rand == 1) color = Gpt_InkColor.BLUE;
+                if (rand == 2) color = Gpt_InkColor.YELLOW;
+
+                colorSeq[i] = color;
+            }
+        }
+    }
+
+    public void UpdateColor(int changeFrame)
+    {
+        if(changeFrame_log != changeFrame)
+        {
+            changeFrame_log = changeFrame;
+            colorSeqID = (colorSeqID + 1) % colorSeq.Length;
+
+            Debug.Log(gameObject.name + " " + colorSeqID);
+        }
+    }
+
+    public Gpt_InkColor GetCurrentColor()
+    {
+        return colorSeq.Length == 0 ? Gpt_InkColor.NONE : colorSeq[colorSeqID % colorSeq.Length];
     }
 
     void LoadYukaBoxes()
@@ -25,22 +72,22 @@ public class Gpt_YukaParts : MonoBehaviour {
         yukaBoxes = transform.GetComponentsInChildren<Gpt_YukaBox>();
     }
 
-    public void SetColor(Gpt_InkColor color)
+    Gpt_InkColor yukaColorToInkColor(YukaColor yukaColor)
     {
-        if (yukaBoxes == null) LoadYukaBoxes();
-        foreach(var a in yukaBoxes)
-        {
-            if (color == Gpt_InkColor.RED) a.SetColor(materialSetting.red);
-            else if (color == Gpt_InkColor.BLUE) a.SetColor(materialSetting.blue);
-            else if (color == Gpt_InkColor.YELLOW) a.SetColor(materialSetting.yellow);
-            else a.SetColor(materialSetting.white);
-        }
+        if (yukaColor == YukaColor.RED) return Gpt_InkColor.RED;
+        if (yukaColor == YukaColor.BLUE) return Gpt_InkColor.BLUE;
+        if (yukaColor == YukaColor.YELLOW) return Gpt_InkColor.YELLOW;
+        return Gpt_InkColor.NONE;
     }
 
-
-    [System.Serializable]
-    public class MaterialSetting
+    public Gpt_YukaBox[] GetYukaBoxes()
     {
-        public Material white, red, blue, yellow;
+        if (yukaBoxes == null || yukaBoxes.Length == 0) LoadYukaBoxes();
+        return yukaBoxes;
+    }
+
+    public Gpt_InkColor GetFirstColor()
+    {
+        return yukaColorToInkColor(firstColor);
     }
 }

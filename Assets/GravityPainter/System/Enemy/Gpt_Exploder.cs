@@ -6,9 +6,12 @@ public class Gpt_Exploder : MonoBehaviour {
 
     private Gpt_EnemyGravityManeger EnemyGravityManeger;
     private GameObject ManegerObject;
+    private GameObject YukaManegerObject;
     private int scale=1;
     private Gpt_Exploder targetExploder;
 
+    private Gpt_YukaManager YukaManager;
+    public float explodeArea=20f;
     public GameObject Explosion_red;
     public GameObject Explosion_blue;
     public GameObject Explosion_yellow;
@@ -34,9 +37,17 @@ public class Gpt_Exploder : MonoBehaviour {
     private int enemyNum;
     private int preserveEnemyNum;
 
+    //重力フラグ
+    private bool isGravity;
+
+    //爆発起動後のエネミーの数
+    private int explodeEnemyNum;
+
     // Use this for initialization
     void Start() {
         ManegerObject = GameObject.Find("GravityManeger");
+        YukaManegerObject = GameObject.Find("YukaManager");
+        YukaManager = YukaManegerObject.GetComponent<Gpt_YukaManager>();
         EnemyGravityManeger = ManegerObject.GetComponent<Gpt_EnemyGravityManeger>();
         EnemyGravityManeger.AddExplodeList(this);
         bug_time = Random.Range(0, 4f); 
@@ -46,9 +57,8 @@ public class Gpt_Exploder : MonoBehaviour {
         bug_time += 0.1f;
 
         //Debug.Log("before:"+enemyNum);
-        enemyNum = preserveEnemyNum;
-        preserveEnemyNum=0;
-        //Debug.Log("after:"+enemyNum);
+
+        
 
         if (isExplode)
         {
@@ -70,14 +80,20 @@ public class Gpt_Exploder : MonoBehaviour {
                 {
                     case 1:
                         Instantiate(Explosion_red, this.transform.position, Quaternion.identity);
+                        YukaManager.DoExplode(color, this.transform.position, explodeArea);
+                        EnemyGravityManeger.IsExplodeWave();//爆風ダメージ
                         isDestroy = true;
                         break;
                     case 2:
                         Instantiate(Explosion_blue, this.transform.position, Quaternion.identity);
+                        YukaManager.DoExplode(color, this.transform.position, explodeArea);
+                        EnemyGravityManeger.IsExplodeWave();
                         isDestroy = true;
                         break;
                     case 3:
                         Instantiate(Explosion_yellow, this.transform.position, Quaternion.identity);
+                        YukaManager.DoExplode(color, this.transform.position, explodeArea);
+                        EnemyGravityManeger.IsExplodeWave();
                         isDestroy = true;
                         break;
                 }
@@ -87,8 +103,20 @@ public class Gpt_Exploder : MonoBehaviour {
         if (isDestroy)
         {
             
-            SetDelayDestroy();
+            SetDelayDestroy(0f);
         }
+
+        //爆発オブジェクト内に敵がいなかったら削除
+        enemyNum = preserveEnemyNum;
+        if (enemyNum == 0 && isGravity)
+        {
+            if (!isExplode&&explodeEnemyNum==0) SetDestroy();
+        }
+        preserveEnemyNum = 0;
+
+        Debug.Log("after:" + enemyNum);
+
+        isGravity = true;
 	}
 
     void OnTriggerEnter(Collider collision)
@@ -139,6 +167,12 @@ public class Gpt_Exploder : MonoBehaviour {
                 SetPosition(collision.gameObject.transform.position+bugVec);
                 preserveEnemyNum++;
             }
+            else if (targetEnemy.GetColor() == color)//はがれる処理関係
+            {
+                preserveEnemyNum++;
+            }
+
+            
         }
     }
 
@@ -170,6 +204,8 @@ public class Gpt_Exploder : MonoBehaviour {
 
     public void IsExplode()
     {
+        //爆発前にエネミーの数を記録
+        explodeEnemyNum = preserveEnemyNum;
         isExplode = true;
     }
 
@@ -178,9 +214,9 @@ public class Gpt_Exploder : MonoBehaviour {
         this.gameObject.transform.position = position;
     }
 
-    public void SetDelayDestroy()
+    public void SetDelayDestroy(float delay)
     {
-        Object.Destroy(this.gameObject, 6f);
+        Object.Destroy(this.gameObject, delay);
     }
     
     public void SetDestroy()

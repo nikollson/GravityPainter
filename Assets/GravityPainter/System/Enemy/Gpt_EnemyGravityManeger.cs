@@ -67,10 +67,19 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
         //敵が一定値に満ちたらドアが開く
         if (isFloor && enemyNumCount >= enemyNum)
         {
-            doorSystem.OpenDoor();
+            if (doorSystem != null)
+            {
+                doorSystem.OpenDoor();
+            }
+            
         }
 
         //Debug.Log(EnemyList.Count);
+    }
+
+    public int GetRestEnemy()
+    {
+        return enemyNum - enemyNumCount;
     }
 
     //爆発処理
@@ -114,6 +123,28 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public void IsExplodeWave()
+    {
+        for (int i = 0; i < ExplodeList.Count; i++)
+        {
+            for (int j = 0; j < EnemyList.Count; j++)
+            {
+                //爆風に近い範囲でダメージ
+                if (Vector3.Distance(ExplodeList[i].gameObject.transform.position, EnemyList[j].gameObject.transform.position)<7f)
+                {
+                    //引力状態にない敵のみダメージ
+                    if(!EnemyList[j].GetGravity()){
+                        EnemyList[j].ExplodeDamage(1);
+                    }
+                    
+                }
+            }
+
+        }
+
+        
     }
 
 
