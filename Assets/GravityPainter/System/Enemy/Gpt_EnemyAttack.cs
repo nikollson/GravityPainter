@@ -24,6 +24,7 @@ public class Gpt_EnemyAttack : MonoBehaviour {
 
     //近接オブジェクト
     public GameObject proxObject;
+    private GameObject prox;
     private Collider proxCollider;
 
     public Quaternion firstProxRotation;
@@ -33,11 +34,13 @@ public class Gpt_EnemyAttack : MonoBehaviour {
 	void Start () {
         firstProxRotation = proxObject.transform.rotation;
         firstProxPosition = proxObject.transform.position;
-        //proxCollider = proxCollider.GetComponent<Collider>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        prox = GameObject.Find("/AttackArea");
+        proxCollider = GetComponent<Collider>();
+
+    }
+
+    // Update is called once per frame
+    void Update () {
         
         //攻撃フラグが立つときにアクション
         if (isAttack)
@@ -55,14 +58,14 @@ public class Gpt_EnemyAttack : MonoBehaviour {
                     {
                         motionTime2 += 0.1f;
                         motionTime1 -= 6f;
-                        //proxCollider.enabled = true;
+                        proxCollider.enabled = true;
                     }
 
                     if (motionTime2 > 1)
                     {
                         Debug.Log("motion1:" + motionTime1);
                         StopAttack();
-                        //proxCollider.enabled = false;
+                        proxCollider.enabled = false;
                         //proxObject.transform.RotateAround(this.transform.position, this.transform.right, -130);
                         proxObject.transform.position = this.transform.position + new Vector3(0, 7f*this.transform.position.y/8, 0);
                         proxObject.transform.rotation = this.transform.rotation;
