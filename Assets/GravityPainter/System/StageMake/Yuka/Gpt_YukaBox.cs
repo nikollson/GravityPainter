@@ -58,6 +58,8 @@ public class Gpt_YukaBox : MonoBehaviour {
         renderer.enabled = true;
         collider.enabled = true;
         HP = tileSetting.StartHP;
+        yukaParts.UpdateColor(Time.frameCount);
+        SetColor(yukaParts.GetCurrentColor());
         MaterialUpdate();
     }
 
