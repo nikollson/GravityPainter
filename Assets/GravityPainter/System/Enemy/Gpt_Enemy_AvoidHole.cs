@@ -21,13 +21,13 @@ public class Gpt_Enemy_AvoidHole : MonoBehaviour
         {
             // 当たっていない、つまり前に穴がある際の処理
             moveScript.IsAbyss();
-            Debug.Log("!!!!!!!!!!!!");
+            ////Debug.Log("!!!!!!!!!!!!");
         }
         else
         {
             // 当たっている、つまり前に穴がない際の処理
             moveScript.IsAbyssFalse();
-            Debug.Log("あたっている状態");
+            //Debug.Log("あたっている状態");
         }
         cnt = 0.0f;
 
