@@ -13,6 +13,11 @@ public class Gpt_Camera : MonoBehaviour
     public int state = (int)State.Normal;
     public GameObject door;
     public GameObject doorCamPosObj;
+    public GameObject bar1;
+    public GameObject bar2;
+    Vector3 bar1Pos = new Vector3(0.26f,1.04f,3.46f);
+    Vector3 bar2Pos = new Vector3(0.26f,-0.98f,3.27f);
+    Vector3 notDrawPos = new Vector3(-10000, -10000, -10000);
 
     /* スティック入力情報変数 */
     float oldCamMoveX = 0.0f;           // スティックX移動量(1フレーム前)
@@ -77,12 +82,18 @@ public class Gpt_Camera : MonoBehaviour
 
         if (state == (int)State.Normal)
         {
+            bar1.transform.position = notDrawPos;
+            bar2.transform.position = notDrawPos;
+
             Update_Rotation();
             Update_Position();
             Update_Look(player.transform.position);
         }
         else if (state == (int)State.Door)
         {
+            bar1.transform.position = bar1.transform.position;
+            bar2.transform.position = bar2.transform.position;
+
             this.transform.position = doorCamPosObj.transform.position;
             Update_Look(door.transform.position);
         }
