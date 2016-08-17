@@ -32,7 +32,7 @@ public class Gpt_PlayerAttackState : MonoBehaviour
         Gpt_InkColor nextColor = Gpt_InkColor.NONE;
 
         if (enemyColor == Gpt_InkColor.NONE) nextColor = playerColor;
-
+        /*
         if (playerColor == Gpt_InkColor.RED) {
             if (enemyColor == Gpt_InkColor.BLUE) nextColor = Gpt_InkColor.PURPLE;
             if (enemyColor == Gpt_InkColor.YELLOW) nextColor = Gpt_InkColor.ORANGE;
@@ -46,7 +46,7 @@ public class Gpt_PlayerAttackState : MonoBehaviour
         {
             if (enemyColor == Gpt_InkColor.BLUE) nextColor = Gpt_InkColor.GREEN;
             if (enemyColor == Gpt_InkColor.RED) nextColor = Gpt_InkColor.ORANGE;
-        }
+        }*/
 
         if (nextColor != Gpt_InkColor.NONE)
         {

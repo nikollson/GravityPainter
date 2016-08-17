@@ -77,6 +77,11 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
         //Debug.Log(EnemyList.Count);
     }
 
+    public int GetRestEnemy()
+    {
+        return enemyNum - enemyNumCount;
+    }
+
     //爆発処理
     public void IsExplode()
     {
