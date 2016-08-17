@@ -13,7 +13,58 @@ public class Gpt_YukaParts : MonoBehaviour {
     
     private Gpt_YukaBox[] yukaBoxes;
 
+    private Gpt_InkColor[] colorSeq;
+
     Gpt_InkColor currentColor;
+    int changeFrame_log = 0;
+    int colorSeqID = 0;
+
+    void Start()
+    {
+        SetColorSequence();
+    }
+
+    void SetColorSequence()
+    {
+        if(changeMode == Mode.CONST)
+        {
+            colorSeq = new Gpt_InkColor[] { yukaColorToInkColor(firstColor) };
+        }
+        if(changeMode == Mode.LOOP)
+        {
+            colorSeq = new Gpt_InkColor[colorLoop.Length];
+            for (int i = 0; i < colorSeq.Length; i++) colorSeq[i] = yukaColorToInkColor(colorLoop[i]);
+        }
+        if(changeMode == Mode.RANDOM)
+        {
+            colorSeq = new Gpt_InkColor[20];
+            for(int i = 0; i < colorSeq.Length; i++)
+            {
+                int rand = Random.Range(0, 3);
+                Gpt_InkColor color = Gpt_InkColor.NONE;
+                if (rand == 0) color = Gpt_InkColor.RED;
+                if (rand == 1) color = Gpt_InkColor.BLUE;
+                if (rand == 2) color = Gpt_InkColor.YELLOW;
+
+                colorSeq[i] = color;
+            }
+        }
+    }
+
+    public void UpdateColor(int changeFrame)
+    {
+        if(changeFrame_log != changeFrame)
+        {
+            changeFrame_log = changeFrame;
+            colorSeqID = (colorSeqID + 1) % colorSeq.Length;
+        }
+    }
+
+    public Gpt_InkColor GetCurrentColor()
+    {
+        return Gpt_InkColor.RED;
+        //return color colorSeq[colorSeqID % colorSeq.Length];
+    }
 
     void LoadYukaBoxes()
     {
