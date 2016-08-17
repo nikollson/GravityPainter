@@ -24,6 +24,8 @@ public class Gpt_YukaBox : MonoBehaviour {
     float reverseEndTime = 0;
     float fallStartY = 0;
     bool isReversing = false;
+
+    Gpt_InkColor nextColor = Gpt_InkColor.NONE;
     
     public void SetColor(Gpt_InkColor color)
     {
@@ -58,8 +60,7 @@ public class Gpt_YukaBox : MonoBehaviour {
         renderer.enabled = true;
         collider.enabled = true;
         HP = tileSetting.StartHP;
-        yukaParts.UpdateColor(Time.frameCount);
-        SetColor(yukaParts.GetCurrentColor());
+        SetColor(nextColor);
         MaterialUpdate();
     }
 
@@ -75,6 +76,12 @@ public class Gpt_YukaBox : MonoBehaviour {
     }
     public void SetExplode(float flushTiming, float explodeTiming, float reverseTiming, float reverseEndTiming)
     {
+        if (HP == 1)
+        {
+            yukaParts.UpdateColor(Time.frameCount);
+            nextColor = yukaParts.GetCurrentColor();
+        }
+
         explodeCount = 0;
         this.explodeTiming = explodeTiming;
         this.flushTiming = flushTiming;
