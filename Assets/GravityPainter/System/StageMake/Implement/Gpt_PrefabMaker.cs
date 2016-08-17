@@ -24,7 +24,7 @@ public class Gpt_PrefabMaker : MonoBehaviour
 
     void Update()
     {
-        if (hitManager.IsHit)
+        if (hitManager == null || hitManager.IsHit)
         {
             count += Time.deltaTime;
             if (count > nextMakeTime)
