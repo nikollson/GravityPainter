@@ -64,7 +64,7 @@ public class Gpt_EnemyAttack : MonoBehaviour {
                         StopAttack();
                         //proxCollider.enabled = false;
                         //proxObject.transform.RotateAround(this.transform.position, this.transform.right, -130);
-                        proxObject.transform.position = this.transform.position + new Vector3(0, this.transform.position.y * 2, 0);
+                        proxObject.transform.position = this.transform.position + new Vector3(0, 7f*this.transform.position.y/8, 0);
                         proxObject.transform.rotation = this.transform.rotation;
                     }
                     //仮モーション
