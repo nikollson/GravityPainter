@@ -185,8 +185,11 @@ public class Gpt_Enemy : MonoBehaviour {
             else if(motionTime1 <6f){
                 rigid.isKinematic = true;
                 this.transform.position = Vector3.Lerp(this.transform.position, exploderPosition, 0.2f);
-                Gpt_Exploder explodeScript = getExploder.GetComponent<Gpt_Exploder>();
-                explodeScript.IsExplodeMotion1();
+                if (getExploder != null)
+                {
+                    Gpt_Exploder explodeScript = getExploder.GetComponent<Gpt_Exploder>();
+                    explodeScript.IsExplodeMotion1();
+                }
             }else if(motionTime1 < 8f)
             {
                 //色を戻す

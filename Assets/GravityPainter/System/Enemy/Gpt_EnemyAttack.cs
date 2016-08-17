@@ -9,6 +9,9 @@ public class Gpt_EnemyAttack : MonoBehaviour {
     private bool isAttack;
     private bool continueAttack;
 
+    public int attackSpeed=3;
+    private int attack=0;
+
     //ビームを打つ間隔
     public float beamTime;
     private float beam;
@@ -41,28 +44,33 @@ public class Gpt_EnemyAttack : MonoBehaviour {
         {
             if (enemyPattern == 0)
             {
-                Debug.Log("atacck");
-                motionTime1 += 0.8f;
-                
-                if(motionTime1 >= 8||motionTime2>0)
+                attack++;
+                //Debug.Log("aa:"+attackSpeed);
+                if (attack%attackSpeed==0)
                 {
-                    motionTime2 += 0.1f;
-                    motionTime1 -= 6f;
-                    //proxCollider.enabled = true;
+                    Debug.Log("atacck");
+                    motionTime1 += 0.8f;
+
+                    if (motionTime1 >= 8 || motionTime2 > 0)
+                    {
+                        motionTime2 += 0.1f;
+                        motionTime1 -= 6f;
+                        //proxCollider.enabled = true;
+                    }
+
+                    if (motionTime2 > 1)
+                    {
+                        Debug.Log("motion1:" + motionTime1);
+                        StopAttack();
+                        //proxCollider.enabled = false;
+                        //proxObject.transform.RotateAround(this.transform.position, this.transform.right, -130);
+                        proxObject.transform.position = this.transform.position + new Vector3(0, this.transform.position.y * 2, 0);
+                        proxObject.transform.rotation = this.transform.rotation;
+                    }
+                    //仮モーション
+
+                    proxObject.transform.RotateAround(this.transform.position, this.transform.right, -motionTime1);
                 }
-                
-                if (motionTime2>1)
-                {
-                    Debug.Log("motion1:" + motionTime1);
-                    StopAttack();
-                    //proxCollider.enabled = false;
-                    //proxObject.transform.RotateAround(this.transform.position, this.transform.right, -130);
-                    proxObject.transform.position = this.transform.position+new Vector3(0,2f,0);
-                    proxObject.transform.rotation = this.transform.rotation;
-                }
-                //仮モーション
-                
-                proxObject.transform.RotateAround(this.transform.position, this.transform.right, -motionTime1);
             }
             else if (enemyPattern == 1)
             {
