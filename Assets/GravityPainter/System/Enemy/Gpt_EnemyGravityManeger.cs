@@ -54,8 +54,21 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
 
                         Vector3 normVec1 = objVec1.normalized;
                         Vector3 normVec2 = objVec2.normalized;
-                        EnemyList[i].SetGravity(normVec1);
-                        EnemyList[j].SetGravity(normVec2);
+                        if(EnemyList[i].GetShake()!= EnemyList[j].GetShake())
+                        {
+                            if (EnemyList[i].GetShake())
+                            {
+                                EnemyList[i].SetGravity(normVec1);
+                            }
+                            else
+                            {
+                                EnemyList[j].SetGravity(normVec2);
+                            }
+                        }else
+                        {
+                            EnemyList[i].SetGravity(normVec1);
+                            EnemyList[j].SetGravity(normVec2);
+                        }
                     }
                 }
                 
