@@ -58,11 +58,6 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
 
         playerInkManage.DoDetonateHeal(enemyPointSum);
         playerState.Detonate();
-
-        /*
-        var script = FindObjectOfType<Gpt_YukaManager>();
-        script.DoExplode(playerState.PlayerColor, this.transform.position, 3);
-        */
     }
 
     public void UpdateDetonate()
