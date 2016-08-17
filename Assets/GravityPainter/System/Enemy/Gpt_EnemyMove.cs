@@ -8,6 +8,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
     public Gpt_EnemyAttack EnemyAttack;
     //走行スピード
     public float enemySpeed;
+    private float preserveEnemySpeed;
     //加速
     public float enemyAccelerate;
     private float enemyTemp;
@@ -35,7 +36,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
     float GRAVITY = 9.8f;
     private float gravity;
 
-    private bool hasGravity=false;
+    private bool isGravity=false;
 
     //移動回転角
     private float moveAngle=-1;
@@ -62,6 +63,10 @@ public class Gpt_EnemyMove : MonoBehaviour {
     private bool isWalked=false;
     //起動スイッチ
     private bool isMoved = false;
+
+    private bool isAbyss = false;
+
+    private float motionTime1;
    
 
     // Use this for initialization
@@ -71,6 +76,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
         player = GameObject.Find("Player");
         myTransform = transform;
         enemyVector= new Vector3(0, 0, 0);
+        preserveEnemySpeed = enemySpeed;
     }
 
     // Update is called once per frame
@@ -95,7 +101,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 
         //移動
         //重力判定時は移動処理は行わない
-        if (!hasGravity)
+        if (!isGravity)
         {
             if (isWalked)
             {
@@ -108,7 +114,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 }
                 move += 0.1f;
                 Vector3 moveVec = AngleToVector(moveAngle);
-
+                //Debug.Log("walked");
                 
                 //索敵処理
                 if (Vector3.Distance(player.transform.position, this.transform.position) < searchArea)
@@ -128,16 +134,19 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     enemyTemp += enemyAccelerate;
                     enemyTemp = enemyTemp < enemySpeed ? enemyTemp : enemySpeed;
                     //遠隔攻撃の射程に入った時
-                    if (Vector3.Distance(player.transform.position, this.transform.position) < attackArea)
+                    if (Vector3.Distance(player.transform.position, this.transform.position) < attackArea||EnemyAttack.GetAttack())
                     {
-                        enemyTemp = 0.1f;
+                        //Debug.Log("attack");
+                        //motionTime1 += 2f;
+                        enemyTemp = 0.01f;
                         EnemyAttack.IsAttack();
-                    }
-                    else
-                    {
-                        EnemyAttack.StopAttack();
+                        
                     }
 
+                    if (isAbyss)
+                    {
+                        enemyTemp = 0;
+                    }
                     enemyMove.x = moveVec.x * enemyTemp;
                     enemyMove.y = gravity;
                     enemyMove.z = moveVec.z * enemyTemp;
@@ -177,9 +186,6 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
         }
         
-        //移動方向の取得
-        
-        
     }
 
     //移動方向の設定
@@ -192,6 +198,23 @@ public class Gpt_EnemyMove : MonoBehaviour {
     public void SetSpeed(float setSpeed)
     {
         enemySpeed = setSpeed;
+    }
+
+    public void SetPreserveSpeed()
+    {
+        enemySpeed = preserveEnemySpeed;
+    }
+
+    //淵で止まる処理
+    public void IsAbyss()
+    {
+        isAbyss = true;
+    }
+
+    //淵で止まらない処理
+    public void IsAbyssFalse()
+    {
+        isAbyss = false;
     }
 
     //移動方向の取得
@@ -217,7 +240,12 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
     public void IsGravity()
     {
-        hasGravity =true;
+        isGravity =true;
+    }
+
+    public void IsGravityFalse()
+    {
+        isGravity = false;
     }
 
     public void SetEnemyPattern(int pattern)

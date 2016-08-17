@@ -10,6 +10,7 @@ public class Gpt_PlayerState : MonoBehaviour
     public int HPMax = 12;
     public float feeverMax = 1;
     public float mutekiTime = 1.0f;
+    public int respawnDamage = 4;
     
     public ComboControlSetting comboSetting;
     ComboControl redCombo, blueCombo, yellowCombo;
@@ -37,6 +38,11 @@ public class Gpt_PlayerState : MonoBehaviour
     public bool IsMuteki { get { return mutekiCount < mutekiTime; } }
     public Gpt_InkColor PlayerColor { get { return playerColor.Color; } }
 
+
+    public void DoRespawn(bool addHpDamage)
+    {
+        if (addHpDamage) AddHPDamage(respawnDamage);
+    }
 
     // プロパティをいじる関数
     public void AddHP(int value) { HP = intValueLimit(0, HPMax, HP + value); }
