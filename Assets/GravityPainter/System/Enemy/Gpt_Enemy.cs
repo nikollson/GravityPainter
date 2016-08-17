@@ -67,6 +67,9 @@ public class Gpt_Enemy : MonoBehaviour {
     //爆風ダメージ時の点滅フラグ
     private bool damageFlag;
 
+    //小刻み処理の際の片側だけに引力が発生するのを防ぐ
+    private bool shakeFlag;
+
     // Use this for initialization
     void Start () {
 
@@ -272,18 +275,19 @@ public class Gpt_Enemy : MonoBehaviour {
             //始めは小刻みに震える
             if (gravityTime < 2f)
             {
+                shakeFlag = true;
                 Character.enabled = false;
 
                 rigid.isKinematic = false;
                 rigid.useGravity = true;
-                float x_temp = Random.Range(-0.15f, 0.15f);
-                float z_temp = Random.Range(-0.15f, 0.15f);
+                float x_temp = Random.Range(-0.2f, 0.2f);
+                float z_temp = Random.Range(-0.2f, 0.2f);
                 this.transform.position=new Vector3(preserveX+x_temp,this.transform.position.y,
                     preserveZ+ z_temp);
             }
             else
             {
-                
+                shakeFlag = false;
                 if (EnemyAttack != null)
                 {
                     EnemyAttack.StopAttack();
@@ -378,6 +382,7 @@ public class Gpt_Enemy : MonoBehaviour {
         EnemyMove.SetPreserveSpeed();
         gravityTime = 0;
         touchFlag = false;
+        shakeFlag = false;
         motionTime1 = 0;
         motionTime2 = 0;
         revivalCount = 0;
@@ -389,5 +394,10 @@ public class Gpt_Enemy : MonoBehaviour {
     {
         hitPoint -= damage;
         damageFlag = true;
+    }
+
+    public bool GetShake()
+    {
+        return shakeFlag;
     }
 }
