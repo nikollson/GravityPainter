@@ -131,6 +131,7 @@ ModelImporter:
     4300010: chara_model:hair2
     4300012: chara_model:pCylinder1
     7400000: Take 001
+    7400002: AttackLeft
     9500000: //RootNode
     13700000: chara_model:bracelet_l
     13700002: chara_model:bracelet_r
@@ -159,7 +160,299 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: All_joint
+        weight: 1
+      - path: All_joint/L_foot
+        weight: 1
+      - path: All_joint/L_foot/L_knee
+        weight: 1
+      - path: All_joint/L_foot/L_knee/L_ankle
+        weight: 1
+      - path: All_joint/L_foot/L_knee/L_ankle/L_instep
+        weight: 1
+      - path: All_joint/R_foot
+        weight: 1
+      - path: All_joint/R_foot/R_knee
+        weight: 1
+      - path: All_joint/R_foot/R_knee/R_instep
+        weight: 1
+      - path: All_joint/R_foot/R_knee/R_instep/R_instep 1
+        weight: 1
+      - path: All_joint/Upperbody
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/L_shoulder
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/L_shoulder/L_elbow
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/L_shoulder/L_elbow/L_wrist
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/L_shoulder/L_elbow/L_wrist/L_hand
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/L_shoulder/L_elbow/L_wrist/L_thumb
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/L_shoulder/L_elbow/L_wrist/L_thumb/L_thumb_2
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/neck
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/neck/head
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/neck/head/hair_1
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/neck/head/hair_1/hair_2
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist/R_hand
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist/R_hand/brush_2
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist/R_hand/brush_2/brush
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist/R_hand/brush_2/brush_3
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist/R_thumb
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist/R_thumb/R_thumb_2
+        weight: 1
+      - path: All_rig
+        weight: 1
+      - path: All_rig/hip_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/L_hand_cns
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/L_hand_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/L_hand_ctr/ikHandle1
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/neck_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/neck_ctr/head_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/neck_ctr/head_ctr/hair_1_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/neck_ctr/head_ctr/hair_1_ctr/hair_2_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/R_hand_cns
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/R_hand_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/R_hand_ctr/ikHandle2
+        weight: 1
+      - path: All_rig/L_foot_cns
+        weight: 1
+      - path: All_rig/L_foot_ctr
+        weight: 1
+      - path: All_rig/L_foot_ctr/ikHandle3
+        weight: 1
+      - path: All_rig/R_foot_cns
+        weight: 1
+      - path: All_rig/R_foot_ctr
+        weight: 1
+      - path: All_rig/R_foot_ctr/ikHandle4
+        weight: 1
+      - path: chara_model:bracelet_l
+        weight: 1
+      - path: chara_model:bracelet_r
+        weight: 1
+      - path: chara_model:brush
+        weight: 1
+      - path: chara_model:chara1
+        weight: 1
+      - path: chara_model:hair1
+        weight: 1
+      - path: chara_model:hair2
+        weight: 1
+      - path: chara_model:pCylinder1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: AttackLeft
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: All_joint
+        weight: 1
+      - path: All_joint/L_foot
+        weight: 1
+      - path: All_joint/L_foot/L_knee
+        weight: 1
+      - path: All_joint/L_foot/L_knee/L_ankle
+        weight: 1
+      - path: All_joint/L_foot/L_knee/L_ankle/L_instep
+        weight: 1
+      - path: All_joint/R_foot
+        weight: 1
+      - path: All_joint/R_foot/R_knee
+        weight: 1
+      - path: All_joint/R_foot/R_knee/R_instep
+        weight: 1
+      - path: All_joint/R_foot/R_knee/R_instep/R_instep 1
+        weight: 1
+      - path: All_joint/Upperbody
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/L_shoulder
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/L_shoulder/L_elbow
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/L_shoulder/L_elbow/L_wrist
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/L_shoulder/L_elbow/L_wrist/L_hand
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/L_shoulder/L_elbow/L_wrist/L_thumb
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/L_shoulder/L_elbow/L_wrist/L_thumb/L_thumb_2
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/neck
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/neck/head
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/neck/head/hair_1
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/neck/head/hair_1/hair_2
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist/R_hand
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist/R_hand/brush_2
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist/R_hand/brush_2/brush
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist/R_hand/brush_2/brush_3
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist/R_thumb
+        weight: 1
+      - path: All_joint/Upperbody/Upperbody_1/Upperbody_2/R_shoulder/R_elbow/R_wrist/R_thumb/R_thumb_2
+        weight: 1
+      - path: All_rig
+        weight: 1
+      - path: All_rig/hip_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/L_hand_cns
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/L_hand_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/L_hand_ctr/ikHandle1
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/neck_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/neck_ctr/head_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/neck_ctr/head_ctr/hair_1_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/neck_ctr/head_ctr/hair_1_ctr/hair_2_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/R_hand_cns
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/R_hand_ctr
+        weight: 1
+      - path: All_rig/hip_ctr/waist_ctr/upperbody_ctr/R_hand_ctr/ikHandle2
+        weight: 1
+      - path: All_rig/L_foot_cns
+        weight: 1
+      - path: All_rig/L_foot_ctr
+        weight: 1
+      - path: All_rig/L_foot_ctr/ikHandle3
+        weight: 1
+      - path: All_rig/R_foot_cns
+        weight: 1
+      - path: All_rig/R_foot_ctr
+        weight: 1
+      - path: All_rig/R_foot_ctr/ikHandle4
+        weight: 1
+      - path: chara_model:bracelet_l
+        weight: 1
+      - path: chara_model:bracelet_r
+        weight: 1
+      - path: chara_model:brush
+        weight: 1
+      - path: chara_model:chara1
+        weight: 1
+      - path: chara_model:hair1
+        weight: 1
+      - path: chara_model:hair2
+        weight: 1
+      - path: chara_model:pCylinder1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
