@@ -9,7 +9,7 @@ public class Gpt_EnemyAttack : MonoBehaviour {
     private bool isAttack;
     private bool continueAttack;
 
-    public int attackSpeed=3;
+    public int attackSpeed=1;
     private int attack=0;
 
     //ビームを打つ間隔
@@ -24,20 +24,25 @@ public class Gpt_EnemyAttack : MonoBehaviour {
 
     //近接オブジェクト
     public GameObject proxObject;
+    private GameObject prox;
     private Collider proxCollider;
 
     public Quaternion firstProxRotation;
     public Vector3 firstProxPosition;
 
+    private bool Damage;
+
 	// Use this for initialization
 	void Start () {
         firstProxRotation = proxObject.transform.rotation;
         firstProxPosition = proxObject.transform.position;
-        //proxCollider = proxCollider.GetComponent<Collider>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        //prox = GameObject.Find("/AttackArea");
+        proxCollider = proxObject.GetComponent<Collider>();
+        proxCollider.enabled = false;
+    }
+
+    // Update is called once per frame
+    void Update () {
         
         //攻撃フラグが立つときにアクション
         if (isAttack)
@@ -48,21 +53,21 @@ public class Gpt_EnemyAttack : MonoBehaviour {
                 //Debug.Log("aa:"+attackSpeed);
                 if (attack%attackSpeed==0)
                 {
-                    Debug.Log("atacck");
+                    //Debug.Log("atacck");
                     motionTime1 += 0.8f;
 
                     if (motionTime1 >= 8 || motionTime2 > 0)
                     {
                         motionTime2 += 0.1f;
                         motionTime1 -= 6f;
-                        //proxCollider.enabled = true;
+                        proxCollider.enabled = true;
                     }
 
                     if (motionTime2 > 1)
                     {
                         Debug.Log("motion1:" + motionTime1);
                         StopAttack();
-                        //proxCollider.enabled = false;
+                        proxCollider.enabled = false;
                         //proxObject.transform.RotateAround(this.transform.position, this.transform.right, -130);
                         proxObject.transform.position = this.transform.position + new Vector3(0, 7f*this.transform.position.y/8, 0);
                         proxObject.transform.rotation = this.transform.rotation;
@@ -83,6 +88,9 @@ public class Gpt_EnemyAttack : MonoBehaviour {
                 
             }
 
+        }else
+        {
+            proxCollider.enabled = false;
         }
         
 	}
@@ -105,6 +113,7 @@ public class Gpt_EnemyAttack : MonoBehaviour {
     public void StopAttack()
     {
         isAttack = false;
+        proxCollider.enabled = false;
         beam = 0;
         motionTime1 = 0;
         motionTime2 = 0;
