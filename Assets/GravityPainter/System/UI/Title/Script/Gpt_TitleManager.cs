@@ -1,10 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Gpt_TitleManager : MonoBehaviour
 {
 
+
+    public float inputRecieveTime = 4.0f;
+    public string NextSceneName = "";
+    
     float cnt;
     enum Scene { ROGO = 0, TITLE = 1 };
     Scene scene;
@@ -37,6 +42,15 @@ public class Gpt_TitleManager : MonoBehaviour
                 Title();
                 break;
         }
+
+
+        if (cnt > inputRecieveTime)
+        {
+            if (HasInput())
+            {
+                SceneManager.LoadScene(NextSceneName);
+            }
+        }
     }
 
     // ロゴ描画関数
@@ -63,5 +77,19 @@ public class Gpt_TitleManager : MonoBehaviour
     void Title()
     {
         titleImg.color = new Color(1, 1, 1, cnt);
+    }
+
+
+    bool HasInput()
+    {
+        bool ret = false;
+        ret |= Gpt_Input.Attack;
+        ret |= Gpt_Input.Skill;
+        ret |= Gpt_Input.Jump;
+        ret |= Gpt_Input.ColorLeft;
+        ret |= Gpt_Input.ColorRight;
+        ret |= Gpt_Input.CameraPush;
+        ret |= Gpt_Input.MovePush;
+        return ret;
     }
 }
