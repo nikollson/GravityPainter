@@ -52,6 +52,22 @@ public class Gpt_YukaBox : MonoBehaviour {
         isFalling = true;
         isReversing = false;
     }
+
+    void EndFall1()
+    {
+        renderer.enabled = true;
+        collider.enabled = true;
+        HP = tileSetting.StartHP;
+        yukaParts.UpdateColor(Time.frameCount);
+        SetColor(yukaParts.GetCurrentColor());
+        MaterialUpdate();
+    }
+
+    void EndFall2()
+    {
+        this.transform.position = new Vector3(this.transform.position.x, fallStartY, this.transform.position.z);
+        fallCount = 0;
+    }
     
     public bool CanSetExplode()
     {
@@ -92,11 +108,8 @@ public class Gpt_YukaBox : MonoBehaviour {
             fallCount += Time.deltaTime;
             if(!isReversing && fallCount > reverseTime)
             {
+                EndFall1();
                 isReversing = true;
-                renderer.enabled = true;
-                collider.enabled = true;
-                HP = tileSetting.StartHP;
-                MaterialUpdate();
             }
 
             if (fallCount > reverseTime)
@@ -105,14 +118,14 @@ public class Gpt_YukaBox : MonoBehaviour {
                 float restTimeMax = reverseEndTime - reverseTime;
                 float restTime = fallCount - reverseTime;
                 pos.y = pos.y + (fallStartY - pos.y) * (restTime / restTimeMax);
+                this.transform.position = pos;
+
                 if (fallCount > reverseEndTime)
                 {
-                    pos.y = fallStartY;
+                    EndFall2();
                     isFalling = false;
                     isReversing = false;
-                    fallCount = 0;
                 }
-                this.transform.position = pos;
             }
 
         }

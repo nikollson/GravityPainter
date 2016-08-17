@@ -162,8 +162,11 @@ public class Gpt_YukaManager : MonoBehaviour {
         Debug.Log("Make Tile End!!");
     }
 
+
+    int nameCount = 0;
     void MakeTile_ClearChilds()
     {
+        nameCount = 0;
         Transform parent = tileParent.transform;
 
         for (int i = 0; i < 10000; i++)
@@ -225,7 +228,8 @@ public class Gpt_YukaManager : MonoBehaviour {
     void SetYukaParts(GameObject yukaPartsObject, ReadTileSetting.Mode mode)
     {
         yukaPartsObject.transform.localPosition = new Vector3(0, 0, 0);
-        yukaPartsObject.name = "" + mode;
+        yukaPartsObject.name = "" + nameCount + "_" + mode;
+        nameCount++;
 
         var yukaParts = yukaPartsObject.GetComponent<Gpt_YukaParts>();
 
