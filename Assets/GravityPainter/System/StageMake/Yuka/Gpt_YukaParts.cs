@@ -57,13 +57,14 @@ public class Gpt_YukaParts : MonoBehaviour {
         {
             changeFrame_log = changeFrame;
             colorSeqID = (colorSeqID + 1) % colorSeq.Length;
+
+            Debug.Log(gameObject.name + " " + colorSeqID);
         }
     }
 
     public Gpt_InkColor GetCurrentColor()
     {
-        return Gpt_InkColor.RED;
-        //return color colorSeq[colorSeqID % colorSeq.Length];
+        return colorSeq.Length == 0 ? Gpt_InkColor.NONE : colorSeq[colorSeqID % colorSeq.Length];
     }
 
     void LoadYukaBoxes()
