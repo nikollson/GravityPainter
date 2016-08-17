@@ -17,7 +17,7 @@ public class Gpt_DoorSystem : MonoBehaviour {
     }
     State state;
     const float MOVE_DOOR_VAL = -4.0f;       // ドア移動範囲
-    public float ROT_SPD = 45.0f;       // ドア回転速度
+    public float ROT_SPD = 75.0f;       // ドア回転速度
 
     void Start () {
         state = State.CLOSE;
@@ -62,7 +62,7 @@ public class Gpt_DoorSystem : MonoBehaviour {
 
     void OpeningDoorRot()
     {
-        if (doorObj[1].transform.eulerAngles.y <= 270.0f)
+        if (doorObj[1].transform.eulerAngles.y <= 150.0f)
         {
             doorObj[0].transform.eulerAngles += new Vector3(0f, -Time.deltaTime * ROT_SPD, 0f);
             doorObj[1].transform.eulerAngles += new Vector3(0f, Time.deltaTime * ROT_SPD, 0f);
