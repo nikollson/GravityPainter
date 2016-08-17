@@ -65,6 +65,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
     private bool isMoved = false;
 
     private bool isAbyss = false;
+
+    private float motionTime1;
    
 
     // Use this for initialization
@@ -132,15 +134,13 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     enemyTemp += enemyAccelerate;
                     enemyTemp = enemyTemp < enemySpeed ? enemyTemp : enemySpeed;
                     //遠隔攻撃の射程に入った時
-                    if (Vector3.Distance(player.transform.position, this.transform.position) < attackArea)
+                    if (Vector3.Distance(player.transform.position, this.transform.position) < attackArea||EnemyAttack.GetAttack())
                     {
                         //Debug.Log("attack");
-                        enemyTemp = 0.1f;
+                        //motionTime1 += 2f;
+                        enemyTemp = 0.01f;
                         EnemyAttack.IsAttack();
-                    }
-                    else
-                    {
-                        EnemyAttack.StopAttack();
+                        
                     }
 
                     if (isAbyss)
