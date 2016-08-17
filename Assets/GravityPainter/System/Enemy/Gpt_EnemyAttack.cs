@@ -34,14 +34,14 @@ public class Gpt_EnemyAttack : MonoBehaviour {
 	void Start () {
         firstProxRotation = proxObject.transform.rotation;
         firstProxPosition = proxObject.transform.position;
-        prox = GameObject.Find("/AttackArea");
-        proxCollider = GetComponent<Collider>();
+        //prox = GameObject.Find("/AttackArea");
+        proxCollider = proxObject.GetComponent<Collider>();
 
     }
 
     // Update is called once per frame
     void Update () {
-        
+        proxCollider.enabled = false;
         //攻撃フラグが立つときにアクション
         if (isAttack)
         {
