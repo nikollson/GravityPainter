@@ -347,15 +347,16 @@ public class Gpt_YukaManager : MonoBehaviour {
         {
             Material[] materials = new Material[]
             {
-               white,red,redF,redCrack,redCrackF,
+               white,white,white,white,
+                red,redF,redCrack,redCrackF,
                 blue,blueF,blueCrack,blueCrackF,
                 yellow,yellowF,yellowCrack,yellowCrackF,
             };
 
             int colorNum = 0;
-            if (color == Gpt_InkColor.RED) colorNum = 1;
-            if (color == Gpt_InkColor.BLUE) colorNum = 5;
-            if (color == Gpt_InkColor.YELLOW) colorNum = 9;
+            if (color == Gpt_InkColor.RED) colorNum = 4;
+            if (color == Gpt_InkColor.BLUE) colorNum = 8;
+            if (color == Gpt_InkColor.YELLOW) colorNum = 12;
             int crackedNum = HP <= 1 ? 2 : 0;
             int flushNum = flushing ? 1 : 0;
 
