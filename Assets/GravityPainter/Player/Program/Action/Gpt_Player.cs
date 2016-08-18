@@ -23,7 +23,7 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerInkManage playerInkManage;
 
     // プレイヤーの状態管理
-    public enum MODE { WAIT, RUN, ATTACK, ROTATE, SKILL, JUMP, FEEVER, AIR, DETONATE };
+    public enum MODE { WAIT, RUN, ATTACK, ROTATE, SKILL, JUMP, FEEVER, AIR, DETONATE, DEAD };
     public enum ATTACK_DIRECTION { RIGHT, LEFT };
     public MODE Mode { get; private set; }
     public ATTACK_DIRECTION AttackDirection { get; private set; }

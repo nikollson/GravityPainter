@@ -13,8 +13,11 @@ public class Gpt_ContinueUI : MonoBehaviour
 
     public float canSelectTime = 1.0f;
 
+    private 
+
     bool isYes = false;
     bool isActive = false;
+
 
     float count = 0;
 
@@ -27,7 +30,11 @@ public class Gpt_ContinueUI : MonoBehaviour
 
     void Update()
     {
-        Update_Slect();
+        if (isActive)
+        {
+            count += Time.deltaTime;
+            Update_Slect();
+        }
     }
 
     void Update_Slect()
@@ -37,11 +44,14 @@ public class Gpt_ContinueUI : MonoBehaviour
             bool isLeft = Gpt_Input.Move.x < 0;
             SelectYes(isLeft);
 
-
-            if (Gpt_Input.AttackDown)
+            if (count > canSelectTime)
             {
-                if (!isYes) SceneManager.LoadScene(tileSceneName);
-                if (isYes) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+                if (Gpt_Input.AttackDown)
+                {
+                    if (!isYes) SceneManager.LoadScene(tileSceneName);
+                    if (isYes) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                }
             }
         }
     }
