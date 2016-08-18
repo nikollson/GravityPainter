@@ -12,17 +12,19 @@ public class Gpt_ContinueUI : MonoBehaviour
     public string tileSceneName;
 
     public float canSelectTime = 1.0f;
+    public float uiActiveTime = 0.5f;
 
-    private 
+    public Gpt_UIManager uiManager;
 
     bool isYes = false;
     bool isActive = false;
-
+    Gpt_Player player;
 
     float count = 0;
 
     void Start()
     {
+        player = uiManager.player.GetComponent<Gpt_Player>();
         SelectYes(true);
         SetOff();
     }
@@ -30,11 +32,14 @@ public class Gpt_ContinueUI : MonoBehaviour
 
     void Update()
     {
-        if (isActive)
+        if(player.Mode == Gpt_Player.MODE.DEAD)
         {
             count += Time.deltaTime;
-            Update_Slect();
+
+            if(!isActive && count > uiActiveTime) { SetOn(); }
+            if(count > canSelectTime) Update_Slect();
         }
+
     }
 
     void Update_Slect()
@@ -43,15 +48,14 @@ public class Gpt_ContinueUI : MonoBehaviour
         {
             bool isLeft = Gpt_Input.Move.x < 0;
             SelectYes(isLeft);
-
-            if (count > canSelectTime)
+        }
+        if (Gpt_Input.Attack)
+        {
+            if (!isYes) SceneManager.LoadScene(tileSceneName);
+            if (isYes)
             {
-
-                if (Gpt_Input.AttackDown)
-                {
-                    if (!isYes) SceneManager.LoadScene(tileSceneName);
-                    if (isYes) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                }
+                Debug.Log("sceeene " + SceneManager.GetActiveScene().name);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
     }
