@@ -5,7 +5,14 @@ public class Gpt_PlayerRespawn : MonoBehaviour {
 
     public GameObject respawnFloorPrefab;
     public Transform respawnFloorPosition;
+
+    Vector3 respawnPosition;
     
+    void Start()
+    {
+        respawnPosition = respawnFloorPosition.position;
+    }
+
     public void DoRespawn()
     {
         MakeFloor();
@@ -13,6 +20,6 @@ public class Gpt_PlayerRespawn : MonoBehaviour {
 
     public void MakeFloor()
     {
-        Instantiate(respawnFloorPrefab, respawnFloorPosition.position, Quaternion.identity);
+        Instantiate(respawnFloorPrefab, respawnPosition, Quaternion.identity);
     }
 }

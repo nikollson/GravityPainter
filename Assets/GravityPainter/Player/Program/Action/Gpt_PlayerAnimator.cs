@@ -26,4 +26,19 @@ public class Gpt_PlayerAnimator : MonoBehaviour {
             for (int i = 0; i < animationMoveRepeat; i++) animator.Update(EPS);
         }
     }
+
+
+    public bool IsRuningAnimation()
+    {
+        var stateInfo = newAnimator.GetCurrentAnimatorStateInfo(0);
+        bool running = stateInfo.IsName("PlayerRunTest");
+        return running;
+    }
+    public bool IsRuningLeftFoot()
+    {
+        var stateInfo = newAnimator.GetCurrentAnimatorStateInfo(0);
+        int tapCount = (int)(stateInfo.normalizedTime / 0.5f);
+
+        return tapCount % 2 == 0;
+    }
 }

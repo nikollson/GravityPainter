@@ -4,10 +4,13 @@ using System.Collections.Generic;
 
 public class Gpt_PlayerAttackState : MonoBehaviour
 {
-
+    private Gpt_PlayerUtillity playerUtillity;
     public Gpt_PlayerState playerState;
     //public HitManager attackCollider;
     public GameObject bulletPrefab;
+    public GameObject hitEffectPrefab;
+    public AudioClip hitSound;
+    public AudioClip attackSound;
     public string enemyTag = "Enemy";
 
     public float attackStartTime = 0.1f;
@@ -19,6 +22,8 @@ public class Gpt_PlayerAttackState : MonoBehaviour
 
     List<HitManager> bullets = new List<HitManager>();
     float count = 0;
+
+    void Awake() { playerUtillity = this.GetComponent<Gpt_PlayerUtillity>(); }
 
     public void StartBullet(Vector3 forward)
     {
@@ -36,6 +41,7 @@ public class Gpt_PlayerAttackState : MonoBehaviour
             bullets.Add(obj.GetComponent<HitManager>());
         }
         count = 0;
+        playerUtillity.audioSource.PlayOneShot(attackSound);
     }
 
     void ResetBullets()
@@ -64,8 +70,9 @@ public class Gpt_PlayerAttackState : MonoBehaviour
                 if (attackCollider.IsHit)
                 {
                     bool drawed = false;
-                    foreach (var a in attackCollider.HitColliders)
+                    foreach (var data in attackCollider.CollisionData)
                     {
+                        var a = data.collider;
                         if (a.gameObject.tag == enemyTag)
                         {
                             var enemyColor = Gpt_ParentTracker.Track<Gpt_EnemyColor>(a.gameObject);
@@ -73,7 +80,9 @@ public class Gpt_PlayerAttackState : MonoBehaviour
                             {
                                 if (CanDrawEnemy(enemyColor))
                                 {
+                                    SetHitSound();
                                     DrawEnemy(enemyColor);
+                                    SetHitEffect(data.hitPosition);
                                     drawed = true;
                                 }
                             }
@@ -93,6 +102,15 @@ public class Gpt_PlayerAttackState : MonoBehaviour
         }
     }
 
+    void SetHitSound()
+    {
+        playerUtillity.audioSource.PlayOneShot(hitSound);
+    }
+
+    void SetHitEffect(Vector3 position)
+    {
+        Instantiate(hitEffectPrefab, position, Quaternion.identity);
+    }
     bool CanDrawEnemy(Gpt_EnemyColor enemyColorScript)
     {
         Gpt_InkColor enemyColor = GetEnemyColor(enemyColorScript);
