@@ -8,7 +8,9 @@ public class Gpt_Camera : MonoBehaviour
     /* 特殊カメラ状態 */
     public enum State {
         Normal = 0,
-        Door = 1
+        Door = 1,
+        BossBattle =2,
+        BossMovie=3,
     }
     public int state = (int)State.Normal;
     public GameObject door;
@@ -91,11 +93,29 @@ public class Gpt_Camera : MonoBehaviour
         }
         else if (state == (int)State.Door)
         {
-            bar1.transform.position = bar1.transform.position;
-            bar2.transform.position = bar2.transform.position;
+            bar1.transform.position = bar1Pos;
+            bar2.transform.position = bar2Pos;
 
             this.transform.position = doorCamPosObj.transform.position;
             Update_Look(door.transform.position);
+        }
+        else if (state == (int)State.BossBattle)
+        {
+            bar1.transform.position = notDrawPos;
+            bar2.transform.position = notDrawPos;
+
+            // 高い位置にいればカメラ操作しない
+            if (player.transform.position.y >= 15.0f)
+            {
+                Update_Position();
+                Update_Rotation();
+                Update_Look(player.transform.position);
+            }
+            else
+            {
+                this.transform.position = player.transform.position * 1.5f;
+                Update_Look(new Vector3(0, 2, 0));
+            }
         }
     }
 
