@@ -100,12 +100,18 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
         {
             if (doorSystem != null)
             {
-                doorSystem.OpenDoor();
+                //doorSystem.OpenDoor();
             }
             
         }
 
         //Debug.Log(EnemyList.Count);
+    }
+
+
+    public List<Gpt_Enemy> GetEnemyList()
+    {
+        return EnemyList;
     }
 
     public int GetRestEnemy()
