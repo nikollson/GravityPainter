@@ -32,6 +32,16 @@ public class Gpt_EnemyAttack : MonoBehaviour {
 
     private bool Damage;
 
+    //攻撃モーションに入ってから攻撃判定に入るまでの時間
+    public float startAttackTime=1f;
+    //攻撃判定が消える時間
+    public float endAttackTime=0.5f;
+    private float attackTime;
+
+    public float jumpTime;
+    private float jump;
+    private Vector3 jumpVec;
+
 	// Use this for initialization
 	void Start () {
         firstProxRotation = proxObject.transform.rotation;
@@ -43,39 +53,55 @@ public class Gpt_EnemyAttack : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+
         
+        Debug.Log("Attack:"+isAttack);
         //攻撃フラグが立つときにアクション
         if (isAttack)
         {
             if (enemyPattern == 0)
             {
-                attack++;
-                //Debug.Log("aa:"+attackSpeed);
-                if (attack%attackSpeed==0)
+                attackTime+=0.1f;
+                jump+=0.1f;
+                if (attackTime > startAttackTime)
                 {
-                    //Debug.Log("atacck");
-                    motionTime1 += 0.8f;
-
-                    if (motionTime1 >= 8 || motionTime2 > 0)
-                    {
-                        motionTime2 += 0.1f;
-                        motionTime1 -= 6f;
-                        proxCollider.enabled = true;
-                    }
-
-                    if (motionTime2 > 1)
-                    {
-                        Debug.Log("motion1:" + motionTime1);
-                        StopAttack();
-                        proxCollider.enabled = false;
-                        //proxObject.transform.RotateAround(this.transform.position, this.transform.right, -130);
-                        proxObject.transform.position = this.transform.position + new Vector3(0, 7f*this.transform.position.y/8, 0);
-                        proxObject.transform.rotation = this.transform.rotation;
-                    }
-                    //仮モーション
-
-                    proxObject.transform.RotateAround(this.transform.position, this.transform.right, -motionTime1);
+                    proxCollider.enabled = true;
+                    //if(jumpTime<jump)
+                    jumpVec=new Vector3(0,0.1f,0);
+                    this.transform.position=this.transform.position+jumpVec;
                 }
+
+                if (attackTime > startAttackTime + endAttackTime)
+                {
+                    proxCollider.enabled = false;
+                    StopAttack();
+                }
+                ////Debug.Log("aa:"+attackSpeed);
+                //if (attack%attackSpeed==0)
+                //{
+                //    //Debug.Log("atacck");
+                //    motionTime1 += 0.8f;
+
+                //    if (motionTime1 >= 8 || motionTime2 > 0)
+                //    {
+                //        motionTime2 += 0.1f;
+                //        motionTime1 -= 6f;
+                //        proxCollider.enabled = true;
+                //    }
+
+                //    if (motionTime2 > 1)
+                //    {
+                //        Debug.Log("motion1:" + motionTime1);
+                //        StopAttack();
+                //        proxCollider.enabled = false;
+                //        //proxObject.transform.RotateAround(this.transform.position, this.transform.right, -130);
+                //        proxObject.transform.position = this.transform.position + new Vector3(0, 7f*this.transform.position.y/8, 0);
+                //        proxObject.transform.rotation = this.transform.rotation;
+                //    }
+                //    //仮モーション
+
+                //    //proxObject.transform.RotateAround(this.transform.position, this.transform.right, -motionTime1);
+                //}
             }
             else if (enemyPattern == 1)
             {
@@ -117,5 +143,7 @@ public class Gpt_EnemyAttack : MonoBehaviour {
         beam = 0;
         motionTime1 = 0;
         motionTime2 = 0;
+        attackTime = 0;
+        jump = 0;
     }
 }

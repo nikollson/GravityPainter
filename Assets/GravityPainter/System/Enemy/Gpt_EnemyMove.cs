@@ -67,7 +67,9 @@ public class Gpt_EnemyMove : MonoBehaviour {
     private bool isAbyss = false;
 
     private float motionTime1;
-   
+
+    //攻撃時にベクトルを保存
+    private Vector3 preserveVec;
 
     // Use this for initialization
     void Start()
@@ -119,12 +121,21 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 //索敵処理
                 if (Vector3.Distance(player.transform.position, this.transform.position) < searchArea)
                 {
-                    moveVec = Vector3.Slerp(moveVec, player.transform.position - this.transform.position, 0.75f);
+                    if (!EnemyAttack.GetAttack())
+                    {
+                        moveVec = Vector3.Slerp(moveVec, player.transform.position - this.transform.position, 0.75f);
+                        preserveVec=moveVec;
+                    }
+                    else
+                    {
+                        //攻撃モーション時は直線
+                        moveVec = preserveVec;
+                    }
                     //moveVec = player.transform.position - this.transform.position;
                     moveVec = moveVec.normalized;
                     move = 0;
                 }
-
+                Debug.Log("Beforenemy:" + enemyTemp);
                 float angle = Mathf.Atan2(moveVec.z, moveVec.x);
                 ////移動方向に回転
                 this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle)+90, 0));
@@ -138,7 +149,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     {
                         //Debug.Log("attack");
                         //motionTime1 += 2f;
-                        enemyTemp = 0.01f;
+                        //enemyTemp = 0.01f;
+                        enemyTemp = enemySpeed;
                         EnemyAttack.IsAttack();
                         
                     }
@@ -173,6 +185,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         enemyTemp = 0;
                     }
                 }
+                Debug.Log("enemy:"+enemyTemp);
                 
             }
             else
