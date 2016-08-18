@@ -74,6 +74,10 @@ public class Gpt_PlayerState : MonoBehaviour
     public void AddYellowCombo() { yellowCombo.AddCombo(); }
     public void AddRainbowCombo() { Debug.Log("RaibowColorComboとは?"); }
 
+    public bool IsDead()
+    {
+        return HP <= 0;
+    }
 
     public void MaxStatusSet()
     {
@@ -99,9 +103,6 @@ public class Gpt_PlayerState : MonoBehaviour
         yellowCombo.Update();
 
         mutekiCount += Time.deltaTime;
-
-
-        if (HP == 0) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void MakeSpecialEnemy(ComboControl comboControl)

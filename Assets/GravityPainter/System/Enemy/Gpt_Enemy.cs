@@ -70,6 +70,10 @@ public class Gpt_Enemy : MonoBehaviour {
     //小刻み処理の際の片側だけに引力が発生するのを防ぐ
     private bool shakeFlag;
 
+    private float enemyUpTime=5f;
+
+    private float enemyUnderTime = 1f;
+
     // Use this for initialization
     void Start () {
 
@@ -177,7 +181,7 @@ public class Gpt_Enemy : MonoBehaviour {
             //collider.isTrigger=true;
             Vector3 exVec = (exploderPosition - this.transform.position).normalized;
             
-            if (motionTime1 < 5f)
+            if (motionTime1 < enemyUpTime)
             {
                 rigid.AddForce(exVec * 10f, ForceMode.VelocityChange);
                 //this.transform.position = exploderPosition;
@@ -185,7 +189,8 @@ public class Gpt_Enemy : MonoBehaviour {
                 var vec = Quaternion.Euler(0f, 90f, 0f) * exVec;
                 rigid.AddForce(vec * 0.8f, ForceMode.VelocityChange);
             }
-            else if(motionTime1 <6f){
+            else if(motionTime1 < enemyUpTime+ enemyUnderTime)
+            {
                 rigid.isKinematic = true;
                 this.transform.position = Vector3.Lerp(this.transform.position, exploderPosition, 0.2f);
                 if (getExploder != null)
@@ -193,7 +198,7 @@ public class Gpt_Enemy : MonoBehaviour {
                     Gpt_Exploder explodeScript = getExploder.GetComponent<Gpt_Exploder>();
                     explodeScript.IsExplodeMotion1();
                 }
-            }else if(motionTime1 < 8f)
+            }else if(motionTime1 < enemyUpTime+enemyUnderTime+2f)
             {
                 //色を戻す
                 SetColor(0);
@@ -399,5 +404,15 @@ public class Gpt_Enemy : MonoBehaviour {
     public bool GetShake()
     {
         return shakeFlag;
+    }
+
+    public void SetUpTime(float time)
+    {
+        enemyUpTime = time;
+    }
+
+    public void SetUnderTime(float time)
+    {
+        enemyUnderTime = time;
     }
 }

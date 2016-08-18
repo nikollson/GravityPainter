@@ -21,6 +21,7 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerSkill playerSkill;
     public Gpt_PlayerDetonate playerDetonate;
     public Gpt_PlayerInkManage playerInkManage;
+    public Gpt_PlayerDeadAction playerDead;
 
     // プレイヤーの状態管理
     public enum MODE { WAIT, RUN, ATTACK, ROTATE, SKILL, JUMP, FEEVER, AIR, DETONATE, DEAD };
@@ -44,6 +45,7 @@ public class Gpt_Player : MonoBehaviour
         if (Mode == MODE.SKILL) UpdateMode_Skill();
         if (Mode == MODE.DETONATE) UpdateMode_Detonate();
         if (Mode == MODE.ROTATE) UpdateMode_Rotate();
+        if (Mode == MODE.DEAD) UpdateMode_Dead();
     }
 
     void UpdateColor()
@@ -56,8 +58,11 @@ public class Gpt_Player : MonoBehaviour
 
     public void DoRespawn(Vector3 position)
     {
-        this.transform.position = position;
         state.DoRespawn(true);
+        if (!state.IsDead())
+        {
+            this.transform.position = position;
+        }
     }
 
 
@@ -66,6 +71,7 @@ public class Gpt_Player : MonoBehaviour
     bool CanStartDetonate() { return Gpt_Input.Detonate && playerInkManage.CanUseDetonate() && playerDetonate.CanStartDetonate(Gpt_Input.DetonateStartFrame); }
     bool CanStartSkill() { return Gpt_Input.Skill && playerInkManage.CanUseSkill(state.PlayerColor) && playerSkill.CanStartSkill(Gpt_Input.SkillStartFrame); }
     bool CanStartJump() { return Gpt_Input.Jump && playerJump.CanStartJump(Gpt_Input.JumpStartFrame); }
+    bool IsDead() { return state.IsDead(); }
 
     void UpdateMode_StartRun()
     {
@@ -113,7 +119,12 @@ public class Gpt_Player : MonoBehaviour
         Mode = MODE.ROTATE;
         playerAttackRotate.StartRotate();
     }
+    void UpdateMode_StartDead()
+    {
+        Mode = MODE.DEAD;
+        playerDead.StartDead();
 
+    }
 
     void UpdateMode_Wait()
     {
@@ -121,7 +132,12 @@ public class Gpt_Player : MonoBehaviour
 
         bool endWait = false;
 
-        if (CanStartMove()) { endWait = true; UpdateMode_StartRun(); }
+        if (IsDead())
+        {
+            endWait = true;
+            UpdateMode_StartDead();
+        }
+        else if (CanStartMove()) { endWait = true; UpdateMode_StartRun(); }
         else if (CanStartAttack()) { endWait = true; UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.NORMAL, ATTACK_DIRECTION.RIGHT); }
         else if (CanStartJump()) { endWait = true; UpdateMode_StartJump(); }
         else if (CanStartSkill()) { endWait = true; UpdateMode_StartSkill(); }
@@ -137,10 +153,15 @@ public class Gpt_Player : MonoBehaviour
 
         bool endRun = false;
 
-        if (!CanStartMove()) { endRun = true; UpdateMode_StartWait(); }
+        if (IsDead())
+        {
+            endRun = true;
+            UpdateMode_StartDead();
+        }
+        else if (!CanStartMove()) { endRun = true; UpdateMode_StartWait(); }
         else if (CanStartAttack()) { endRun = true; UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.DASH, ATTACK_DIRECTION.RIGHT); }
         else if (CanStartJump()) { endRun = true; UpdateMode_StartJump(); }
-        else if (CanStartSkill()) { endRun = true;  UpdateMode_StartSkill(); }
+        else if (CanStartSkill()) { endRun = true; UpdateMode_StartSkill(); }
         else if (CanStartDetonate()) { endRun = true; UpdateMode_StartDetonate(); }
         else if (!playerUtillity.IsGround()) { endRun = true; UpdateMode_StartAir(); }
 
@@ -154,21 +175,27 @@ public class Gpt_Player : MonoBehaviour
 
         bool endAttack = false;
 
-        if (playerAttack.CanSecondAttack() && CanStartAttack())
+        if (IsDead())
+        {
+            endAttack = true;
+            UpdateMode_StartDead();
+        }
+        else if (playerAttack.CanSecondAttack() && CanStartAttack())
         {
             ATTACK_DIRECTION next = (AttackDirection == ATTACK_DIRECTION.LEFT) ? ATTACK_DIRECTION.RIGHT : ATTACK_DIRECTION.LEFT;
             UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.NORMAL, next);
-        }else if (playerAttack.CanSecondAttack() && CanStartJump())
+        }
+        else if (playerAttack.CanSecondAttack() && CanStartJump())
         {
             endAttack = true;
             UpdateMode_StartJump();
         }
-        else if(playerAttack.CanSecondAttack() && CanStartSkill())
+        else if (playerAttack.CanSecondAttack() && CanStartSkill())
         {
             endAttack = true;
             UpdateMode_StartSkill();
         }
-        else if(playerAttack.CanSecondAttack() && CanStartDetonate())
+        else if (playerAttack.CanSecondAttack() && CanStartDetonate())
         {
             endAttack = true;
             UpdateMode_StartDetonate();
@@ -195,7 +222,12 @@ public class Gpt_Player : MonoBehaviour
 
         bool endRotate = false;
 
-        if (playerAttackRotate.CanStartAttack() && CanStartAttack())
+        if (IsDead())
+        {
+            endRotate = true;
+            UpdateMode_StartDead();
+        }
+        else if (playerAttackRotate.CanStartAttack() && CanStartAttack())
         {
             endRotate = true;
             UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.ROTATE, ATTACK_DIRECTION.RIGHT);
@@ -220,7 +252,12 @@ public class Gpt_Player : MonoBehaviour
 
         bool endJump = false;
 
-        if (playerJump.IsJumpEnd())
+        if (IsDead())
+        {
+            endJump = true;
+            UpdateMode_StartDead();
+        }
+        else if (playerJump.IsJumpEnd())
         {
             endJump = true;
 
@@ -237,7 +274,12 @@ public class Gpt_Player : MonoBehaviour
 
         bool endAir = false;
 
-        if (playerUtillity.IsGround())
+        if (IsDead())
+        {
+            endAir = true;
+            UpdateMode_StartDead();
+        }
+        else if (playerUtillity.IsGround())
         {
             endAir = true;
             UpdateMode_StartWait();
@@ -255,7 +297,12 @@ public class Gpt_Player : MonoBehaviour
 
         //Debug.Log(Time.frameCount+" "+ playerSkill.IsEndSkill() + " " + playerInkManage.CanContinueSkill(playerSkill.Color)+" "+ playerSkill.CanEndSkill(Gpt_Input.Skill, Gpt_Input.SkillStartFrame));
 
-        if (playerSkill.IsEndSkill())
+        if (IsDead())
+        {
+            endSkill = true;
+            UpdateMode_StartDead();
+        }
+        else if (playerSkill.IsEndSkill())
         {
             endSkill = true;
             UpdateMode_StartWait();
@@ -276,12 +323,22 @@ public class Gpt_Player : MonoBehaviour
 
         bool endDetonate = false;
 
-        if (playerDetonate.IsEndDetonate())
+        if (IsDead())
+        {
+            endDetonate = true;
+            UpdateMode_StartDead();
+        }
+        else if (playerDetonate.IsEndDetonate())
         {
             endDetonate = true;
             UpdateMode_StartWait();
         }
 
         if (endDetonate) playerDetonate.EndDetonate();
+    }
+
+    void UpdateMode_Dead()
+    {
+        playerDead.UpdateDead();
     }
 }
