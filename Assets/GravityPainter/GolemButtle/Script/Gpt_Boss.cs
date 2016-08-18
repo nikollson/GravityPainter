@@ -3,13 +3,22 @@ using System.Collections;
 
 public class Gpt_Boss : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
+    const float maxHp = 10.0f;
+    float hp = 10.0f;
+
+    void Start () {
 	}
 	
-	// Update is called once per frame
 	void Update () {
-	
 	}
+
+    public float GetMaxHp()
+    {
+        return maxHp;
+    }
+
+    public float GetHp()
+    {
+        return hp;
+    }
 }
