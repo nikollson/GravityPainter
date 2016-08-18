@@ -43,6 +43,13 @@ public class Gpt_Exploder : MonoBehaviour {
     //爆発起動後のエネミーの数
     private int explodeEnemyNum;
 
+    //爆発上昇のスピード
+    private float explodeUpSpeed;
+    //爆発下降のスピード
+    private float explodeUnderSpeed;
+
+    //爆発箇所の高さ調整
+    public float explodeY=4f;
     // Use this for initialization
     void Start() {
         ManegerObject = GameObject.Find("GravityManeger");
@@ -64,35 +71,36 @@ public class Gpt_Exploder : MonoBehaviour {
         {
             if (!isAfterExplode)
             {
-                //爆発モーション（上昇）
-                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.08f, this.transform.position.z);
-                
                 //爆発モーション（下降）
-                if (isExplodeMotion1)
+                if (!isExplodeMotion1)
                 {
-                    this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 0.72f, this.transform.position.z);
+                    this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + explodeUpSpeed, this.transform.position.z);
+                }else
+                {
+                    this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - explodeUnderSpeed, this.transform.position.z);
                 }
 
             } else if (!isDestroy)
             {
-                
+                //爆発エフェクトの位置調整
+                Vector3 explode = new Vector3(0, explodeY, 0);
                 switch (color)
                 {
                     case 1:
-                        Instantiate(Explosion_red, this.transform.position, Quaternion.identity);
-                        YukaManager.DoExplode(color, this.transform.position, explodeArea);
+                        Instantiate(Explosion_red, this.transform.position + explode, Quaternion.identity);
+                        YukaManager.DoExplode(color, this.transform.position + explode, explodeArea);
                         EnemyGravityManeger.IsExplodeWave();//爆風ダメージ
                         isDestroy = true;
                         break;
                     case 2:
-                        Instantiate(Explosion_blue, this.transform.position, Quaternion.identity);
-                        YukaManager.DoExplode(color, this.transform.position, explodeArea);
+                        Instantiate(Explosion_blue, this.transform.position + explode, Quaternion.identity);
+                        YukaManager.DoExplode(color, this.transform.position + explode, explodeArea);
                         EnemyGravityManeger.IsExplodeWave();
                         isDestroy = true;
                         break;
                     case 3:
-                        Instantiate(Explosion_yellow, this.transform.position, Quaternion.identity);
-                        YukaManager.DoExplode(color, this.transform.position, explodeArea);
+                        Instantiate(Explosion_yellow, this.transform.position+explode, Quaternion.identity);
+                        YukaManager.DoExplode(color, this.transform.position + explode, explodeArea);
                         EnemyGravityManeger.IsExplodeWave();
                         isDestroy = true;
                         break;
@@ -262,5 +270,15 @@ public class Gpt_Exploder : MonoBehaviour {
     public int GetEnemyNum()
     {
         return enemyNum;
+    }
+
+    public void SetUpSpeed(float speed)
+    {
+        explodeUpSpeed = speed;
+    }
+
+    public void SetUnderSpeed(float speed)
+    {
+        explodeUnderSpeed = speed;
     }
 }
