@@ -19,6 +19,19 @@ public class Gpt_Input : MonoBehaviour
     public static bool Option { get { inputGetter.Update(); return inputGetter.Option; } }
     public static bool Detonate { get { inputGetter.Update(); return inputGetter.Detonate; } }
 
+    public static bool HasAnyKey()
+    {
+        bool ret = false;
+        ret |= Gpt_Input.Attack;
+        ret |= Gpt_Input.Skill;
+        ret |= Gpt_Input.Jump;
+        ret |= Gpt_Input.ColorLeft;
+        ret |= Gpt_Input.ColorRight;
+        ret |= Gpt_Input.CameraPush;
+        ret |= Gpt_Input.MovePush;
+        return ret;
+    }
+
     //キーが押され始めたフレームを返すプロパティ。押されてないときは0を返す
     public static int JumpStartFrame { get { inputGetter.Update(); return inputGetter.JumpStartFrame; } }
     public static int AttackStartFrame { get { inputGetter.Update(); return inputGetter.AttackStartFrame; } }

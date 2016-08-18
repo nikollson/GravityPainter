@@ -9,6 +9,9 @@ using UnityEditor;
 
 public class Gpt_YukaManager : MonoBehaviour {
 
+
+    public enum ExplosionMode { WAY4, WAY8 };
+
     [Button("MakeTile", "MakeTiles")]
     [SerializeField]
     private int _makeTileint = 0;
@@ -16,6 +19,7 @@ public class Gpt_YukaManager : MonoBehaviour {
     public Transform tileParent;
     public Texture2D stageTile;
     public float tileSize = 3;
+    public ExplosionMode explosionMode;
 
     public VisualSetting visualSetting;
     public ReadTileSetting readSetting;
@@ -118,7 +122,14 @@ public class Gpt_YukaManager : MonoBehaviour {
 
             int[] dx = { 1, 0, -1, 0 };
             int[] dy = { 0, 1, 0, -1 };
-            for (int p = 0; p < 4; p++)
+
+            if(explosionMode == ExplosionMode.WAY8)
+            {
+                dx = new int[] { -1, -1, -1, 0, 0, 1, 1, 1 };
+                dy = new int[] { -1, 0, 1, 1, -1, 1, 0, -1 };
+            }
+
+            for (int p = 0; p < dx.Length; p++)
             {
                 int nx = u.x + dx[p];
                 int ny = u.y + dy[p];
