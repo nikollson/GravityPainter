@@ -48,7 +48,7 @@ public class Gpt_TitleManager : MonoBehaviour
         {
             if (Gpt_Input.HasAnyKey())
             {
-                SceneManager.LoadScene(NextSceneName);
+                 Gpt_SceneManager.LoadScene(NextSceneName);
             }
         }
     }

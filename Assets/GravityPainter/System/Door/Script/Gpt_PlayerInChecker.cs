@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class Gpt_PlayerInChecker : MonoBehaviour
 {
-    public int goSceneNum;
+    public string nextSceneName = "Stage_Boss";
 
     void Start()
     {
@@ -18,7 +18,7 @@ public class Gpt_PlayerInChecker : MonoBehaviour
     {
         if (coll.tag == "Player")
         {
-            SceneManager.LoadScene(goSceneNum);
+            Gpt_SceneManager.LoadScene(nextSceneName);
         }
     }
 }
