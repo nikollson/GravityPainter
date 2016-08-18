@@ -9,17 +9,18 @@ public class Gpt_Camera : MonoBehaviour
     public enum State {
         Normal = 0,
         Door = 1,
-        BossBattle =2,
-        BossMovie=3,
+        BossStartMovie = 2,
+        BossBattle = 3,
     }
     public int state = (int)State.Normal;
     public GameObject door;
     public GameObject doorCamPosObj;
-    public GameObject bar1;
-    public GameObject bar2;
-    Vector3 bar1Pos = new Vector3(0.26f,1.04f,3.46f);
-    Vector3 bar2Pos = new Vector3(0.26f,-0.98f,3.27f);
+    public GameObject camStartPos;
     Vector3 notDrawPos = new Vector3(-10000, -10000, -10000);
+    bool stateStartFlg = true;
+    Vector3 firstPlayerPos;
+    public GameObject movieBar1;
+    public GameObject movieBar2;
 
     /* スティック入力情報変数 */
     float oldCamMoveX = 0.0f;           // スティックX移動量(1フレーム前)
@@ -75,6 +76,7 @@ public class Gpt_Camera : MonoBehaviour
     // 初期化関数
     void Start()
     {
+        firstPlayerPos = player.transform.position;
     }
 
     //レンダリング前更新関数
@@ -84,26 +86,17 @@ public class Gpt_Camera : MonoBehaviour
 
         if (state == (int)State.Normal)
         {
-            bar1.transform.position = notDrawPos;
-            bar2.transform.position = notDrawPos;
-
             Update_Rotation();
             Update_Position();
             Update_Look(player.transform.position);
         }
         else if (state == (int)State.Door)
         {
-            bar1.transform.position = bar1Pos;
-            bar2.transform.position = bar2Pos;
-
             this.transform.position = doorCamPosObj.transform.position;
             Update_Look(door.transform.position);
         }
         else if (state == (int)State.BossBattle)
         {
-            bar1.transform.position = notDrawPos;
-            bar2.transform.position = notDrawPos;
-
             // 高い位置にいればカメラ操作しない
             if (player.transform.position.y >= 15.0f)
             {
@@ -115,6 +108,39 @@ public class Gpt_Camera : MonoBehaviour
             {
                 this.transform.position = player.transform.position * 1.5f;
                 Update_Look(new Vector3(0, 2, 0));
+            }
+        }
+        else if (state == (int)State.BossStartMovie)
+        {
+            // 最初のみ場所を代入
+            if (stateStartFlg)
+            {
+                this.transform.position = camStartPos.transform.position;
+                stateStartFlg = false;
+            }
+
+            if (this.transform.position.y < 12.0f)
+            {
+                this.transform.position += new Vector3(0, Time.deltaTime, 0);
+                Update_Look(this.transform.position + new Vector3(0, 0, -1.0f));
+            }
+            else if (this.transform.position.y < 12.1f)
+            {
+                this.transform.position += new Vector3(0, Time.deltaTime / 10.0f, 0);
+                Update_Look(this.transform.position + new Vector3(0, 0, -1.0f));
+            }
+            else {
+                Vector3 vec = new Vector3(-0.05f, 19.935f, 40.329f) - this.transform.position;
+                this.transform.position += vec * Time.deltaTime;
+                Update_Look(this.transform.position + new Vector3(0, 0, -1.0f));
+                if(this.transform.position.z>firstPlayerPos.z) Update_Look(firstPlayerPos);
+
+                if (this.transform.position.z >= player.transform.position.z + distanceXZ*0.85f)
+                {
+                    state = (int)State.BossBattle;
+                    movieBar1.transform.position = notDrawPos;
+                    movieBar2.transform.position = notDrawPos;
+                }
             }
         }
     }
