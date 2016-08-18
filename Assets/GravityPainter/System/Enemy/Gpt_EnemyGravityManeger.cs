@@ -19,6 +19,17 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
 
     //何体敵を倒してクリア
     public int enemyNum;
+
+
+    //爆発上昇のスピード
+    public float explodeUpSpeed = 0.08f;
+    
+    //爆発下降のスピード
+    public float explodeUnderSpeed = 0.64f;
+    //爆発上昇の時間
+    public float enemyUpTime = 5f;
+    //爆発下降の時間
+    public float enemyUnderTime = 1f;
     private int enemyNumCount;
 
 	void Start () {
@@ -34,10 +45,17 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
             isFloor=true;
         }
 
-        
+        for (int i = 0; i < ExplodeList.Count; i++)
+        {
+            ExplodeList[i].SetUnderSpeed(explodeUnderSpeed);
+            ExplodeList[i].SetUpSpeed(explodeUpSpeed);
+        }
+
         //距離判定
         for (int i = 0; i < EnemyList.Count; i++)
         {
+            EnemyList[i].SetUpTime(enemyUpTime);
+            EnemyList[i].SetUnderTime(enemyUnderTime);
             for (int j = i; j < EnemyList.Count; j++)
             {
                 if (j == i) continue;
