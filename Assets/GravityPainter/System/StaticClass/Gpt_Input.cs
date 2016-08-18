@@ -3,13 +3,14 @@ using System.Collections;
 
 public class Gpt_Input : MonoBehaviour
 {
-
+    const float EPS = 0.001f;
     static InputGetter inputGetter = new InputGetter();
 
     //コントローラーに入力された情報を返すプロパティ
     public static bool Jump { get { inputGetter.Update(); return inputGetter.Jump; } }
     public static bool Attack { get { inputGetter.Update(); return inputGetter.Attack; } }
     public static bool Skill { get { inputGetter.Update(); return inputGetter.Skill; } }
+    public static bool IsMoving { get { return Move.magnitude > EPS; } }
     public static Vector2 Move { get { inputGetter.Update(); return inputGetter.Move; } }
     public static Vector2 CamMove { get { inputGetter.Update(); return inputGetter.CamMove; } }
     public static bool MovePush { get { inputGetter.Update(); return inputGetter.MovePush; } }
