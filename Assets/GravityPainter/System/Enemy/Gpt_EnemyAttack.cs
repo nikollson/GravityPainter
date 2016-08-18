@@ -55,7 +55,7 @@ public class Gpt_EnemyAttack : MonoBehaviour {
     void Update () {
 
         
-        Debug.Log("Attack:"+isAttack);
+        //Debug.Log("Attack:"+isAttack);
         //攻撃フラグが立つときにアクション
         if (isAttack)
         {
@@ -146,4 +146,6 @@ public class Gpt_EnemyAttack : MonoBehaviour {
         attackTime = 0;
         jump = 0;
     }
+
+    
 }

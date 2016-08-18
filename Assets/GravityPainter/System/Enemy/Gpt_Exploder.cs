@@ -122,7 +122,7 @@ public class Gpt_Exploder : MonoBehaviour {
         }
         preserveEnemyNum = 0;
 
-        Debug.Log("after:" + enemyNum);
+        //Debug.Log("after:" + enemyNum);
 
         isGravity = true;
 	}
@@ -215,6 +215,11 @@ public class Gpt_Exploder : MonoBehaviour {
         //爆発前にエネミーの数を記録
         explodeEnemyNum = preserveEnemyNum;
         isExplode = true;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return this.gameObject.transform.position;
     }
 
     public void SetPosition(Vector3 position)

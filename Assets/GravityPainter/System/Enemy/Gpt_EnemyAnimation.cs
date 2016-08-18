@@ -15,7 +15,7 @@ public class Gpt_EnemyAnimation : MonoBehaviour {
     // Update is called once per frame
     void Update(){
     
-        Debug.Log("Anime:"+EnemyAttack.GetAttack());
+        //Debug.Log("Anime:"+EnemyAttack.GetAttack());
         if (EnemyAttack.GetAttack())
         {
             animator.SetBool("IsAttack", true);

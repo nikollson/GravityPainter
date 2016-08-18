@@ -135,7 +135,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     moveVec = moveVec.normalized;
                     move = 0;
                 }
-                Debug.Log("Beforenemy:" + enemyTemp);
+                //Debug.Log("Beforenemy:" + enemyTemp);
                 float angle = Mathf.Atan2(moveVec.z, moveVec.x);
                 ////移動方向に回転
                 this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle)+90, 0));
@@ -185,7 +185,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         enemyTemp = 0;
                     }
                 }
-                Debug.Log("enemy:"+enemyTemp);
+                //Debug.Log("enemy:"+enemyTemp);
                 
             }
             else
