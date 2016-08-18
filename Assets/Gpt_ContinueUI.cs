@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Gpt_ContinueUI : MonoBehaviour
 {
     public GameObject parent;
     public Image SelectorYes;
     public Image SelectorNo;
+
+    public string tileSceneName;
 
     public float canSelectTime = 1.0f;
 
@@ -33,7 +36,13 @@ public class Gpt_ContinueUI : MonoBehaviour
         {
             bool isLeft = Gpt_Input.Move.x < 0;
             SelectYes(isLeft);
-            Debug.Log(isLeft);
+
+
+            if (Gpt_Input.AttackDown)
+            {
+                if (!isYes) SceneManager.LoadScene(tileSceneName);
+                if (isYes) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
         }
     }
 
