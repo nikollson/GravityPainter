@@ -118,7 +118,7 @@ public class Gpt_Exploder : MonoBehaviour {
         enemyNum = preserveEnemyNum;
         if (enemyNum == 0 && isGravity)
         {
-            if (!isExplode&&explodeEnemyNum==0) SetDestroy();
+            //if (!isExplode&&explodeEnemyNum==0) SetDestroy();
         }
         preserveEnemyNum = 0;
 

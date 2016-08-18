@@ -106,7 +106,8 @@ public class Gpt_Enemy : MonoBehaviour {
                 if (this.transform.position.x * this.transform.position.z > collision.gameObject.transform.position.x * collision.gameObject.transform.position.z)
                 {
                     // インスタンス生成
-                    Vector3 trans = collision.gameObject.transform.position;
+                    float temp = Random.Range(-0.01f, 0.01f);
+                    Vector3 trans = collision.gameObject.transform.position+new Vector3(temp,temp,temp);//バグ防止
                     GameObject gameObj = Instantiate(exploder, trans, Quaternion.identity) as GameObject;
                     Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
                     targetExploder.SetColor(GetColor());
