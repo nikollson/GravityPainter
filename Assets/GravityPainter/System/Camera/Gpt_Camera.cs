@@ -32,6 +32,7 @@ public class Gpt_Camera : MonoBehaviour
 
     /* プレイヤー情報系 */
     public GameObject player;           // プレイヤー情報
+    public Vector3 playerZure;
     public float distanceXZ = 5.0f;     // プレイヤーとの距離倍率XZ
     public float distanceY = 5.0f;      // プレイヤーとの距離倍率Y
 
@@ -71,6 +72,14 @@ public class Gpt_Camera : MonoBehaviour
     public float addStopTimeY = 3.0f;   // 停止までの時間倍率(小さいほど長くなる)
     public float stopSpdY = 0.05f;      // 停止速度
 
+
+    /* 画面揺れ系 */
+    private Vector3 screenShake = Vector3.zero;
+    public float shakeFriction = 0.8f;
+    public float shakePowerFriction = 0.2f;
+    public float pushShakePower = 0.5f;
+    private float shakePower = 0;
+
     // -------------------------------------------------- 大元関数 -------------------------------------------------- //
 
     // 初期化関数
@@ -83,12 +92,13 @@ public class Gpt_Camera : MonoBehaviour
     void OnPreRender()
     {
         Update_Stick();
+        Update_ScreenShake();
 
         if (state == (int)State.Normal)
         {
             Update_Rotation();
             Update_Position();
-            Update_Look(player.transform.position);
+            Update_Look(player.transform.position + playerZure);
         }
         else if (state == (int)State.Door)
         {
@@ -179,6 +189,7 @@ public class Gpt_Camera : MonoBehaviour
     void Update_Look(Vector3 pos)
     {
         this.transform.LookAt(pos);
+        this.transform.Rotate(screenShake);
     }
 
     // -------------------------------------------------- 回転系関数 -------------------------------------------------- //
@@ -313,11 +324,30 @@ public class Gpt_Camera : MonoBehaviour
         if (rotY < MIN_ROTY) rotY = MIN_ROTY;
     }
 
+    // -------------------------------------------------- 画面揺れ -------------------------------------------------- //
+
+    void Update_ScreenShake()
+    {
+        Vector3 shakeAdd = new Vector3(randomAbs(shakePower), randomAbs(shakePower), 0);
+        screenShake = screenShake * shakeFriction + shakeAdd;
+        shakePower = shakePower * shakePowerFriction;
+    }
+
+    public void SetScreenShake(float shakePower)
+    {
+        this.shakePower = shakePower;
+    }
+
     // -------------------------------------------------- 補佐関数 -------------------------------------------------- //
 
     // 角度をラジアンに変換する関数
     float angToRad(float ang)
     {
         return ang / 180.0f * Mathf.PI;
+    }
+
+    float randomAbs(float value)
+    {
+        return Random.Range(-value, value);
     }
 }
