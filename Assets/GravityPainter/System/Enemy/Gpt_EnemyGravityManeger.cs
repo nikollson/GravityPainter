@@ -51,8 +51,8 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
             {
                 if (EnemyList[i].GetColor() != 0)
                 {
-                    FirstEnemy = EnemyList[i];
-                    FirstEnemyPosition=FirstEnemy.FirstEnemyPosition();
+                    //FirstEnemy = EnemyList[i];
+                    //FirstEnemyPosition=FirstEnemy.FirstEnemyPosition();
                     break;
                 }
             }
