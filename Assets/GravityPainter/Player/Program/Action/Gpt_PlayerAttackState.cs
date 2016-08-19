@@ -19,9 +19,13 @@ public class Gpt_PlayerAttackState : MonoBehaviour
     public float startAngle = -60;
     public float startAngleDiff = 15;
     public int wayNum = 5;
+    public float hitScreenShake = 0.4f;
+    public float screenShakeTime = 0.18f;
 
     List<HitManager> bullets = new List<HitManager>();
     float count = 0;
+    bool willScreenShake = false;
+    bool screenShaked = false;
 
     void Awake() { playerUtillity = this.GetComponent<Gpt_PlayerUtillity>(); }
 
@@ -41,6 +45,8 @@ public class Gpt_PlayerAttackState : MonoBehaviour
             bullets.Add(obj.GetComponent<HitManager>());
         }
         count = 0;
+        willScreenShake = false;
+        screenShaked = false;
         playerUtillity.audioSource.PlayOneShot(attackSound);
     }
 
@@ -80,6 +86,7 @@ public class Gpt_PlayerAttackState : MonoBehaviour
                             {
                                 if (CanDrawEnemy(enemyColor))
                                 {
+                                    willScreenShake = true;
                                     SetHitSound();
                                     DrawEnemy(enemyColor);
                                     SetHitEffect(data.hitPosition);
@@ -95,6 +102,12 @@ public class Gpt_PlayerAttackState : MonoBehaviour
                     }
                 }
             }
+        }
+        if(!screenShaked && count > screenShakeTime && willScreenShake)
+        {
+            Debug.Log("sahke" + Time.frameCount);
+            screenShaked = true;
+            playerUtillity.camera.SetScreenShake(hitScreenShake);
         }
         if(count > attackEndTime)
         {
