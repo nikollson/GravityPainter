@@ -129,12 +129,12 @@ public class Gpt_Camera : MonoBehaviour
                 stateStartFlg = false;
             }
 
-            if (this.transform.position.y < 12.0f)
+            if (this.transform.position.y < 9.0f)
             {
                 this.transform.position += new Vector3(0, Time.deltaTime, 0);
                 Update_Look(this.transform.position + new Vector3(0, 0, -1.0f));
             }
-            else if (this.transform.position.y < 12.1f)
+            else if (this.transform.position.y < 9.1f)
             {
                 this.transform.position += new Vector3(0, Time.deltaTime / 10.0f, 0);
                 Update_Look(this.transform.position + new Vector3(0, 0, -1.0f));
