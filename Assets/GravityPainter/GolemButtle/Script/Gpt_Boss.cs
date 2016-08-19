@@ -7,25 +7,40 @@ public class Gpt_Boss : MonoBehaviour {
     float hp = 10.0f;
     public GameObject hand1;
     public GameObject hand2;
-    public int state = 1;
+    public int state = 0;
+    float fallSpd = 10.0f;
+
+    float cnt = 0.0f;
+    const float CNTTIME = 20.0f;
 
     void Start () {
 	}
 	
 	void Update () {
 
-        if (state==0)
+        cnt += Time.deltaTime;
+
+        if (state == 0)
         {
             // 通常状態
+
+            if (cnt >= CNTTIME)
+            {
+                cnt = 0.0f;
+                state = 1;
+            }
+
         }
         else if (state == 1)
         {
-            this.transform.position += new Vector3(0, Time.deltaTime * 100.0f, 0);
+            this.transform.position += new Vector3(0, -Time.deltaTime* fallSpd, 0);
+            if(this.transform.position.y < -15.0f)
+            {
+                state = 0;
+                this.hp -= 2.5f;
+                this.transform.position = new Vector3(0,0.23f,0);
+            }
         }
-
-        this.transform.position += new Vector3(0, Time.deltaTime * 100.0f, 0);
-
-        Debug.Log("BOSS_STATE: "+state);
 	}
 
     public float GetMaxHp()
