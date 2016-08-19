@@ -28,7 +28,7 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
     bool CanLoadPhase()
     {
         changeWait -= Time.deltaTime;
-        return changeWait < 0 && enemyGravityManager.GetEnemyList().Count == 0 && currentfaseNum + 1 < PhaseEnemyParent.Length;
+        return changeWait < 0 && enemyGravityManager.GetEnemyList().Count <=1 && currentfaseNum + 1 < PhaseEnemyParent.Length;
     }
 
     void LoadPhase(int num)
@@ -51,7 +51,7 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
 
     bool IsEndPhase()
     {
-        return changeWait < 0 && enemyGravityManager.GetEnemyList().Count == 0;
+        return changeWait < 0 && enemyGravityManager.GetEnemyList().Count <= 1;
     }
 
     public bool IsEndAllPhase()
