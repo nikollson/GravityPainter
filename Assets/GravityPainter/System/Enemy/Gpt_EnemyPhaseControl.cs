@@ -58,4 +58,16 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
     {
         return IsEndPhase() && currentfaseNum + 1 >= PhaseEnemyParent.Length;
     }
+
+    public int GetPhaseNum()
+    {
+        return PhaseEnemyParent.Length;
+    }
+
+    public int GetPhaseEnemyNum(int num)
+    {
+        if (num < currentfaseNum) return 0;
+        if (num == currentfaseNum) return enemyGravityManager.GetEnemyList().Count;
+        return PhaseEnemyParent[num].transform.childCount;
+    }
 }
