@@ -10,10 +10,14 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
     public float detonateDoTime = 0.3f;
     public float friction = 400;
     public new Rigidbody rigidbody;
+    public float screenShakeTime = 1.4f;
+    public float screenShake = 0.6f;
+    public GameObject hamonPrefab;
 
     int inputFrame_log = 0;
     float detonateCount = 0;
     bool detonateDone = false;
+    bool hamoned = false;
 
     public bool CanStartDetonate(int inputFrame)
     {
@@ -58,6 +62,8 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
 
         playerInkManage.DoDetonateHeal(enemyPointSum);
         playerState.Detonate();
+
+        hamoned = false;
     }
 
     public void UpdateDetonate()
@@ -70,6 +76,16 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
         if (CanDetonate())
         {
             DoDetonate();            
+        }
+
+        if(detonateCount > screenShakeTime)
+        {
+            playerUtillity.camera.SetScreenShake(screenShake);
+            if (!hamoned)
+            {
+                var obj = (GameObject)Instantiate(hamonPrefab, this.transform.position, Quaternion.identity);
+                hamoned = true;
+            }
         }
 
     }
