@@ -27,7 +27,7 @@ public class Gpt_Boss : MonoBehaviour {
             if (cnt >= CNTTIME)
             {
                 cnt = 0.0f;
-                state = 1;
+                //state = 1;
             }
 
         }
