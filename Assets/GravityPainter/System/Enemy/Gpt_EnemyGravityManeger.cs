@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class Gpt_EnemyGravityManeger : MonoBehaviour {
 
     private List<Gpt_Enemy> EnemyList = new List<Gpt_Enemy>();
-
+    private Gpt_Enemy FirstEnemy;
+    private Vector3 FirstEnemyPosition;
     private List<Gpt_Exploder> ExplodeList = new List<Gpt_Exploder>();
     private List<Vector3> ExplodePosition = new List<Vector3>();
 
@@ -39,10 +40,22 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        
         //敵が一人以上いた時にカウントスタート
         if (EnemyList.Count > 0)
         {
             isFloor=true;
+            //一番目の敵を登録
+
+            for (int i = 0; i < EnemyList.Count; i++)
+            {
+                if (EnemyList[i].GetColor() != 0)
+                {
+                    FirstEnemy = EnemyList[i];
+                    FirstEnemyPosition=FirstEnemy.FirstEnemyPosition();
+                    break;
+                }
+            }
         }
 
         for (int i = 0; i < ExplodeList.Count; i++)
