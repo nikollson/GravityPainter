@@ -8,16 +8,19 @@ public class Gpt_Camera : MonoBehaviour
     /* 特殊カメラ状態 */
     public enum State {
         Normal = 0,
-        Door = 1
+        Door = 1,
+        BossStartMovie = 2,
+        BossBattle = 3,
     }
     public int state = (int)State.Normal;
     public GameObject door;
     public GameObject doorCamPosObj;
-    public GameObject bar1;
-    public GameObject bar2;
-    Vector3 bar1Pos = new Vector3(0.26f,1.04f,3.46f);
-    Vector3 bar2Pos = new Vector3(0.26f,-0.98f,3.27f);
+    public GameObject camStartPos;
     Vector3 notDrawPos = new Vector3(-10000, -10000, -10000);
+    bool stateStartFlg = true;
+    Vector3 firstPlayerPos;
+    public GameObject movieBar1;
+    public GameObject movieBar2;
 
     /* スティック入力情報変数 */
     float oldCamMoveX = 0.0f;           // スティックX移動量(1フレーム前)
@@ -29,6 +32,7 @@ public class Gpt_Camera : MonoBehaviour
 
     /* プレイヤー情報系 */
     public GameObject player;           // プレイヤー情報
+    public Vector3 playerZure;
     public float distanceXZ = 5.0f;     // プレイヤーとの距離倍率XZ
     public float distanceY = 5.0f;      // プレイヤーとの距離倍率Y
 
@@ -68,34 +72,86 @@ public class Gpt_Camera : MonoBehaviour
     public float addStopTimeY = 3.0f;   // 停止までの時間倍率(小さいほど長くなる)
     public float stopSpdY = 0.05f;      // 停止速度
 
+
+    /* 画面揺れ系 */
+    private Vector3 screenShake = Vector3.zero;
+    public float shakeFriction = 0.8f;
+    public float shakePowerFriction = 0.2f;
+    public float pushShakePower = 0.5f;
+    private float shakePower = 0;
+
     // -------------------------------------------------- 大元関数 -------------------------------------------------- //
 
     // 初期化関数
     void Start()
     {
+        firstPlayerPos = player.transform.position;
     }
 
     //レンダリング前更新関数
     void OnPreRender()
     {
         Update_Stick();
+        Update_ScreenShake();
 
         if (state == (int)State.Normal)
         {
-            bar1.transform.position = notDrawPos;
-            bar2.transform.position = notDrawPos;
-
             Update_Rotation();
             Update_Position();
-            Update_Look(player.transform.position);
+            Update_Look(player.transform.position + playerZure);
         }
         else if (state == (int)State.Door)
         {
-            bar1.transform.position = bar1.transform.position;
-            bar2.transform.position = bar2.transform.position;
-
             this.transform.position = doorCamPosObj.transform.position;
             Update_Look(door.transform.position);
+        }
+        else if (state == (int)State.BossBattle)
+        {
+            // 高い位置にいればカメラ操作しない
+            if (player.transform.position.y >= 15.0f)
+            {
+                Update_Position();
+                Update_Rotation();
+                Update_Look(player.transform.position);
+            }
+            else
+            {
+                this.transform.position = player.transform.position * 1.5f;
+                Update_Look(new Vector3(0, 2, 0));
+            }
+        }
+        else if (state == (int)State.BossStartMovie)
+        {
+            // 最初のみ場所を代入
+            if (stateStartFlg)
+            {
+                this.transform.position = camStartPos.transform.position;
+                stateStartFlg = false;
+            }
+
+            if (this.transform.position.y < 9.0f)
+            {
+                this.transform.position += new Vector3(0, Time.deltaTime, 0);
+                Update_Look(this.transform.position + new Vector3(0, 0, -1.0f));
+            }
+            else if (this.transform.position.y < 9.1f)
+            {
+                this.transform.position += new Vector3(0, Time.deltaTime / 10.0f, 0);
+                Update_Look(this.transform.position + new Vector3(0, 0, -1.0f));
+            }
+            else {
+                Vector3 vec = new Vector3(-0.05f, 19.935f, 40.329f) - this.transform.position;
+                this.transform.position += vec * Time.deltaTime;
+                Update_Look(this.transform.position + new Vector3(0, 0, -1.0f));
+                if(this.transform.position.z>firstPlayerPos.z) Update_Look(firstPlayerPos);
+
+                if (this.transform.position.z >= player.transform.position.z + distanceXZ*0.85f)
+                {
+                    state = (int)State.BossBattle;
+                    movieBar1.transform.position = notDrawPos;
+                    movieBar2.transform.position = notDrawPos;
+                }
+            }
         }
     }
 
@@ -133,6 +189,7 @@ public class Gpt_Camera : MonoBehaviour
     void Update_Look(Vector3 pos)
     {
         this.transform.LookAt(pos);
+        this.transform.Rotate(screenShake);
     }
 
     // -------------------------------------------------- 回転系関数 -------------------------------------------------- //
@@ -267,11 +324,30 @@ public class Gpt_Camera : MonoBehaviour
         if (rotY < MIN_ROTY) rotY = MIN_ROTY;
     }
 
+    // -------------------------------------------------- 画面揺れ -------------------------------------------------- //
+
+    void Update_ScreenShake()
+    {
+        Vector3 shakeAdd = new Vector3(randomAbs(shakePower), randomAbs(shakePower), 0);
+        screenShake = screenShake * shakeFriction + shakeAdd;
+        shakePower = shakePower * shakePowerFriction;
+    }
+
+    public void SetScreenShake(float shakePower)
+    {
+        this.shakePower = shakePower;
+    }
+
     // -------------------------------------------------- 補佐関数 -------------------------------------------------- //
 
     // 角度をラジアンに変換する関数
     float angToRad(float ang)
     {
         return ang / 180.0f * Mathf.PI;
+    }
+
+    float randomAbs(float value)
+    {
+        return Random.Range(-value, value);
     }
 }

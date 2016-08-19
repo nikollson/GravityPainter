@@ -22,12 +22,18 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerDetonate playerDetonate;
     public Gpt_PlayerInkManage playerInkManage;
     public Gpt_PlayerDeadAction playerDead;
+    public Gpt_PlayerRespawn playerRespawn;
 
     // プレイヤーの状態管理
     public enum MODE { WAIT, RUN, ATTACK, ROTATE, SKILL, JUMP, FEEVER, AIR, DETONATE, DEAD };
     public enum ATTACK_DIRECTION { RIGHT, LEFT };
     public MODE Mode { get; private set; }
     public ATTACK_DIRECTION AttackDirection { get; private set; }
+
+    void Start()
+    {
+        //playerRespawn.MakeFloor();
+    }
 
     void Update()
     {
@@ -62,6 +68,7 @@ public class Gpt_Player : MonoBehaviour
         if (!state.IsDead())
         {
             this.transform.position = position;
+            playerRespawn.DoRespawn();
         }
     }
 
@@ -93,6 +100,7 @@ public class Gpt_Player : MonoBehaviour
     {
         Mode = MODE.ATTACK;
         playerAttack.StartAttack(mode, Gpt_Input.AttackStartFrame);
+        playerAttackState.StartBullet(this.transform.right);
         AttackDirection = dir;
         trailControl.StartTrail(playerColor.Color);
         playerInkManage.UseAttak();
