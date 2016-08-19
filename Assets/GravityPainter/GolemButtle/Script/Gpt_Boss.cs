@@ -3,15 +3,23 @@ using System.Collections;
 
 public class Gpt_Boss : MonoBehaviour {
 
+    enum State
+    {
+        Wait = 0,
+        Search,
+        Fall,
+        Atk1,
+        Atk2,
+        Atk3, 
+    }
+    State state = (int)State.Wait;
+
     const float maxHp = 10.0f;
     float hp = 10.0f;
     public GameObject hand1;
     public GameObject hand2;
-    public int state = 0;
     float fallSpd = 10.0f;
-
     float cnt = 0.0f;
-    const float CNTTIME = 20.0f;
 
     void Start () {
 	}
@@ -20,18 +28,11 @@ public class Gpt_Boss : MonoBehaviour {
 
         cnt += Time.deltaTime;
 
-        if (state == 0)
+        if (state == State.Wait)
         {
-            // 通常状態
-
-            if (cnt >= CNTTIME)
-            {
-                cnt = 0.0f;
-                //state = 1;
-            }
-
+            //
         }
-        else if (state == 1)
+        else if (state == State.Fall)
         {
             this.transform.position += new Vector3(0, -Time.deltaTime* fallSpd, 0);
             if(this.transform.position.y < -15.0f)
@@ -57,15 +58,4 @@ public class Gpt_Boss : MonoBehaviour {
     {
         hp += plus;
     }
-
-    //void OnTriggerEnter(Collider c)
-    //{
-    //    if (c.tag != "Player" && c.tag != "Enemy")
-    //    {
-    //        Debug.Log("AA");
-    //    }
-
-    //    Debug.Log("AAaaa");
-
-    //}
 }
