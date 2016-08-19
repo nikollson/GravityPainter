@@ -105,7 +105,6 @@ public class Gpt_PlayerAttackState : MonoBehaviour
         }
         if(!screenShaked && count > screenShakeTime && willScreenShake)
         {
-            Debug.Log("sahke" + Time.frameCount);
             screenShaked = true;
             playerUtillity.camera.SetScreenShake(hitScreenShake);
         }

@@ -10,7 +10,7 @@ using UnityEditor;
 public class Gpt_YukaManager : MonoBehaviour {
 
 
-    public enum ExplosionMode { WAY4, WAY8 };
+    public enum ExplosionMode { WAY4, WAY8, BOSS_GOLEM };
 
     [Button("MakeTile", "MakeTiles")]
     [SerializeField]
@@ -24,6 +24,7 @@ public class Gpt_YukaManager : MonoBehaviour {
     public VisualSetting visualSetting;
     public ReadTileSetting readSetting;
     public TileSetting tileSetting;
+    public GolemSetting golemSetting;
 
     private Gpt_YukaParts[] yukaParts;
     private Gpt_YukaBox[,] tiles;
@@ -42,18 +43,32 @@ public class Gpt_YukaManager : MonoBehaviour {
 
         int w = 0;
         int h = 0;
-        foreach(var a in boxes)
+        foreach (var a in boxes)
         {
             Q coordinate = GetCoordinate(a.transform.localPosition);
-            w = Mathf.Max(w, coordinate.x);
-            h = Mathf.Max(h, coordinate.y);
+            w = Mathf.Max(w, Mathf.Abs(coordinate.x));
+            h = Mathf.Max(h, Mathf.Abs(coordinate.y));
         }
 
-        tiles = new Gpt_YukaBox[h + 1, w + 1];
-        foreach(var a in boxes)
+
+        if (explosionMode != ExplosionMode.BOSS_GOLEM)
         {
-            Q coordinate = GetCoordinate(a.transform.localPosition);
-            tiles[coordinate.y, coordinate.x] = a;
+            tiles = new Gpt_YukaBox[h + 1, w + 1];
+
+            foreach (var a in boxes)
+            {
+                Q coordinate = GetCoordinate(a.transform.localPosition);
+                tiles[Mathf.Abs(coordinate.y), Mathf.Abs(coordinate.x)] = a;
+            }
+        }
+
+        if(explosionMode == ExplosionMode.BOSS_GOLEM)
+        {
+            tiles = new Gpt_YukaBox[1, boxes.Count + 1];
+            for(int i = 0; i < boxes.Count; i++)
+            {
+                tiles[0, i] = boxes[i];
+            }
         }
     }
     
@@ -86,7 +101,50 @@ public class Gpt_YukaManager : MonoBehaviour {
         }
     }
 
-    public void DoExplode(Gpt_InkColor color ,Vector3 point, float radius)
+    public void DoExplode(Gpt_InkColor color, Vector3 point, float radius)
+    {
+        if (explosionMode != ExplosionMode.BOSS_GOLEM) DoExplode_Way(color, point, radius);
+        if (explosionMode == ExplosionMode.BOSS_GOLEM) DoExplode_Golem(color, point, radius);
+    }
+
+    void DoExplode_Golem(Gpt_InkColor color, Vector3 point, float radius)
+    {
+        var list = new List<Gpt_YukaBox>();
+        int h = tiles.GetLength(0);
+        int w = tiles.GetLength(1);
+
+        for (int i = 0; i < h; i++)
+        {
+            for (int j = 0; j < w; j++)
+            {
+                if (tiles[i, j] == null) continue;
+                if (tiles[i, j].Color != color) continue;
+                if (!tiles[i, j].CanSetExplode()) continue;
+                list.Add(tiles[i, j]);
+            }
+        }
+        float angle = Mathf.Atan2(point.z, point.x) / Mathf.PI * 180;
+
+
+        foreach(var a in list)
+        {
+            float tangle = Mathf.Atan2(a.transform.parent.position.z, a.transform.parent.position.x) / Mathf.PI * 180;
+            float angleDist = AngleDistDigree(tangle, angle);
+
+            if (a.Color == color && angleDist  < golemSetting.angleDist)
+            {
+                int timing = 10;
+                SetExplode(a, timing);
+            }
+        }
+    }
+
+    float AngleDistDigree(float a, float b)
+    {
+        return Mathf.Min(Mathf.Abs(a - b), Mathf.Abs(a + 360 - b), Mathf.Abs(b + 360 - a));
+    }
+
+    void DoExplode_Way(Gpt_InkColor color, Vector3 point, float radius)
     {
         var list = new List<Gpt_YukaBox>();
         Queue<Q> que = new Queue<Q>();
@@ -105,11 +163,12 @@ public class Gpt_YukaManager : MonoBehaviour {
             }
         }
 
+
         int[,] visit = new int[h, w];
         for (int i = 0; i < h; i++) for (int j = 0; j < w; j++) visit[i, j] = 0;
 
 
-        for(int i = 0; i < 10000; i++)
+        for (int i = 0; i < 10000; i++)
         {
             if (que.Count == 0) break;
 
@@ -123,7 +182,7 @@ public class Gpt_YukaManager : MonoBehaviour {
             int[] dx = { 1, 0, -1, 0 };
             int[] dy = { 0, 1, 0, -1 };
 
-            if(explosionMode == ExplosionMode.WAY8)
+            if (explosionMode == ExplosionMode.WAY8)
             {
                 dx = new int[] { -1, -1, -1, 0, 0, 1, 1, 1 };
                 dy = new int[] { -1, 0, 1, 1, -1, 1, 0, -1 };
@@ -137,15 +196,14 @@ public class Gpt_YukaManager : MonoBehaviour {
                 if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
                 if (visit[ny, nx] == 1) continue;
                 if (tiles[ny, nx] == null) continue;
-                if(tiles[u.y, u.x].Color != tiles[ny, nx].Color) continue;
+                if (tiles[u.y, u.x].Color != tiles[ny, nx].Color) continue;
 
                 que.Enqueue(new Q(nx, ny, u.count + 1));
             }
 
         }
-
     }
-
+    
 
     void SetExplode(Gpt_YukaBox yukaBox, int timing)
     {
@@ -375,5 +433,11 @@ public class Gpt_YukaManager : MonoBehaviour {
 
             return materials[materialNum];
         }
+    }
+
+    [System.Serializable]
+    public class GolemSetting
+    {
+        public float angleDist = 40;
     }
 }
