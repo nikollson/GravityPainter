@@ -80,9 +80,9 @@ public class Gpt_Enemy : MonoBehaviour {
     public float waveExplodeSpeed = 3f;
 
     //吹っ飛ぶ時のスピード
-    public float forceSpeed;
+    public float forceSpeed=700f;
     //吹っ飛ぶ時の高さ
-    public float forceHeight;
+    public float forceHeight=6f;
     private bool isForce;
     //力がかかる時間
     public float forceTime;
@@ -91,6 +91,8 @@ public class Gpt_Enemy : MonoBehaviour {
     private bool isDeath;
     private bool isDeath2;
 
+    //転倒パラメータ
+    public float faliingTime=8f;
     // Use this for initialization
     void Start () {
 
@@ -174,7 +176,6 @@ public class Gpt_Enemy : MonoBehaviour {
         }
         else if (damageFlag)//爆風の点滅処理
         {
-            damageCount+=0.1f;
             EnemyColor.IsDamage();
             EnemyAttack.StopAttack();
             Vector3 waveVec = (waveExploderPosition - this.transform.position).normalized;
@@ -183,9 +184,14 @@ public class Gpt_Enemy : MonoBehaviour {
             rigid.isKinematic = false;
             waveVec.y = -1f + motionTime2;
             //爆風でふっとぶ調整
-
-            WaveForce(waveVec);
+            if (damageCount == 0f)
+            {
+                waveVec.y = 0;
+                rigid.AddForce(waveVec * forceSpeed/4, ForceMode.VelocityChange);
+                rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
+            }
             
+            damageCount += 0.1f;
             if (damageCount > damageTime)
             {
                 EnemyColor.IsDamageFalse();
@@ -232,28 +238,34 @@ public class Gpt_Enemy : MonoBehaviour {
             {
                 //色を戻す
                 SetColor(0);
-                if (motionTime2 == 0)
-                {
-                    hitPoint--;
-                    if (hitPoint <= 0)
-                    {
-                        isDeath=true;
-                    }
-                }
+                
                 if (getExploder != null)
                 {
                     Gpt_Exploder explodeScript = getExploder.GetComponent<Gpt_Exploder>();
                     explodeScript.IsAfterExplode();
                 }
                 //吹っ飛ぶスピード、高さ
-                WaveForce(exVec);
-                motionTime2 += 0.2f;
+                //WaveForce(exVec);
+                
+                
+                
                 coll.enabled = true;
                 rigid.useGravity = true;
                 rigid.isKinematic = false;
-                exVec.y = -1f + motionTime2;
-                
-                
+                //exVec.y = -1f + motionTime2;
+
+                if (motionTime2 == 0)
+                {
+                    hitPoint--;
+                    if (hitPoint <= 0)
+                    {
+                        isDeath = true;
+                        exVec.y=0;
+                        rigid.AddForce(exVec * forceSpeed, ForceMode.VelocityChange);
+                        rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
+                    }
+                }
+                motionTime2 += 0.2f;
                 EnemyColor.IsDamage();
 
                 
@@ -313,13 +325,19 @@ public class Gpt_Enemy : MonoBehaviour {
             preserveZ = this.transform.position.z;
             preserveVec = gravityVec;
             EnemyAttack.StopAttack();
+
+            //転ばせる
+            Character.enabled = false;
+            rigid.isKinematic = false;
+            rigid.useGravity = true;
+            rigid.AddForce(-this.transform.forward * faliingTime, ForceMode.VelocityChange);
         }
         //Debug.Log("Gravity");
         gravityFlag = true;
 
         if(!isExplode){
             Speed(0);
-            //始めは小刻みに震える
+            //始めは小刻みに震える(8/19暫定無し)
             if (gravityTime < 2f)
             {
                 shakeFlag = true;
@@ -329,8 +347,9 @@ public class Gpt_Enemy : MonoBehaviour {
                 rigid.useGravity = true;
                 float x_temp = Random.Range(-0.2f, 0.2f);
                 float z_temp = Random.Range(-0.2f, 0.2f);
-                this.transform.position=new Vector3(preserveX+x_temp,this.transform.position.y,
-                    preserveZ+ z_temp);
+                
+                //this.transform.position=new Vector3(preserveX+x_temp,this.transform.position.y,
+                    //preserveZ+ z_temp);
             }
             else
             {
@@ -471,10 +490,12 @@ public class Gpt_Enemy : MonoBehaviour {
     public void WaveForce(Vector3 vec)
     {
         forceTimeTemp += 0.1f;
-        vec.y = 0;
+        //vec.y = 0;
         if (forceTimeTemp < forceTime)
         {
+            vec.y = 0;
             rigid.AddForce(vec * forceSpeed, ForceMode.VelocityChange);
+            rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
         }
         else
         {
