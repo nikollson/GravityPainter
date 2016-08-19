@@ -93,6 +93,16 @@ public class Gpt_Enemy : MonoBehaviour {
 
     //転倒パラメータ
     public float faliingTime=8f;
+
+    //起点敵の位置
+    private Vector3 firstVector;
+    private bool firstEnemy;
+
+    //始めの敵が空中に浮かび上がる高さ
+    public float firstHeight;
+
+    //
+
     // Use this for initialization
     void Start () {
 
@@ -162,6 +172,18 @@ public class Gpt_Enemy : MonoBehaviour {
         if (temp > 10f) {
             //IsExplode();
         }
+
+        //始めの敵ならその位置固定
+        if (firstEnemy)
+        {
+            Speed(0);
+            EnemyAttack.StopAttack();
+            Vector3 firstTemp=new Vector3(0,firstHeight,0);
+            this.transform.position = firstVector;
+            Debug.Log("first");
+            this.transform.position = Vector3.Lerp(firstVector, firstVector + firstTemp, 0.5f);
+        }
+
         if (gravityFlag)
         {
             gravityTime += 0.1f;
@@ -170,8 +192,13 @@ public class Gpt_Enemy : MonoBehaviour {
             firmCount += 0.1f;
             if (firmCount > firmTime&&!isExplode)
             {
-                EnemyReset();
-                SetColor(0);
+                //始めの敵ならはがれない
+                if (!firstEnemy)
+                {
+                    EnemyReset();
+                    SetColor(0);
+                }
+                
             }
         }
         else if (damageFlag)//爆風の点滅処理
@@ -358,6 +385,7 @@ public class Gpt_Enemy : MonoBehaviour {
                 {
                     EnemyAttack.StopAttack();
                 }
+                
                 rigid.AddForce(-gravityVec * gravity, ForceMode.VelocityChange);
             }
             
@@ -453,6 +481,7 @@ public class Gpt_Enemy : MonoBehaviour {
         motionTime2 = 0;
         revivalCount = 0;
         firmCount = 0;
+        firstEnemy = false;
     }
 
     //爆風のダメージ
@@ -501,5 +530,13 @@ public class Gpt_Enemy : MonoBehaviour {
         {
             forceTimeTemp = 0;
         }
+    }
+
+    public Vector3 FirstEnemyPosition()
+    {
+        
+        firstEnemy = true;
+        firstVector = this.transform.position;
+        return this.transform.position;
     }
 }

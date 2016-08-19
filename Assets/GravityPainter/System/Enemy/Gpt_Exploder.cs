@@ -12,9 +12,19 @@ public class Gpt_Exploder : MonoBehaviour {
 
     private Gpt_YukaManager YukaManager;
     public float explodeArea=20f;
+    //爆破エフェクト
     public GameObject Explosion_red;
     public GameObject Explosion_blue;
     public GameObject Explosion_yellow;
+
+    //上昇エフェクト
+    public GameObject Explosion_dust;
+
+    //下降エフェクト
+    public GameObject Explosion_Flare;
+
+    private bool isDust;
+    private bool isFlare;
 
     public Rigidbody rigid;
     //バグ防止
@@ -75,9 +85,20 @@ public class Gpt_Exploder : MonoBehaviour {
                 if (!isExplodeMotion1)
                 {
                     this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + explodeUpSpeed, this.transform.position.z);
+                    if (!isDust)
+                    {
+                        Instantiate(Explosion_dust, this.transform.position, Quaternion.identity);
+                        isDust = true;
+                    }
                 }else
                 {
                     this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - explodeUnderSpeed, this.transform.position.z);
+                    if (!isFlare)
+                    {
+                        Instantiate(Explosion_Flare, this.transform.position-new Vector3(0,2f,0), Quaternion.identity);
+                        isFlare = true;
+                    }
+                    
                 }
 
             } else if (!isDestroy)
