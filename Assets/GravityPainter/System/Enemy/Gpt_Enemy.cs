@@ -101,6 +101,8 @@ public class Gpt_Enemy : MonoBehaviour {
     //始めの敵が空中に浮かび上がる高さ
     public float firstHeight;
 
+    //
+
     // Use this for initialization
     void Start () {
 
@@ -383,6 +385,7 @@ public class Gpt_Enemy : MonoBehaviour {
                 {
                     EnemyAttack.StopAttack();
                 }
+                
                 rigid.AddForce(-gravityVec * gravity, ForceMode.VelocityChange);
             }
             
