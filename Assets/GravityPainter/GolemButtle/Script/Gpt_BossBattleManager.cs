@@ -7,6 +7,8 @@ public class Gpt_BossBattleManager : MonoBehaviour {
     public float fallY = -20.0f;
     public Vector3 playerResPos;
 
+    public GameObject enemy;
+
     void Start () {
 	}
 	
