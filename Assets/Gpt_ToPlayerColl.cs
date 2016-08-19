@@ -11,8 +11,8 @@ public class Gpt_ToPlayerColl : MonoBehaviour {
 	void Update () {
     }
 
-    void OnTriggerEnter()
+    void OnTriggerEnter(Collider c)
     {
-        player.GetComponent<Gpt_PlayerState>().AddHPDamage(6);
+        if(c.tag=="Player") player.GetComponent<Gpt_PlayerState>().AddHPDamage(3);
     }
 }
