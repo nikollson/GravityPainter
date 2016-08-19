@@ -87,7 +87,11 @@ public class Gpt_Exploder : MonoBehaviour {
                     this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + explodeUpSpeed, this.transform.position.z);
                     if (!isDust)
                     {
-                        Instantiate(Explosion_dust, this.transform.position, Quaternion.identity);
+                        if (Explosion_dust != null)
+                        {
+                            Instantiate(Explosion_dust, this.transform.position, Quaternion.identity);
+                        }
+                        
                         isDust = true;
                     }
                 }else
