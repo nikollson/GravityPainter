@@ -20,6 +20,7 @@ public class Gpt_Boss : MonoBehaviour {
 
         cnt += Time.deltaTime;
 
+        state = 0;
         if (state == 0)
         {
             // 通常状態
