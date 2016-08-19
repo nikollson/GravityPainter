@@ -6,6 +6,7 @@ public class Gpt_PlayerUtillity : MonoBehaviour
     public Gpt_EnemyGravityManeger gravityManager;
     public Gpt_Camera camera;
     public HitManager footCollider;
+    public AudioSource audioSource;
     public float ignoreFootColliderTime = 0.1f;
     float ignoreFootColliderCount = 100;
 

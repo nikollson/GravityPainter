@@ -100,12 +100,18 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
         {
             if (doorSystem != null)
             {
-                doorSystem.OpenDoor();
+                //doorSystem.OpenDoor();
             }
             
         }
 
         //Debug.Log(EnemyList.Count);
+    }
+
+
+    public List<Gpt_Enemy> GetEnemyList()
+    {
+        return EnemyList;
     }
 
     public int GetRestEnemy()
@@ -167,6 +173,7 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
                 {
                     //引力状態にない敵のみダメージ
                     if(!EnemyList[j].GetGravity()){
+                        EnemyList[j].SetWavePosition(ExplodeList[i].GetPosition());
                         EnemyList[j].ExplodeDamage(1);
                     }
                     
@@ -187,8 +194,6 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
     public void RemoveEnemyList(Gpt_Enemy Enemy)
     {
         EnemyList.Remove(Enemy);
-        //フロアで倒した敵を加算
-        enemyNumCount++;
     }
 
     public int ListIndex(Gpt_Enemy Enemy)
@@ -216,6 +221,18 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
     public void RemoveExplodePosition(Vector3 position)
     {
         ExplodePosition.Remove(position);
+    }
+
+    //現在のエネミー数を返す
+    public int EnemyCount()
+    {
+        return EnemyList.Count;
+    }
+
+    public void ReduceNumCount()
+    {
+        //フロアで倒した敵を加算
+        enemyNumCount++;
     }
 
 }
