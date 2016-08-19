@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class Gpt_EnemyPhaseControl : MonoBehaviour {
 
     public Gpt_EnemyGravityManeger enemyGravityManager;
-    public GameObject[] PhaseEnemyParent;
+    public Gpt_EnemyAppearans[] PhaseEnemyParent;
     public float loadEnemyTime = 3f;
     int currentfaseNum = -1;
     float loadPhaseCount = 0;
@@ -45,7 +45,7 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
         if (!loaded && loadPhaseCount > loadEnemyTime)
         {
             loaded = true;
-            PhaseEnemyParent[currentfaseNum].SetActive(true);
+            PhaseEnemyParent[currentfaseNum].gameObject.SetActive(true);
         }
     }
 

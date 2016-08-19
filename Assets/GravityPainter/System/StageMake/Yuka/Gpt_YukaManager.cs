@@ -29,6 +29,8 @@ public class Gpt_YukaManager : MonoBehaviour {
     private Gpt_YukaParts[] yukaParts;
     private Gpt_YukaBox[,] tiles;
 
+    
+
     void Start()
     {
         yukaParts = tileParent.GetComponentsInChildren<Gpt_YukaParts>();
@@ -70,6 +72,20 @@ public class Gpt_YukaManager : MonoBehaviour {
                 tiles[0, i] = boxes[i];
             }
         }
+
+        /*
+        string s = "";
+        for(int i = 0; i < h; i++)
+        {
+            for (int j = 0; j < w; j++)
+            {
+                s += tiles[i, j] == null ? "   " : "" + tiles[i, j].Color;
+                s += " ";
+            }
+            s += "\n";
+        }
+        Debug.Log(s);
+        */
     }
     
     public void DoExplode(int color, Vector3 point, float radius)
@@ -220,7 +236,46 @@ public class Gpt_YukaManager : MonoBehaviour {
         return new Q((int)(localPosition.z / tileSize + 0.4999), (int)(-localPosition.x / tileSize + 0.4999));
     }
 
+    public Vector2 GetTileCordinate(Vector3 position)
+    {
+        int h = tiles.GetLength(0);
+        int w = tiles.GetLength(1);
 
+        int neari = 0;
+        int nearj = 0;
+        float mini = 1000000000;
+
+
+        for(int i = 0; i < h; i++)
+        {
+            for (int j = 0; j < w; j++)
+            {
+                if (tiles[i, j] == null) continue;
+                float dist = (tiles[i, j].transform.position - position).magnitude;
+                if (mini > dist)
+                {
+                    mini = dist;
+                    neari = i;
+                    nearj = j;
+                }
+            }
+        }
+        return new Vector2(nearj, neari);
+    }
+
+    public bool HasTile(Vector3 position)
+    {
+        Vector2 cd = GetTileCordinate(position);
+        Gpt_YukaBox tile = tiles[(int)cd.y, (int)cd.x];
+        if (tile == null) return false;
+        if (!tile.CanSetExplode()) return false;
+
+        Vector3 dist = tile.transform.position - position;
+        dist.y = 0;
+
+        return dist.magnitude < tileSize * 1.1;
+    }
+    
 
 #if UNITY_EDITOR
     void MakeTile()

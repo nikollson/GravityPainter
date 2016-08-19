@@ -12,6 +12,7 @@ public class Gpt_Enemy : MonoBehaviour {
     private Gpt_EnemyGravityManeger EnemyGravityManeger;
 
     private CharacterController Character;
+    public bool IsTop { get; private set; }
 
     //雑魚パターン(0:近接 1:遠隔)
     public int enemyPattern=0;
@@ -173,6 +174,12 @@ public class Gpt_Enemy : MonoBehaviour {
             //IsExplode();
         }
 
+
+        if (IsTop)
+        {
+            this.transform.position = topSettedPosition;
+        }
+
         //始めの敵ならその位置固定
         if (firstEnemy)
         {
@@ -288,9 +295,11 @@ public class Gpt_Enemy : MonoBehaviour {
                     {
                         isDeath = true;
                         exVec.y=0;
-                        rigid.AddForce(exVec * forceSpeed, ForceMode.VelocityChange);
-                        rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
+                        
                     }
+                    exVec.y = 0;
+                    rigid.AddForce(exVec * forceSpeed, ForceMode.VelocityChange);
+                    rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
                 }
                 motionTime2 += 0.2f;
                 EnemyColor.IsDamage();
@@ -482,6 +491,7 @@ public class Gpt_Enemy : MonoBehaviour {
         revivalCount = 0;
         firmCount = 0;
         firstEnemy = false;
+        IsTop = false;
     }
 
     //爆風のダメージ
@@ -538,5 +548,12 @@ public class Gpt_Enemy : MonoBehaviour {
         firstEnemy = true;
         firstVector = this.transform.position;
         return this.transform.position;
+    }
+
+    Vector3 topSettedPosition;
+    public void SetTop()
+    {
+        topSettedPosition = this.transform.position + new Vector3(0,1,0);
+        IsTop = true;
     }
 }
