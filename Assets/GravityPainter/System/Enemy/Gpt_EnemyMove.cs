@@ -9,6 +9,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
     //走行スピード
     public float enemySpeed;
     private float preserveEnemySpeed;
+    public NavMeshAgent navMesh;
     //加速
     public float enemyAccelerate;
     private float enemyTemp;
@@ -123,13 +124,23 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 {
                     if (!EnemyAttack.GetAttack())
                     {
-                        moveVec = Vector3.Slerp(moveVec, player.transform.position - this.transform.position, 0.75f);
+                        //moveVec = Vector3.Slerp(moveVec, player.transform.position - this.transform.position, 0.75f);
+                        moveVec = player.transform.position - this.transform.position;
                         preserveVec=moveVec;
+                        if (navMesh!=null)
+                        {
+                            navMesh.enabled = true;
+                        }
+                        
                     }
                     else
                     {
                         //攻撃モーション時は直線
                         moveVec = preserveVec;
+                        if (navMesh != null)
+                        {
+                            navMesh.enabled = false;
+                        }
                     }
                     //moveVec = player.transform.position - this.transform.position;
                     moveVec = moveVec.normalized;
@@ -155,10 +166,17 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         
                     }
 
+                    if (navMesh != null && navMesh.enabled)
+                    {
+                        enemyTemp = 0;
+                    }
+
                     if (isAbyss)
                     {
                         enemyTemp = 0;
                     }
+
+                    
                     enemyMove.x = moveVec.x * enemyTemp;
                     enemyMove.y = gravity;
                     enemyMove.z = moveVec.z * enemyTemp;
