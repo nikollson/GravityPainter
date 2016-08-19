@@ -18,6 +18,7 @@ public class Gpt_Boss : MonoBehaviour {
     const float maxHp = 10.0f;
     float hp = 10.0f;
 
+    Vector3 toPlayerVec;        // プレイヤーまでのベクトル
     public GameObject hand1;
     public GameObject hand2;
 
@@ -27,7 +28,7 @@ public class Gpt_Boss : MonoBehaviour {
     float magmaDmg = 2.5f;
     float cnt = 0.0f;
     public Vector3 firstBossPos;
-
+    public GameObject player;
 
     void Start () {
 	}
@@ -35,6 +36,7 @@ public class Gpt_Boss : MonoBehaviour {
 	void Update () {
 
         cnt += Time.deltaTime;
+        toPlayerVec = player.transform.position - this.transform.position;
 
         // 最初の行動パターン
         if (state == State.Wait)
@@ -82,15 +84,13 @@ public class Gpt_Boss : MonoBehaviour {
         }
         else if (state == State.Atk1)
         {
-
+            // プレイヤーまでの方向ベクトルから角度を計算する
         }
         else if (state == State.Atk2)
         {
-
         }
         else if (state == State.Atk3)
         {
-
         }
     }
 
