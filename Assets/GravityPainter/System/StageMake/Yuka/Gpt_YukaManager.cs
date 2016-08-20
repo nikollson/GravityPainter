@@ -88,6 +88,14 @@ public class Gpt_YukaManager : MonoBehaviour {
         */
     }
     
+    void Update()
+    {
+        if (Gpt_Input.MovePush)
+        {
+            ReverseAllTiles();
+        }
+    }
+
     public void DoExplode(int color, Vector3 point, float radius)
     {
         Gpt_InkColor inkColor = Gpt_InkColor.NONE;
@@ -220,6 +228,14 @@ public class Gpt_YukaManager : MonoBehaviour {
 
         }
     }
+
+    public void ReverseAllTiles()
+    {
+        foreach(var a in tiles)
+        {
+            a.ReverseTile();
+        }
+    }
     
 
     void SetExplode(Gpt_YukaBox yukaBox, int timing)
@@ -267,6 +283,7 @@ public class Gpt_YukaManager : MonoBehaviour {
 
     public bool HasTile(Vector3 position)
     {
+        if (tiles == null) return false;
         Vector2 cd = GetTileCordinate(position);
         Gpt_YukaBox tile = tiles[(int)cd.y, (int)cd.x];
         if (tile == null) return false;
