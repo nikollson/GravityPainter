@@ -42,19 +42,20 @@ public class Gpt_PlayerState : MonoBehaviour
 
     public void DoRespawn(bool addHpDamage)
     {
-        if (addHpDamage) AddHPDamage(respawnDamage);
+        if (addHpDamage) AddHPDamage(respawnDamage, false);
     }
 
     // プロパティをいじる関数
     public void AddHP(int value) { HP = intValueLimit(0, HPMax, HP + value); }
-    public void AddHPDamage(int value)
+    public void AddHPDamage(int value, bool setMuteki = true)
     {
         if (!IsMuteki)
         {
             AddHP(-value);
-            mutekiCount = 0;
+            if(setMuteki) mutekiCount = 0;
         }
     }
+
     public void AddFeever(float value) { Feever = floatValueLimit(0f, feeverMax, Feever + value); }
 
     public void StartFeever() { IsFeever = true; }
