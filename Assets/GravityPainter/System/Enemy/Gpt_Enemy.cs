@@ -120,7 +120,7 @@ public class Gpt_Enemy : MonoBehaviour {
         EnemyMove.SetVecter(this.transform.forward);
         int temp= Random.Range(0, 1); 
         EnemyColor.SetColor(temp);
-        player= = GameObject.Find("Player");
+        player = GameObject.Find("Player");
         Character = this.GetComponent<CharacterController>();
         //Debug.Log(EnemyGravityManeger.ListIndex(this));
     }
@@ -398,7 +398,7 @@ public class Gpt_Enemy : MonoBehaviour {
             Character.enabled = false;
             rigid.isKinematic = false;
             rigid.useGravity = false;
-            rigid.AddForce(-this.transform.forward * faliingTime, ForceMode.VelocityChange);
+            rigid.AddForce(player.transform.right * faliingTime, ForceMode.VelocityChange);
         }
         //Debug.Log("Gravity");
         gravityFlag = true;
