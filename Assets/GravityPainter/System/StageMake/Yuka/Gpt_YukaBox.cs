@@ -5,6 +5,8 @@ public class Gpt_YukaBox : MonoBehaviour {
 
     public Renderer renderer;
     public new Collider collider;
+    public NavMeshObstacle navMeshObstacle;
+    
     
     public int HP { get; private set; }
     public Gpt_InkColor Color { get; private set; }
@@ -50,6 +52,7 @@ public class Gpt_YukaBox : MonoBehaviour {
         fallStartY = this.transform.position.y;
         renderer.enabled = false;
         collider.enabled = false;
+        navMeshObstacle.enabled = true;
         this.transform.position += new Vector3(0, -tileSetting.fallDistance, 0);
         isFalling = true;
         isReversing = false;
@@ -67,6 +70,7 @@ public class Gpt_YukaBox : MonoBehaviour {
     void EndFall2()
     {
         this.transform.position = new Vector3(this.transform.position.x, fallStartY, this.transform.position.z);
+        navMeshObstacle.enabled = false;
         fallCount = 0;
     }
     

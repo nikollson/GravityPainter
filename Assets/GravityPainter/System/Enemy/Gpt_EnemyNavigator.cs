@@ -8,7 +8,7 @@ public class Gpt_EnemyNavigator : MonoBehaviour {
     public NavMeshAgent navigator;
 	// Use this for initialization
 	void Start () {
-        
+        target = GameObject.FindWithTag("Player").transform;
 	}
 	
 	// Update is called once per frame
