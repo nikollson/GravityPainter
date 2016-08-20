@@ -10,6 +10,7 @@ public class Gpt_PlayerState : MonoBehaviour
     public int HPMax = 12;
     public float feeverMax = 1;
     public float mutekiTime = 1.0f;
+    public float damageTime = 0.1f;
     public int respawnDamage = 4;
     
     public ComboControlSetting comboSetting;
@@ -74,14 +75,14 @@ public class Gpt_PlayerState : MonoBehaviour
     public void AddYellowCombo() { yellowCombo.AddCombo(); }
     public void AddRainbowCombo() { Debug.Log("RaibowColorComboとは?"); }
 
-    public bool IsDead()
-    {
-        return HP <= 0;
-    }
+    public bool IsDead() { return HP <= 0; }
+    public bool IsDamaging() { return mutekiCount < damageTime; }
 
     public void MaxStatusSet()
     {
+        float inf = 10000000;
         HP = HPMax;
+        mutekiCount = inf;
     }
     
     void Start()
