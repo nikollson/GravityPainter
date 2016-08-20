@@ -38,13 +38,10 @@ public class Gpt_Boss : MonoBehaviour {
         cnt += Time.deltaTime;
         toPlayerVec = player.transform.position - this.transform.position;
 
-<<<<<<< HEAD
         state = 0;
         if (state == 0)
-=======
         // 最初の行動パターン
         if (state == State.Wait)
->>>>>>> origin/Matsui3
         {
             // 乱数生成
             float rnd = Random.Range(0.0f, 1.0f);
