@@ -74,6 +74,10 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
     private float breakTime;
 
+    //ナビゲーション用に回転するベクトルを保存するための変数
+    private Vector3 beforePosition;
+    private Vector3 afterPosition;
+
     // Use this for initialization
     void Start()
     {
@@ -82,6 +86,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
         myTransform = transform;
         enemyVector= new Vector3(0, 0, 0);
         preserveEnemySpeed = enemySpeed;
+        beforePosition = this.transform.position;
     }
 
     // Update is called once per frame
@@ -154,9 +159,25 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     move = 0;
                 }
                 //Debug.Log("Beforenemy:" + enemyTemp);
-                float angle = Mathf.Atan2(moveVec.z, moveVec.x);
-                ////移動方向に回転
-                this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle)+90, 0));
+
+                if (navMesh.enabled)
+                {
+                    //ナビゲーション用に回転
+                    afterPosition = this.transform.position;
+                    Vector3 rotateVector = afterPosition - beforePosition;
+                    rotateVector = rotateVector.normalized;
+                    float angle = Mathf.Atan2(rotateVector.z, rotateVector.x);
+                    ////移動方向に回転
+                    this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle) + 90, 0));
+                    beforePosition = this.transform.position;
+                }
+                else
+                {
+                    float angle = Mathf.Atan2(moveVec.z, moveVec.x);
+                    ////移動方向に回転
+                    this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle) + 90, 0));
+                }
+
                 //移動処理
                 if (move < moveTime)
                 {
