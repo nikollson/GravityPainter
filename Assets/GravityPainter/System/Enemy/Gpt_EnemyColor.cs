@@ -8,22 +8,45 @@ public class Gpt_EnemyColor : MonoBehaviour {
     public Renderer renderer;
     public Renderer rendererFootR;
     public Renderer rendererFootL;
-
+    public Gpt_Enemy EnemyClass;
     public Material[] _material;
 
-    private bool isDamage;
+    public Material ikemen_material;
 
+    private bool isDamage;
+    private bool ikemen;
     //点滅間隔
     private int damageTime = 4;
     private int damageCount;
 
+    private float textureOffset;
     // Use this for initialization
     void Start () {
+        int texture=Random.Range(0,101);
+
+        if (texture < 90)
+        {
+            textureOffset = 0f;//ノーマル顔
+        }
+        else
+        {
+            textureOffset = 0.39f;//イケメン顔
+            ikemen = true;
+        }
 
     }
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (EnemyClass.GetGravity()||EnemyClass.IsTop)
+        {
+            renderer.sharedMaterial.SetTextureOffset("_MainTex", new Vector2(0, 0.2f));
+        }
+        else
+        {
+            renderer.sharedMaterial.SetTextureOffset("_MainTex", new Vector2(0, textureOffset));//やられ顔
+        }
 
         damageCount++;
         if (isDamage)
@@ -55,7 +78,22 @@ public class Gpt_EnemyColor : MonoBehaviour {
     {
         Color = setColor;
         if (renderer == null) renderer = this.GetComponent<Renderer>();
-        renderer.sharedMaterial = _material[setColor];
+        if (setColor == 0)
+        {
+            if (ikemen)
+            {
+                renderer.sharedMaterial = ikemen_material;
+            }
+            else
+            {
+                renderer.sharedMaterial = _material[setColor];
+            }
+        }
+        else
+        {
+            renderer.sharedMaterial = _material[setColor];
+        }
+        
         rendererFootR.sharedMaterial = _material[setColor];
         rendererFootL.sharedMaterial = _material[setColor];
     }

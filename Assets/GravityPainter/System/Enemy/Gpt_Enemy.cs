@@ -190,6 +190,10 @@ public class Gpt_Enemy : MonoBehaviour {
         {
             this.transform.position = topSettedPosition;
             //中心に爆発オブジェクト生成
+            Character.enabled = false;
+            rigid.isKinematic = true;
+            rigid.useGravity = false;
+            navAgent.enabled = false;
             if (!isTopExplode)
             {
                 GameObject gameObj = Instantiate(exploder, this.transform.position, Quaternion.identity) as GameObject;
@@ -403,7 +407,7 @@ public class Gpt_Enemy : MonoBehaviour {
             Character.enabled = false;
             rigid.isKinematic = false;
             rigid.useGravity = false;
-            //navAgent.enabled = false;
+            navAgent.enabled = false;
             rigid.AddForce(player.transform.right * faliingTime, ForceMode.VelocityChange);
         }
         //Debug.Log("Gravity");
@@ -533,7 +537,7 @@ public class Gpt_Enemy : MonoBehaviour {
         IsTop = false;
         isTopExplode = false ;
         CanSetColor = true;
-        //navAgent.enabled = true;
+        navAgent.enabled = true;
     }
 
     //爆風のダメージ
