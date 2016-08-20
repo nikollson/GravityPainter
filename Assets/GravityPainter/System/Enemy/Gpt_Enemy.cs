@@ -105,7 +105,8 @@ public class Gpt_Enemy : MonoBehaviour {
     //始めの敵が空中に浮かび上がる高さ
     public float firstHeight;
 
-    //
+    //転がっているか
+    private bool CanSetColor { get; set; }
 
     // Use this for initialization
     void Start () {
@@ -123,6 +124,7 @@ public class Gpt_Enemy : MonoBehaviour {
         player = GameObject.Find("Player");
         Character = this.GetComponent<CharacterController>();
         //Debug.Log(EnemyGravityManeger.ListIndex(this));
+        CanSetColor = true;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -246,11 +248,12 @@ public class Gpt_Enemy : MonoBehaviour {
                 rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
                 //this.transform.position = this.transform.position + waveVec * 50f;
             }
-            Debug.Log(waveVec);
+            //Debug.Log(waveVec);
             
             //rigid.AddForce(waveVec * forceSpeed / 4, ForceMode.VelocityChange);
             //rigid.AddForce(new Vector3(200, forceHeight, 200), ForceMode.VelocityChange);
             damageCount += 0.1f;
+            CanSetColor = false;
             if (damageCount > damageTime)
             {
                 EnemyColor.IsDamageFalse();
@@ -268,7 +271,7 @@ public class Gpt_Enemy : MonoBehaviour {
                 IsTop = false;
                 
             }
-
+            CanSetColor = false;
             coll.enabled = false;
             rigid.useGravity = false;
             //エラー防止
@@ -526,6 +529,7 @@ public class Gpt_Enemy : MonoBehaviour {
         firstEnemy = false;
         IsTop = false;
         isTopExplode = false ;
+        CanSetColor = true;
     }
 
     //爆風のダメージ
