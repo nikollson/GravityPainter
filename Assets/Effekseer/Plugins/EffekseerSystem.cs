@@ -160,9 +160,8 @@ public class EffekseerSystem : MonoBehaviour
 			bytes = asset.bytes;
 		} else {
 			// Resourcesから読み込む
-			//var asset = Resources.Load<TextAsset>(Utility.ResourcePath(name, true));
-			var asset = Resources.Load<TextAsset>("Assets/Effekseer/StreamingAssets/赤軌跡.efk");
-            if (asset == null) {
+			var asset = Resources.Load<TextAsset>(Utility.ResourcePath(name, true));
+			if (asset == null) {
 				Debug.LogError("[Effekseer] Failed to load effect: " + name);
 				return IntPtr.Zero;
 			}
