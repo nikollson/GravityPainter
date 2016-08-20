@@ -65,6 +65,14 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
         {
             ExplodeList[i].SetUnderSpeed(explodeUnderSpeed);
             ExplodeList[i].SetUpSpeed(explodeUpSpeed);
+            for (int j = 0; j < EnemyList.Count; j++)
+            {
+                //色が付いた敵は、爆発オブジェクトの場所を登録
+                if (ExplodeList[i].GetColor() == EnemyList[j].GetColor())
+                {
+                    EnemyList[j].SetExploderPosition(ExplodeList[i].transform.position);
+                }
+            }
         }
 
         //距離判定
