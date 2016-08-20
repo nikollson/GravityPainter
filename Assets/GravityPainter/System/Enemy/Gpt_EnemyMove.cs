@@ -118,9 +118,13 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 move += 0.1f;
                 Vector3 moveVec = AngleToVector(moveAngle);
                 //Debug.Log("walked");
-                
+
+                Vector3 tempEnemyVec = new Vector3(0, this.transform.position.y, 0);
+                Vector3 tempPlayerVec = new Vector3(0, player.transform.position.y, 0);
                 //索敵処理
-                if (Vector3.Distance(player.transform.position, this.transform.position) < searchArea)
+                //高さの判定を入れてリスポーン時は敵が引き寄せられない。
+                if (Vector3.Distance(player.transform.position, this.transform.position) < searchArea&&
+                    Vector3.Distance(tempPlayerVec, tempEnemyVec) < 4f)
                 {
                     if (!EnemyAttack.GetAttack())
                     {
