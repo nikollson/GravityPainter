@@ -12,6 +12,7 @@ public class Gpt_Enemy : MonoBehaviour {
     private Gpt_EnemyGravityManeger EnemyGravityManeger;
 
     private CharacterController Character;
+    public bool IsTop { get; private set; }
 
     //雑魚パターン(0:近接 1:遠隔)
     public int enemyPattern=0;
@@ -29,6 +30,9 @@ public class Gpt_Enemy : MonoBehaviour {
     //爆発物オブジェクト
     public GameObject exploder;
     private Vector3 exploderPosition;
+
+    //爆風の位置
+    private Vector3 waveExploderPosition;
     //爆発フラグ
     private bool isExplode;
 
@@ -62,10 +66,43 @@ public class Gpt_Enemy : MonoBehaviour {
     private float firmCount;
 
     //爆風ダメージ時の点滅時間
-    private float damageTime = 7f;
+    private float damageTime = 5f;
     private float damageCount;
     //爆風ダメージ時の点滅フラグ
     private bool damageFlag;
+
+    //小刻み処理の際の片側だけに引力が発生するのを防ぐ
+    private bool shakeFlag;
+
+    private float enemyUpTime=5f;
+
+    private float enemyUnderTime = 1f;
+
+    public float waveExplodeSpeed = 3f;
+
+    //吹っ飛ぶ時のスピード
+    public float forceSpeed=700f;
+    //吹っ飛ぶ時の高さ
+    public float forceHeight=6f;
+    private bool isForce;
+    //力がかかる時間
+    public float forceTime;
+    private float forceTimeTemp;
+
+    private bool isDeath;
+    private bool isDeath2;
+
+    //転倒パラメータ
+    public float faliingTime=8f;
+
+    //起点敵の位置
+    private Vector3 firstVector;
+    private bool firstEnemy;
+
+    //始めの敵が空中に浮かび上がる高さ
+    public float firstHeight;
+
+    //
 
     // Use this for initialization
     void Start () {
@@ -99,7 +136,8 @@ public class Gpt_Enemy : MonoBehaviour {
                 if (this.transform.position.x * this.transform.position.z > collision.gameObject.transform.position.x * collision.gameObject.transform.position.z)
                 {
                     // インスタンス生成
-                    Vector3 trans = collision.gameObject.transform.position;
+                    float temp = Random.Range(-0.01f, 0.01f);
+                    Vector3 trans = collision.gameObject.transform.position+new Vector3(temp,temp,temp);//バグ防止
                     GameObject gameObj = Instantiate(exploder, trans, Quaternion.identity) as GameObject;
                     Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
                     targetExploder.SetColor(GetColor());
@@ -135,6 +173,24 @@ public class Gpt_Enemy : MonoBehaviour {
         if (temp > 10f) {
             //IsExplode();
         }
+
+
+        if (IsTop)
+        {
+            this.transform.position = topSettedPosition;
+        }
+
+        //始めの敵ならその位置固定
+        if (firstEnemy)
+        {
+            Speed(0);
+            EnemyAttack.StopAttack();
+            Vector3 firstTemp=new Vector3(0,firstHeight,0);
+            this.transform.position = firstVector;
+            Debug.Log("first");
+            this.transform.position = Vector3.Lerp(firstVector, firstVector + firstTemp, 0.5f);
+        }
+
         if (gravityFlag)
         {
             gravityTime += 0.1f;
@@ -143,18 +199,45 @@ public class Gpt_Enemy : MonoBehaviour {
             firmCount += 0.1f;
             if (firmCount > firmTime&&!isExplode)
             {
-                EnemyReset();
-                SetColor(0);
+                //始めの敵ならはがれない
+                if (!firstEnemy)
+                {
+                    EnemyReset();
+                    SetColor(0);
+                }
+                
             }
         }
         else if (damageFlag)//爆風の点滅処理
         {
-            damageCount+=0.1f;
             EnemyColor.IsDamage();
+            EnemyAttack.StopAttack();
+            Vector3 waveVec = (waveExploderPosition - this.transform.position).normalized;
+            Character.enabled = false;
+            coll.enabled = true;
+            rigid.useGravity = true;
+            rigid.isKinematic = false;
+            waveVec.y = -1f + motionTime2;
+            //爆風でふっとぶ調整
+            if (damageCount == 0f)
+            {
+
+                
+                waveVec.y = 0;
+                rigid.AddForce(waveVec * forceSpeed/4, ForceMode.VelocityChange);
+                rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
+                //this.transform.position = this.transform.position + waveVec * 50f;
+            }
+            Debug.Log(waveVec);
+            
+            //rigid.AddForce(waveVec * forceSpeed / 4, ForceMode.VelocityChange);
+            //rigid.AddForce(new Vector3(200, forceHeight, 200), ForceMode.VelocityChange);
+            damageCount += 0.1f;
             if (damageCount > damageTime)
             {
                 EnemyColor.IsDamageFalse();
                 damageFlag=false;
+                EnemyReset();
             }
         }
 
@@ -174,7 +257,7 @@ public class Gpt_Enemy : MonoBehaviour {
             //collider.isTrigger=true;
             Vector3 exVec = (exploderPosition - this.transform.position).normalized;
             
-            if (motionTime1 < 5f)
+            if (motionTime1 < enemyUpTime)
             {
                 rigid.AddForce(exVec * 10f, ForceMode.VelocityChange);
                 //this.transform.position = exploderPosition;
@@ -182,7 +265,8 @@ public class Gpt_Enemy : MonoBehaviour {
                 var vec = Quaternion.Euler(0f, 90f, 0f) * exVec;
                 rigid.AddForce(vec * 0.8f, ForceMode.VelocityChange);
             }
-            else if(motionTime1 <6f){
+            else if(motionTime1 < enemyUpTime+ enemyUnderTime)
+            {
                 rigid.isKinematic = true;
                 this.transform.position = Vector3.Lerp(this.transform.position, exploderPosition, 0.2f);
                 if (getExploder != null)
@@ -190,35 +274,46 @@ public class Gpt_Enemy : MonoBehaviour {
                     Gpt_Exploder explodeScript = getExploder.GetComponent<Gpt_Exploder>();
                     explodeScript.IsExplodeMotion1();
                 }
-            }else if(motionTime1 < 8f)
+            }
+            else
             {
                 //色を戻す
                 SetColor(0);
-                motionTime2 += 0.2f;
-                coll.enabled = true;
-                rigid.useGravity = true;
-                rigid.isKinematic = false;
-                exVec.y = -1f+motionTime2;
-                rigid.AddForce(-exVec * 3f, ForceMode.VelocityChange);
                 
                 if (getExploder != null)
                 {
                     Gpt_Exploder explodeScript = getExploder.GetComponent<Gpt_Exploder>();
                     explodeScript.IsAfterExplode();
                 }
-
-
-            }
-            else
-            {
-                EnemyColor.IsDamage();
+                //吹っ飛ぶスピード、高さ
+                //WaveForce(exVec);
+                
+                
+                
                 coll.enabled = true;
                 rigid.useGravity = true;
                 rigid.isKinematic = false;
+                //exVec.y = -1f + motionTime2;
+
+                if (motionTime2 == 0)
+                {
+                    hitPoint--;
+                    if (hitPoint <= 0)
+                    {
+                        isDeath = true;
+                        exVec.y=0;
+                        
+                    }
+                    exVec.y = 0;
+                    rigid.AddForce(exVec * forceSpeed, ForceMode.VelocityChange);
+                    rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
+                }
+                motionTime2 += 0.2f;
+                EnemyColor.IsDamage();
+
+                
                 if (revivalCount > revivalTime)
                 {
-                    //復活時に初期化
-                    hitPoint--;
                     //HP0で死亡
                     if (hitPoint <= 0)
                     {
@@ -237,12 +332,22 @@ public class Gpt_Enemy : MonoBehaviour {
         //爆風での死亡判定
         if (hitPoint<=0)
         {
+            //死亡フラグ時に敵のカウントを減らす
+            if (isDeath)
+            {
+                EnemyGravityManeger.ReduceNumCount();
+                isDeath = false;
+            }
+            
             Speed(0);
             EnemyDestroy(2f);
             EnemyMove.IsGravity();
-            this.transform.Rotate(this.transform.up, temp * 2f);
-
+            //this.transform.Rotate(this.transform.up, temp * 2f);
+            EnemyAttack.StopAttack();
         }
+
+        
+        //爆発・爆風での力制御
     }
     
 
@@ -263,31 +368,40 @@ public class Gpt_Enemy : MonoBehaviour {
             preserveZ = this.transform.position.z;
             preserveVec = gravityVec;
             EnemyAttack.StopAttack();
+
+            //転ばせる
+            Character.enabled = false;
+            rigid.isKinematic = false;
+            rigid.useGravity = true;
+            rigid.AddForce(-this.transform.forward * faliingTime, ForceMode.VelocityChange);
         }
         //Debug.Log("Gravity");
         gravityFlag = true;
 
         if(!isExplode){
             Speed(0);
-            //始めは小刻みに震える
+            //始めは小刻みに震える(8/19暫定無し)
             if (gravityTime < 2f)
             {
+                shakeFlag = true;
                 Character.enabled = false;
 
                 rigid.isKinematic = false;
                 rigid.useGravity = true;
-                float x_temp = Random.Range(-0.15f, 0.15f);
-                float z_temp = Random.Range(-0.15f, 0.15f);
-                this.transform.position=new Vector3(preserveX+x_temp,this.transform.position.y,
-                    preserveZ+ z_temp);
+                float x_temp = Random.Range(-0.2f, 0.2f);
+                float z_temp = Random.Range(-0.2f, 0.2f);
+                
+                //this.transform.position=new Vector3(preserveX+x_temp,this.transform.position.y,
+                    //preserveZ+ z_temp);
             }
             else
             {
-                
+                shakeFlag = false;
                 if (EnemyAttack != null)
                 {
                     EnemyAttack.StopAttack();
                 }
+                
                 rigid.AddForce(-gravityVec * gravity, ForceMode.VelocityChange);
             }
             
@@ -378,10 +492,13 @@ public class Gpt_Enemy : MonoBehaviour {
         EnemyMove.SetPreserveSpeed();
         gravityTime = 0;
         touchFlag = false;
+        shakeFlag = false;
         motionTime1 = 0;
         motionTime2 = 0;
         revivalCount = 0;
         firmCount = 0;
+        firstEnemy = false;
+        IsTop = false;
     }
 
     //爆風のダメージ
@@ -389,5 +506,61 @@ public class Gpt_Enemy : MonoBehaviour {
     {
         hitPoint -= damage;
         damageFlag = true;
+        if (hitPoint <= 0)
+        {
+            isDeath = true;
+        }
+
+    }
+
+    public bool GetShake()
+    {
+        return shakeFlag;
+    }
+
+    public void SetUpTime(float time)
+    {
+        enemyUpTime = time;
+    }
+
+    public void SetUnderTime(float time)
+    {
+        enemyUnderTime = time;
+    }
+
+    public void SetWavePosition(Vector3 position)
+    {
+        waveExploderPosition = position;
+    }
+
+    public void WaveForce(Vector3 vec)
+    {
+        forceTimeTemp += 0.1f;
+        //vec.y = 0;
+        if (forceTimeTemp < forceTime)
+        {
+            vec.y = 0;
+            rigid.AddForce(vec * forceSpeed, ForceMode.VelocityChange);
+            rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
+        }
+        else
+        {
+            forceTimeTemp = 0;
+        }
+    }
+
+    public Vector3 FirstEnemyPosition()
+    {
+        
+        firstEnemy = true;
+        firstVector = this.transform.position;
+        return this.transform.position;
+    }
+
+    Vector3 topSettedPosition;
+    public void SetTop()
+    {
+        topSettedPosition = this.transform.position + new Vector3(0,1,0);
+        IsTop = true;
     }
 }

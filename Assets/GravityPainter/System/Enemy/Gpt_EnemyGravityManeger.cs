@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Gpt_EnemyGravityManeger : MonoBehaviour {
+public class Gpt_EnemyGravityManeger : MonoBehaviour
+{
 
     private List<Gpt_Enemy> EnemyList = new List<Gpt_Enemy>();
-
+    private Gpt_Enemy FirstEnemy;
+    private Vector3 FirstEnemyPosition;
     private List<Gpt_Exploder> ExplodeList = new List<Gpt_Exploder>();
     private List<Vector3> ExplodePosition = new List<Vector3>();
 
@@ -19,47 +21,97 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
 
     //何体敵を倒してクリア
     public int enemyNum;
+
+
+    //爆発上昇のスピード
+    public float explodeUpSpeed = 0.08f;
+
+    //爆発下降のスピード
+    public float explodeUnderSpeed = 0.64f;
+    //爆発上昇の時間
+    public float enemyUpTime = 5f;
+    //爆発下降の時間
+    public float enemyUnderTime = 1f;
     private int enemyNumCount;
 
-	void Start () {
+    void Start()
+    {
         Application.targetFrameRate = 30; //30FPSに設定
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
 
         //敵が一人以上いた時にカウントスタート
         if (EnemyList.Count > 0)
         {
-            isFloor=true;
+            isFloor = true;
+            //一番目の敵を登録
+
+            for (int i = 0; i < EnemyList.Count; i++)
+            {
+                if (EnemyList[i].GetColor() != 0)
+                {
+                    //FirstEnemy = EnemyList[i];
+                    //FirstEnemyPosition=FirstEnemy.FirstEnemyPosition();
+                    break;
+                }
+            }
         }
 
-        
+        for (int i = 0; i < ExplodeList.Count; i++)
+        {
+            ExplodeList[i].SetUnderSpeed(explodeUnderSpeed);
+            ExplodeList[i].SetUpSpeed(explodeUpSpeed);
+        }
+
         //距離判定
         for (int i = 0; i < EnemyList.Count; i++)
         {
-            for (int j = i; j < EnemyList.Count; j++)
+            EnemyList[i].SetUpTime(enemyUpTime);
+            EnemyList[i].SetUnderTime(enemyUnderTime);
+
+            bool hitted = false;
+
+            for (int j = 0; j < EnemyList.Count; j++)
             {
                 if (j == i) continue;
 
-                if(EnemyList[i].GetColor()!=0&&EnemyList[i].GetColor()== EnemyList[j].GetColor())
+
+                if (Vector3.Distance(EnemyList[i].transform.position, EnemyList[j].transform.position) < gravityArea)
                 {
-                    if (Vector3.Distance(EnemyList[i].transform.position, EnemyList[j].transform.position) < gravityArea)
+                    if (EnemyList[i].GetColor() != 0 && EnemyList[i].GetColor() == EnemyList[j].GetColor())
                     {
+                        hitted = true;
                         //i番目へのベクトル
                         Vector3 objVec1 = EnemyList[i].transform.position - EnemyList[j].transform.position;
 
-                        //j番目へのベクトル
-                        Vector3 objVec2 = EnemyList[j].transform.position - EnemyList[i].transform.position;
-
-                        Vector3 normVec1 = objVec1.normalized;
-                        Vector3 normVec2 = objVec2.normalized;
-                        EnemyList[i].SetGravity(normVec1);
-                        EnemyList[j].SetGravity(normVec2);
+                        float topGravityPower = 3;
+                        float scaleA = EnemyList[j].IsTop ? topGravityPower : 1;
+                        Vector3 normVec1 = objVec1.normalized * scaleA;
+                        if (EnemyList[i].GetShake() != EnemyList[j].GetShake())
+                        {
+                            if (EnemyList[i].GetShake())
+                            {
+                                EnemyList[i].SetGravity(normVec1);
+                            }
+                        }
+                        else
+                        {
+                            EnemyList[i].SetGravity(normVec1);
+                        }
                     }
                 }
-                
+
             }
+
+            if (!hitted && EnemyList[i].GetColor() != 0 && !EnemyList[i].IsTop)
+            {
+                EnemyList[i].SetTop();
+            }
+
 
             //接触判定
         }
@@ -69,12 +121,18 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
         {
             if (doorSystem != null)
             {
-                doorSystem.OpenDoor();
+                //doorSystem.OpenDoor();
             }
-            
+
         }
 
         //Debug.Log(EnemyList.Count);
+    }
+
+
+    public List<Gpt_Enemy> GetEnemyList()
+    {
+        return EnemyList;
     }
 
     public int GetRestEnemy()
@@ -109,7 +167,7 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
             {
                 ExplodeList[i].IsExplode();
             }
-            
+
         }
 
         for (int i = 0; i < EnemyList.Count; i++)
@@ -132,19 +190,20 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
             for (int j = 0; j < EnemyList.Count; j++)
             {
                 //爆風に近い範囲でダメージ
-                if (Vector3.Distance(ExplodeList[i].gameObject.transform.position, EnemyList[j].gameObject.transform.position)<7f)
+                if (Vector3.Distance(ExplodeList[i].gameObject.transform.position, EnemyList[j].gameObject.transform.position) < 7f)
                 {
                     //引力状態にない敵のみダメージ
-                    if(!EnemyList[j].GetGravity()){
+                    if (!EnemyList[j].GetGravity())
+                    {
+                        EnemyList[j].SetWavePosition(ExplodeList[i].GetPosition());
                         EnemyList[j].ExplodeDamage(1);
                     }
-                    
+
                 }
             }
 
         }
 
-        
     }
 
 
@@ -156,8 +215,6 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
     public void RemoveEnemyList(Gpt_Enemy Enemy)
     {
         EnemyList.Remove(Enemy);
-        //フロアで倒した敵を加算
-        enemyNumCount++;
     }
 
     public int ListIndex(Gpt_Enemy Enemy)
@@ -185,6 +242,18 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour {
     public void RemoveExplodePosition(Vector3 position)
     {
         ExplodePosition.Remove(position);
+    }
+
+    //現在のエネミー数を返す
+    public int EnemyCount()
+    {
+        return EnemyList.Count;
+    }
+
+    public void ReduceNumCount()
+    {
+        //フロアで倒した敵を加算
+        enemyNumCount++;
     }
 
 }

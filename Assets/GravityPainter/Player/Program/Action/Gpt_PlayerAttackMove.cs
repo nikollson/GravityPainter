@@ -44,7 +44,7 @@ public class Gpt_PlayerAttackMove : MonoBehaviour
 
     void AttackStartAddForce(float power, float stop, float friction)
     {
-        Vector3 force = power * playerUtillity.GetAnalogpadMove() - stop * rigidbody.velocity;
+        Vector3 force = power * playerUtillity.GetAnalogpadMove() - stop * (rigidbody.velocity - new Vector3(0, rigidbody.velocity.y, 0));
         rigidbody.AddForce(force, ForceMode.VelocityChange);
         currentDirection = friction;
     }
@@ -76,7 +76,7 @@ public class Gpt_PlayerAttackMove : MonoBehaviour
     {
         attackCount += Time.deltaTime;
 
-        Vector3 fricionPower = -1 * currentDirection * rigidbody.velocity;
+        Vector3 fricionPower = -1 * currentDirection * (rigidbody.velocity - new Vector3(0, rigidbody.velocity.y, 0));
         rigidbody.AddForce(Time.deltaTime * fricionPower, ForceMode.Acceleration);
     }
 }

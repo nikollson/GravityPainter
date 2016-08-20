@@ -46,9 +46,9 @@ public class Gpt_TitleManager : MonoBehaviour
 
         if (cnt > inputRecieveTime)
         {
-            if (HasInput())
+            if (Gpt_Input.HasAnyKey())
             {
-                SceneManager.LoadScene(NextSceneName);
+                 Gpt_SceneManager.LoadScene(NextSceneName);
             }
         }
     }
@@ -77,19 +77,5 @@ public class Gpt_TitleManager : MonoBehaviour
     void Title()
     {
         titleImg.color = new Color(1, 1, 1, cnt);
-    }
-
-
-    bool HasInput()
-    {
-        bool ret = false;
-        ret |= Gpt_Input.Attack;
-        ret |= Gpt_Input.Skill;
-        ret |= Gpt_Input.Jump;
-        ret |= Gpt_Input.ColorLeft;
-        ret |= Gpt_Input.ColorRight;
-        ret |= Gpt_Input.CameraPush;
-        ret |= Gpt_Input.MovePush;
-        return ret;
     }
 }

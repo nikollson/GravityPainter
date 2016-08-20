@@ -3,12 +3,12 @@ using System.Collections;
 
 public class Gpt_PlayerDamageCollider : MonoBehaviour
 {
-
+    private Gpt_EnemyAttack EnemyAttack;
     public HitManager attackCollider;
     public int damage = 3;
 
     string playerTag = "Player";
-
+    
     void Update()
     {
         foreach (var a in attackCollider.HitColliders)
