@@ -14,6 +14,7 @@ public class Gpt_Raycast : MonoBehaviour {
     private bool isTouch;
     private bool oneTouch=false;
 
+    public Transform Camera;
     // Use this for initialization
     void Start () {
 
@@ -29,32 +30,33 @@ public class Gpt_Raycast : MonoBehaviour {
             //Debug.Log("hit!:" + hit.transform.gameObject.name);
             if (hit.transform.gameObject.tag == "DoorSystem")
             {
-                
-                isTouch = false;
-                
-                if (!oneTouch)
-                {
-                    preserveName = hit.transform.gameObject.name;
-                    preserveRenderer = hit.transform.gameObject.GetComponent<Renderer>();
-                    preserveMaterial = preserveRenderer.material;
 
-                }
-                else
-                {
-                    if (preserveName != hit.transform.gameObject.name)
-                    {
-                        //preserveRenderer = hit.transform.gameObject.GetComponent<Renderer>();
-                        //preserveMaterial = meshRenderer.material;
-                        isTouch = true;
-                    }else
-                    {
-                        preserveRenderer = hit.transform.gameObject.GetComponent<Renderer>();
-                        preserveMaterial = meshRenderer.material;
-                    }
-                }
-                oneTouch = true;
-                meshRenderer = hit.transform.gameObject.GetComponent<Renderer>();
-                meshRenderer.sharedMaterial = changeMaterial;
+                //isTouch = false;
+
+                //if (!oneTouch)
+                //{
+                //    preserveName = hit.transform.gameObject.name;
+                //    preserveRenderer = hit.transform.gameObject.GetComponent<Renderer>();
+                //    preserveMaterial = preserveRenderer.material;
+
+                //}
+                //else
+                //{
+                //    if (preserveName != hit.transform.gameObject.name)
+                //    {
+                //        //preserveRenderer = hit.transform.gameObject.GetComponent<Renderer>();
+                //        //preserveMaterial = meshRenderer.material;
+                //        isTouch = true;
+                //    }else
+                //    {
+                //        preserveRenderer = hit.transform.gameObject.GetComponent<Renderer>();
+                //        preserveMaterial = meshRenderer.material;
+                //    }
+                //}
+                //oneTouch = true;
+                //meshRenderer = hit.transform.gameObject.GetComponent<Renderer>();
+                //meshRenderer.sharedMaterial = changeMaterial;
+                Camera.transform.position = hit.point;
             }
 
             //マテリアルを基に戻す
