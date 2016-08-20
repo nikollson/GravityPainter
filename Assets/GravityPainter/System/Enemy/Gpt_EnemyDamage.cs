@@ -9,6 +9,8 @@ public class Gpt_EnemyDamage : MonoBehaviour
 
     string playerTag = "Player";
 
+    private bool hitAttack;
+
     void Start()
     {
         EnemyAttack = this.transform.parent.parent.parent.parent.parent.GetComponent<Gpt_EnemyAttack>();
@@ -18,7 +20,8 @@ public class Gpt_EnemyDamage : MonoBehaviour
     {
         foreach (var a in attackCollider.HitColliders)
         {
-            if (a.tag == playerTag)
+            //ダブルチェック
+            if (a.tag == playerTag&&hitAttack)
             {
                 var playerState = Gpt_ParentTracker.Track<Gpt_PlayerState>(a.gameObject);
                 if (playerState != null)
@@ -27,9 +30,28 @@ public class Gpt_EnemyDamage : MonoBehaviour
                     {
                         playerState.AddHPDamage(damage);
                     }
-
                 }
             }
+            hitAttack = false;
+        }
+    }
+
+    void OnTriggerEnter(Collider collision)
+    {
+        
+        if (collision.gameObject.tag == "Player")
+        {
+            hitAttack = true;
+            Debug.Log("!!!!!!!");
+        }
+    }
+
+    void OnTriggerExit(Collider collision)
+    {
+        Debug.Log("??????");
+        if (collision.gameObject.tag == "player")
+        {
+            hitAttack = false;
         }
     }
 }

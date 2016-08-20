@@ -9,6 +9,7 @@ public class Gpt_Enemy : MonoBehaviour {
     public Collider collider;
     private GameObject ManegerObject;
     public Rigidbody rigid;
+    public NavMeshAgent navAgent;
     private Gpt_EnemyGravityManeger EnemyGravityManeger;
 
     private CharacterController Character;
@@ -197,6 +198,7 @@ public class Gpt_Enemy : MonoBehaviour {
                 touchFlag = true;
             }
             isTopExplode = true;
+            EnemyAttack.StopAttack();
 
         }
 
@@ -401,6 +403,7 @@ public class Gpt_Enemy : MonoBehaviour {
             Character.enabled = false;
             rigid.isKinematic = false;
             rigid.useGravity = false;
+            //navAgent.enabled = false;
             rigid.AddForce(player.transform.right * faliingTime, ForceMode.VelocityChange);
         }
         //Debug.Log("Gravity");
@@ -530,6 +533,7 @@ public class Gpt_Enemy : MonoBehaviour {
         IsTop = false;
         isTopExplode = false ;
         CanSetColor = true;
+        //navAgent.enabled = true;
     }
 
     //爆風のダメージ

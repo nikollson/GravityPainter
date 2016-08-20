@@ -72,6 +72,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
     //攻撃時にベクトルを保存
     private Vector3 preserveVec;
 
+    private float breakTime;
+
     // Use this for initialization
     void Start()
     {
@@ -139,7 +141,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     }
                     else
                     {
-                        //攻撃モーション時は直線
+                        //攻撃モーション時は直
+                        
                         moveVec = preserveVec;
                         if (navMesh != null)
                         {
@@ -160,7 +163,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     enemyTemp += enemyAccelerate;
                     enemyTemp = enemyTemp < enemySpeed ? enemyTemp : enemySpeed;
                     //遠隔攻撃の射程に入った時
-                    if (Vector3.Distance(player.transform.position, this.transform.position) < attackArea||EnemyAttack.GetAttack())
+                    if ((Vector3.Distance(player.transform.position, this.transform.position) < attackArea||EnemyAttack.GetAttack())&&EnemyAttack.CanAttack)
                     {
                         //Debug.Log("attack");
                         //motionTime1 += 2f;
@@ -173,6 +176,13 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     if (navMesh != null && navMesh.enabled)
                     {
                         enemyTemp = 0;
+                        breakTime = 0;
+                    }
+                    else//攻撃時減速
+                    {
+                        breakTime += 0.02f;
+                        breakTime= breakTime > 1f ? 1f : breakTime;
+                        enemyTemp*=1f-breakTime;
                     }
 
                     if (isAbyss)
