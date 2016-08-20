@@ -175,7 +175,8 @@ public class Gpt_YukaManager : MonoBehaviour {
                 if (tiles[i, j] == null) continue;
                 if (tiles[i, j].Color != color) continue;
                 if (!tiles[i, j].CanSetExplode()) continue;
-                if ((tiles[i, j].transform.position - point).magnitude < radius) que.Enqueue(new Q(j, i, 0));
+                Vector3 dist = (tiles[i, j].transform.position - point);
+                if ((dist - new Vector3(0, dist.y, 0)).magnitude < radius) que.Enqueue(new Q(j, i, 0));
             }
         }
 
@@ -238,6 +239,7 @@ public class Gpt_YukaManager : MonoBehaviour {
 
     public Vector2 GetTileCordinate(Vector3 position)
     {
+        if (tiles == null) return Vector2.zero;
         int h = tiles.GetLength(0);
         int w = tiles.GetLength(1);
 

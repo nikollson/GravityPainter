@@ -7,6 +7,8 @@ public class Gpt_EnemyDamage : MonoBehaviour
     public HitManager attackCollider;
     public int damage = 3;
 
+    public Transform hitRoot;
+
     string playerTag = "Player";
 
     void Start()
@@ -23,11 +25,9 @@ public class Gpt_EnemyDamage : MonoBehaviour
                 var playerState = Gpt_ParentTracker.Track<Gpt_PlayerState>(a.gameObject);
                 if (playerState != null)
                 {
-                    if (EnemyAttack.GetAttack())
-                    {
-                        playerState.AddHPDamage(damage);
-                    }
-
+                    Vector3 position = this.transform.position;
+                    if (hitRoot != null) position = hitRoot.transform.position;
+                    playerState.AddHPDamage_Attack(damage, position);
                 }
             }
         }

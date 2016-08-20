@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class Gpt_PlayerState : MonoBehaviour
 {
+    public Gpt_PlayerUtillity playerUtillity;
     public Gpt_PlayerColor playerColor;
     public Gpt_PlayerInkManage playerInkManage;
 
@@ -53,6 +54,16 @@ public class Gpt_PlayerState : MonoBehaviour
         {
             AddHP(-value);
             if(setMuteki) mutekiCount = 0;
+        }
+    }
+    public void AddHPDamage_Attack(int value, Vector3 hitPosition)
+    {
+        if (!IsMuteki)
+        {
+            AddHPDamage(value);
+            Vector3 look = hitPosition;
+            look.y = this.transform.position.y;
+            playerUtillity.LookAt(look);
         }
     }
 
