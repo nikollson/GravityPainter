@@ -213,6 +213,7 @@ public class Gpt_Enemy : MonoBehaviour {
             EnemyColor.IsDamage();
             EnemyAttack.StopAttack();
             Vector3 waveVec = (waveExploderPosition - this.transform.position).normalized;
+            Character.enabled = false;
             coll.enabled = true;
             rigid.useGravity = true;
             rigid.isKinematic = false;
@@ -220,11 +221,17 @@ public class Gpt_Enemy : MonoBehaviour {
             //爆風でふっとぶ調整
             if (damageCount == 0f)
             {
+
+                
                 waveVec.y = 0;
                 rigid.AddForce(waveVec * forceSpeed/4, ForceMode.VelocityChange);
                 rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
+                //this.transform.position = this.transform.position + waveVec * 50f;
             }
+            Debug.Log(waveVec);
             
+            //rigid.AddForce(waveVec * forceSpeed / 4, ForceMode.VelocityChange);
+            //rigid.AddForce(new Vector3(200, forceHeight, 200), ForceMode.VelocityChange);
             damageCount += 0.1f;
             if (damageCount > damageTime)
             {
@@ -335,7 +342,7 @@ public class Gpt_Enemy : MonoBehaviour {
             Speed(0);
             EnemyDestroy(2f);
             EnemyMove.IsGravity();
-            this.transform.Rotate(this.transform.up, temp * 2f);
+            //this.transform.Rotate(this.transform.up, temp * 2f);
             EnemyAttack.StopAttack();
         }
 

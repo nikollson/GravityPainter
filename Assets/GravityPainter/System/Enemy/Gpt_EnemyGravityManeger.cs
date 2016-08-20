@@ -204,7 +204,6 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
 
         }
 
-
     }
 
 
