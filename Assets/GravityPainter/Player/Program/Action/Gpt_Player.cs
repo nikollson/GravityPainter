@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Gpt_Player : MonoBehaviour
 {
-
+    public bool canControl = true;
     public Gpt_PlayerUtillity playerUtillity;
 
     // プレイヤーの動作に必要なクラス
@@ -76,11 +76,11 @@ public class Gpt_Player : MonoBehaviour
     }
 
 
-    bool CanStartMove() { return playerUtillity.HasAnalogpadMove(); }
-    bool CanStartAttack() { return Gpt_Input.Attack && playerInkManage.CanUseAttack() && playerAttack.CanFirstAttack(Gpt_Input.AttackStartFrame); }
-    bool CanStartDetonate() { return Gpt_Input.Detonate && playerInkManage.CanUseDetonate() && playerDetonate.CanStartDetonate(Gpt_Input.DetonateStartFrame); }
-    bool CanStartSkill() { return Gpt_Input.Skill && playerInkManage.CanUseSkill(state.PlayerColor) && playerSkill.CanStartSkill(Gpt_Input.SkillStartFrame); }
-    bool CanStartJump() { return Gpt_Input.Jump && playerJump.CanStartJump(Gpt_Input.JumpStartFrame); }
+    bool CanStartMove() { return canControl && playerUtillity.HasAnalogpadMove(); }
+    bool CanStartAttack() { return canControl && Gpt_Input.Attack && playerInkManage.CanUseAttack() && playerAttack.CanFirstAttack(Gpt_Input.AttackStartFrame); }
+    bool CanStartDetonate() { return canControl && Gpt_Input.Detonate && playerInkManage.CanUseDetonate() && playerDetonate.CanStartDetonate(Gpt_Input.DetonateStartFrame); }
+    bool CanStartSkill() { return canControl && Gpt_Input.Skill && playerInkManage.CanUseSkill(state.PlayerColor) && playerSkill.CanStartSkill(Gpt_Input.SkillStartFrame); }
+    bool CanStartJump() { return canControl && Gpt_Input.Jump && playerJump.CanStartJump(Gpt_Input.JumpStartFrame); }
     bool IsDead() { return state.IsDead(); }
     bool IsDamaging() { return state.IsDamaging(); }
 
