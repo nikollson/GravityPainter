@@ -68,7 +68,16 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
 
     bool IsEndPhase()
     {
-        return currentfaseNum < 0 || enemyGravityManager.GetEnemyList().Count <= PhaseEnemyParent[currentfaseNum].changeNextRest;
+        if (currentfaseNum < 0) return true;
+        if(currentfaseNum < PhaseEnemyParent.Length - 1)
+        {
+            return enemyGravityManager.GetEnemyList().Count <= PhaseEnemyParent[currentfaseNum].changeNextRest;
+        }
+        if(currentfaseNum == PhaseEnemyParent.Length - 1)
+        {
+            return enemyGravityManager.GetEnemyNumCount() >= PhaseEnemyParent[currentfaseNum].changeNextRest;
+        }
+        return false;
     }
 
     public bool IsEndAllPhase()
@@ -95,6 +104,11 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
         {
             Destroy(a.gameObject);
         }
+    }
+
+    public int GetAllClearEnemyNum()
+    {
+        return PhaseEnemyParent[PhaseEnemyParent.Length - 1].changeNextRest;
     }
 
     [System.Serializable]
