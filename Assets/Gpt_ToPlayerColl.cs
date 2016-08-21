@@ -25,7 +25,8 @@ public class Gpt_ToPlayerColl : MonoBehaviour {
             //boss.GetComponent<Gpt_Boss>().state = 1;
         }else
         {
-            boss.GetComponent<Gpt_Boss>().state = 1;
+            // ここで手が床にあたっているかを確認し、落下判定を取るのが良い
+            //boss.GetComponent<Gpt_Boss>().state = (int)1;
         }
     }
 }

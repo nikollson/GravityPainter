@@ -80,6 +80,11 @@ public class Gpt_Camera : MonoBehaviour
     public float pushShakePower = 0.5f;
     private float shakePower = 0;
 
+
+
+    bool firstBossMovieFlg = true;
+    Vector3 BossStartMovie = new Vector3(-0.05f, 19.935f, 40.329f);
+
     // -------------------------------------------------- 大元関数 -------------------------------------------------- //
 
     // 初期化関数
@@ -140,7 +145,12 @@ public class Gpt_Camera : MonoBehaviour
                 Update_Look(this.transform.position + new Vector3(0, 0, -1.0f));
             }
             else {
-                Vector3 vec = new Vector3(-0.05f, 19.935f, 40.329f) - this.transform.position;
+                if (firstBossMovieFlg) {
+                    firstBossMovieFlg = false;
+                    player.GetComponent<Gpt_Player>().canControl = false;
+                }
+
+                Vector3 vec = BossStartMovie - this.transform.position;
                 this.transform.position += vec * Time.deltaTime;
                 Update_Look(this.transform.position + new Vector3(0, 0, -1.0f));
                 if(this.transform.position.z>firstPlayerPos.z) Update_Look(firstPlayerPos);
@@ -150,6 +160,7 @@ public class Gpt_Camera : MonoBehaviour
                     state = (int)State.BossBattle;
                     movieBar1.transform.position = notDrawPos;
                     movieBar2.transform.position = notDrawPos;
+                    player.GetComponent<Gpt_Player>().canControl = false;
                 }
             }
         }
