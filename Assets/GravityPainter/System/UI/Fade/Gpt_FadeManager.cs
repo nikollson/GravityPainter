@@ -52,6 +52,7 @@ public class Gpt_FadeManager : MonoBehaviour
             if (state.normalizedTime >= 1.0 && sceneLoadFunc != null)
             {
                 sceneLoadFunc();
+                sceneLoadFunc = null;
             }
         }
     }
