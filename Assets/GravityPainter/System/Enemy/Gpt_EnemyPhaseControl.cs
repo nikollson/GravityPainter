@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class Gpt_EnemyPhaseControl : MonoBehaviour {
 
     public Gpt_EnemyGravityManeger enemyGravityManager;
-    public int clearEnemyNum = 20;
     public PhaseInfo[] PhaseEnemyParent;
     public Gpt_DoorSystem doorSystem;
 
@@ -66,7 +65,7 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
     bool IsEndPhase()
     {
         if (currentfaseNum < 0) return true;
-        return enemyGravityManager.GetEnemyList().Count <= PhaseEnemyParent[currentfaseNum].changeNextRest;
+        return enemyGravityManager.GetEnemyNumCount() >= PhaseEnemyParent[currentfaseNum].changeNextRest;
     }
 
     void DoEndPhase()
@@ -80,7 +79,10 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
 
     public bool IsEndAllPhase()
     {
-        return changeWait < 0 && (currentfaseNum + 1 >= PhaseEnemyParent.Length || enemyGravityManager.GetEnemyNumCount() >= clearEnemyNum);
+        if (!(changeWait < 0)) return false;
+        if (enemyGravityManager.GetEnemyNumCount() >= GetAllClearEnemyNum()) return true;
+        if (currentfaseNum >= PhaseEnemyParent.Length) return true;
+        return false;
     }
 
     public int GetPhaseNum()
@@ -106,7 +108,7 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
 
     public int GetAllClearEnemyNum()
     {
-        return clearEnemyNum;
+        return PhaseEnemyParent[PhaseEnemyParent.Length-1].changeNextRest;
     }
 
     [System.Serializable]
