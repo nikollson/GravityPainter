@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Gpt_Player : MonoBehaviour
 {
-
+    public bool canControl = true;
     public Gpt_PlayerUtillity playerUtillity;
 
     // プレイヤーの動作に必要なクラス
@@ -23,9 +23,11 @@ public class Gpt_Player : MonoBehaviour
     public Gpt_PlayerInkManage playerInkManage;
     public Gpt_PlayerDeadAction playerDead;
     public Gpt_PlayerRespawn playerRespawn;
+    public Gpt_PlayerDeadAction playerDeadAction;
+    public Gpt_PlayerDamagedMove playerDamage;
 
     // プレイヤーの状態管理
-    public enum MODE { WAIT, RUN, ATTACK, ROTATE, SKILL, JUMP, FEEVER, AIR, DETONATE, DEAD };
+    public enum MODE { WAIT, RUN, ATTACK, ROTATE, SKILL, JUMP, FEEVER, AIR, DETONATE, DEAD, DAMAGE };
     public enum ATTACK_DIRECTION { RIGHT, LEFT };
     public MODE Mode { get; private set; }
     public ATTACK_DIRECTION AttackDirection { get; private set; }
@@ -52,6 +54,7 @@ public class Gpt_Player : MonoBehaviour
         if (Mode == MODE.DETONATE) UpdateMode_Detonate();
         if (Mode == MODE.ROTATE) UpdateMode_Rotate();
         if (Mode == MODE.DEAD) UpdateMode_Dead();
+        if (Mode == MODE.DAMAGE) UpdateMode_Damage();
     }
 
     void UpdateColor()
@@ -73,12 +76,13 @@ public class Gpt_Player : MonoBehaviour
     }
 
 
-    bool CanStartMove() { return playerUtillity.HasAnalogpadMove(); }
-    bool CanStartAttack() { return Gpt_Input.Attack && playerInkManage.CanUseAttack() && playerAttack.CanFirstAttack(Gpt_Input.AttackStartFrame); }
-    bool CanStartDetonate() { return Gpt_Input.Detonate && playerInkManage.CanUseDetonate() && playerDetonate.CanStartDetonate(Gpt_Input.DetonateStartFrame); }
-    bool CanStartSkill() { return Gpt_Input.Skill && playerInkManage.CanUseSkill(state.PlayerColor) && playerSkill.CanStartSkill(Gpt_Input.SkillStartFrame); }
-    bool CanStartJump() { return Gpt_Input.Jump && playerJump.CanStartJump(Gpt_Input.JumpStartFrame); }
+    bool CanStartMove() { return canControl && playerUtillity.HasAnalogpadMove(); }
+    bool CanStartAttack() { return canControl && Gpt_Input.Attack && playerInkManage.CanUseAttack() && playerAttack.CanFirstAttack(Gpt_Input.AttackStartFrame); }
+    bool CanStartDetonate() { return canControl && Gpt_Input.Detonate && playerInkManage.CanUseDetonate() && playerDetonate.CanStartDetonate(Gpt_Input.DetonateStartFrame); }
+    bool CanStartSkill() { return canControl && Gpt_Input.Skill && playerInkManage.CanUseSkill(state.PlayerColor) && playerSkill.CanStartSkill(Gpt_Input.SkillStartFrame); }
+    bool CanStartJump() { return canControl && Gpt_Input.Jump && playerJump.CanStartJump(Gpt_Input.JumpStartFrame); }
     bool IsDead() { return state.IsDead(); }
+    bool IsDamaging() { return state.IsDamaging(); }
 
     void UpdateMode_StartRun()
     {
@@ -100,7 +104,7 @@ public class Gpt_Player : MonoBehaviour
     {
         Mode = MODE.ATTACK;
         playerAttack.StartAttack(mode, Gpt_Input.AttackStartFrame);
-        playerAttackState.StartBullet(this.transform.right);
+        playerAttackState.StartBullet(this.transform.right, dir == ATTACK_DIRECTION.RIGHT);
         AttackDirection = dir;
         trailControl.StartTrail(playerColor.Color);
         playerInkManage.UseAttak();
@@ -131,7 +135,11 @@ public class Gpt_Player : MonoBehaviour
     {
         Mode = MODE.DEAD;
         playerDead.StartDead();
-
+    }
+    void UpdateMode_StartDamage()
+    {
+        Mode = MODE.DAMAGE;
+        playerDamage.StartDamage();
     }
 
     void UpdateMode_Wait()
@@ -140,7 +148,12 @@ public class Gpt_Player : MonoBehaviour
 
         bool endWait = false;
 
-        if (IsDead())
+        if (IsDamaging())
+        {
+            endWait = true;
+            UpdateMode_StartDamage();
+        }
+        else if (IsDead())
         {
             endWait = true;
             UpdateMode_StartDead();
@@ -161,17 +174,22 @@ public class Gpt_Player : MonoBehaviour
 
         bool endRun = false;
 
-        if (IsDead())
+        if (IsDamaging())
+        {
+            endRun = true;
+            UpdateMode_StartDamage();
+        }
+        else if (IsDead())
         {
             endRun = true;
             UpdateMode_StartDead();
         }
+        else if (!playerUtillity.IsGround()) { endRun = true; UpdateMode_StartAir(); }
         else if (!CanStartMove()) { endRun = true; UpdateMode_StartWait(); }
         else if (CanStartAttack()) { endRun = true; UpdateMode_StartAttack(Gpt_PlayerAttackMove.ATTACK_MODE.DASH, ATTACK_DIRECTION.RIGHT); }
         else if (CanStartJump()) { endRun = true; UpdateMode_StartJump(); }
         else if (CanStartSkill()) { endRun = true; UpdateMode_StartSkill(); }
         else if (CanStartDetonate()) { endRun = true; UpdateMode_StartDetonate(); }
-        else if (!playerUtillity.IsGround()) { endRun = true; UpdateMode_StartAir(); }
 
         if (endRun) playerRun.EndRun();
     }
@@ -183,7 +201,13 @@ public class Gpt_Player : MonoBehaviour
 
         bool endAttack = false;
 
-        if (IsDead())
+
+        if (IsDamaging())
+        {
+            endAttack = true;
+            UpdateMode_StartDamage();
+        }
+        else if (IsDead())
         {
             endAttack = true;
             UpdateMode_StartDead();
@@ -230,7 +254,12 @@ public class Gpt_Player : MonoBehaviour
 
         bool endRotate = false;
 
-        if (IsDead())
+        if (IsDamaging())
+        {
+            endRotate = true;
+            UpdateMode_StartDamage();
+        }
+        else if (IsDead())
         {
             endRotate = true;
             UpdateMode_StartDead();
@@ -260,7 +289,12 @@ public class Gpt_Player : MonoBehaviour
 
         bool endJump = false;
 
-        if (IsDead())
+        if (IsDamaging())
+        {
+            endJump = true;
+            UpdateMode_StartDamage();
+        }
+        else if (IsDead())
         {
             endJump = true;
             UpdateMode_StartDead();
@@ -282,7 +316,12 @@ public class Gpt_Player : MonoBehaviour
 
         bool endAir = false;
 
-        if (IsDead())
+        if (IsDamaging())
+        {
+            endAir = true;
+            UpdateMode_StartDamage();
+        }
+        else if (IsDead())
         {
             endAir = true;
             UpdateMode_StartDead();
@@ -305,10 +344,19 @@ public class Gpt_Player : MonoBehaviour
 
         //Debug.Log(Time.frameCount+" "+ playerSkill.IsEndSkill() + " " + playerInkManage.CanContinueSkill(playerSkill.Color)+" "+ playerSkill.CanEndSkill(Gpt_Input.Skill, Gpt_Input.SkillStartFrame));
 
-        if (IsDead())
+        if (IsDamaging())
+        {
+            endSkill = true;
+            UpdateMode_StartDamage();
+        }
+        else if (IsDead())
         {
             endSkill = true;
             UpdateMode_StartDead();
+        }
+        else if (!playerUtillity.IsGround())
+        {
+            endSkill = true; UpdateMode_StartAir();
         }
         else if (playerSkill.IsEndSkill())
         {
@@ -331,10 +379,19 @@ public class Gpt_Player : MonoBehaviour
 
         bool endDetonate = false;
 
-        if (IsDead())
+        if (IsDamaging())
+        {
+            endDetonate = true;
+            UpdateMode_StartDamage();
+        }
+        else if (IsDead())
         {
             endDetonate = true;
             UpdateMode_StartDead();
+        }
+        else if (!playerUtillity.IsGround())
+        {
+            endDetonate = true; UpdateMode_StartAir();
         }
         else if (playerDetonate.IsEndDetonate())
         {
@@ -348,5 +405,26 @@ public class Gpt_Player : MonoBehaviour
     void UpdateMode_Dead()
     {
         playerDead.UpdateDead();
+    }
+
+    void UpdateMode_Damage()
+    {
+        playerDamage.UpdateDamage();
+        bool endDamage = false;
+        if (IsDead())
+        {
+            endDamage = true;
+            UpdateMode_StartDead();
+        }
+        else if (!IsDamaging())
+        {
+            endDamage = true;
+
+            if (IsDead()) UpdateMode_StartDamage();
+            else if (!playerUtillity.IsGround() ) UpdateMode_StartJump();
+            else if (!CanStartMove()) UpdateMode_StartWait();
+            else if (CanStartMove()) UpdateMode_StartRun();
+        }
+        if(endDamage) playerDamage.EndDamage();
     }
 }

@@ -1,48 +1,179 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public class Gpt_Boss : MonoBehaviour {
+public class Gpt_Boss : MonoBehaviour
+{
+    enum State
+    {
+        Search,
+        Move,
+        SelectAtk,
+
+        Fall,
+        Up,
+
+        Atk1,
+        Atk2,
+        Atk3,
+    }
+    State state = State.Search;
 
     const float maxHp = 10.0f;
     float hp = 10.0f;
+
     public GameObject hand1;
     public GameObject hand2;
-    public int state = 0;
-    float fallSpd = 10.0f;
 
+    float fallSpd = 10.0f;      // 落下速度
+    float upSpd = 25.0f;        // 上昇速度
+    float fallY = -15.0f;       // マグマY位置()
+    float magmaDmg = 2.5f;
     float cnt = 0.0f;
-    const float CNTTIME = 20.0f;
+    public Vector3 firstBossPos;
+    public GameObject player;
+    public Animator anim;
+    public Transform[] AtkTargetPos = new Transform[8];
+    public GameObject[] yuka = new GameObject[8];
+    Transform targetPos;        // プレイヤーから一番近い座標
 
-    void Start () {
-	}
-	
-	void Update () {
+    float readyTime = 0.0f;
+    const float READY_TIME_MAX = 2.25f;
+    float attackTime = 0.0f;
+    const float ATTACK_TIME_MAX = 0.5f;
 
+    int targetYukaNum = 0;        // もくひょうゆかばんごう
+
+
+    void Start()
+    {
+    }
+
+    void Update()
+    {
         cnt += Time.deltaTime;
 
-        state = 0;
-        if (state == 0)
+        // プレイヤーを探す
+        if (state == State.Search)
         {
-            // 通常状態
-
-            if (cnt >= CNTTIME)
-            {
-                cnt = 0.0f;
-                //state = 1;
-            }
-
+            // targetPos(プレイヤーから一番近い座標)取得
+            Search_PlayerNearPos();
+            // ステート変更
+            state = State.Move;
         }
-        else if (state == 1)
+        // プレイヤーの方向を向く
+        else if (state == State.Move)
         {
-            this.transform.position += new Vector3(0, -Time.deltaTime* fallSpd, 0);
-            if(this.transform.position.y < -15.0f)
+            if (readyTime < READY_TIME_MAX)
             {
-                state = 0;
-                this.hp -= 2.5f;
-                this.transform.position = new Vector3(0,0.23f,0);
+                transform.rotation = Quaternion.Slerp(this.transform.rotation, targetPos.rotation, Time.deltaTime);
+                readyTime += Time.deltaTime;
+            }
+            else
+            {
+                // 一定時間経過でステート変更
+                state = State.SelectAtk;
+                readyTime = 0.0f;
             }
         }
-	}
+        // 攻撃方法を選ぶ
+        else if (state == State.SelectAtk)
+        {
+            float rnd = UnityEngine.Random.Range(0.0f,100.0f);
+            if (hp >= 7.0f)
+            {
+                if (rnd < 50.0f)
+                {
+                    state = State.Atk1;
+                    attackTime = 0.0f;
+                    anim.SetBool("Atk_L_Flg", true);
+                }
+                else
+                {
+                    state = State.Atk2;
+                    attackTime = 0.0f;
+                    anim.SetBool("Atk_R_Flg", true);
+                }
+            }
+            else
+            {
+                if (rnd < 33.33f)
+                {
+                    state = State.Atk1;
+                    attackTime = 0.0f;
+                    anim.SetBool("Atk_L_Flg", true);
+                }
+                else if (rnd < 66.66f)
+                {
+                    state = State.Atk2;
+                    attackTime = 0.0f;
+                    anim.SetBool("Atk_R_Flg", true);
+                }
+                else
+                {
+                    state = State.Atk3;
+                    attackTime = 0.0f;
+                    anim.SetBool("Atk_Nagi_Flg", true);
+                }
+            }
+        }
+        else if ( state == State.Fall)
+        {
+            // 落下ベクトルを足す
+            this.transform.position += new Vector3(0, -Time.deltaTime * fallSpd, 0);
+            // 一定まで落ちると被ダメ
+            if (this.transform.position.y < fallY)
+            {
+                state = State.Up;
+                this.hp -= magmaDmg;
+            }
+        }
+        // 上昇ステート(簡易制御)
+        else if (state == State.Up)
+        {
+            // 上昇ベクトルを足す
+            this.transform.position += new Vector3(0, Time.deltaTime * upSpd, 0);
+
+            // 元々いた位置まで上昇すれば
+            if (this.transform.position.y < firstBossPos.y)
+            {
+                this.transform.position = new Vector3(0, firstBossPos.y, 0);
+                state = State.Search;
+            }
+        }
+        // 攻撃L
+        else if (state == State.Atk1)
+        {
+            attackTime += Time.deltaTime;
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime >= 0.5f)
+            {
+                anim.SetBool("Atk_L_Flg", false);
+                state = State.Search;
+
+                yuka[(targetYukaNum+2)%8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+            }    
+        }
+        // 攻撃R
+        else if (state == State.Atk2)
+        {
+            attackTime += Time.deltaTime;
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime >= 0.5f)
+            {
+                anim.SetBool("Atk_R_Flg", false);
+                state = State.Search;
+            }
+        }
+        // なぎ払い攻撃
+        else if (state == State.Atk3)
+        {
+            attackTime += Time.deltaTime;
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime >= 0.5f)
+            {
+                anim.SetBool("Atk_Nagi_Flg", false);
+                state = State.Search;
+            }
+        }
+    }
 
     public float GetMaxHp()
     {
@@ -59,14 +190,23 @@ public class Gpt_Boss : MonoBehaviour {
         hp += plus;
     }
 
-    //void OnTriggerEnter(Collider c)
-    //{
-    //    if (c.tag != "Player" && c.tag != "Enemy")
-    //    {
-    //        Debug.Log("AA");
-    //    }
-
-    //    Debug.Log("AAaaa");
-
-    //}
+    // プレイヤーと最も近い場所を探す
+    void Search_PlayerNearPos()
+    {
+        // プレイヤーと最も近い場所を探す
+        float min = 99999.9f;
+        targetYukaNum = 0;
+        for (int i = 0; i < AtkTargetPos.Length; i++)
+        {
+            Vector3 vec = AtkTargetPos[i].position - player.transform.position;
+            vec = new Vector3(vec.x, 0.0f, vec.z);
+            if (min > vec.magnitude)
+            {
+                min = vec.magnitude;
+                targetYukaNum = i;
+            }
+        }
+        // プレイヤーと最も近い場所保存
+        targetPos = AtkTargetPos[(targetYukaNum + 2)%8];
+    }
 }

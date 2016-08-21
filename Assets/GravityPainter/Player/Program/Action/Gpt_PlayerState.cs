@@ -4,12 +4,14 @@ using UnityEngine.SceneManagement;
 
 public class Gpt_PlayerState : MonoBehaviour
 {
+    public Gpt_PlayerUtillity playerUtillity;
     public Gpt_PlayerColor playerColor;
     public Gpt_PlayerInkManage playerInkManage;
 
     public int HPMax = 12;
     public float feeverMax = 1;
     public float mutekiTime = 1.0f;
+    public float damageTime = 0.1f;
     public int respawnDamage = 4;
     
     public ComboControlSetting comboSetting;
@@ -35,25 +37,37 @@ public class Gpt_PlayerState : MonoBehaviour
 
     public bool IsFeever { get; private set; }
 
-    public bool IsMuteki { get { return mutekiCount < mutekiTime; } }
+    public bool IsMuteki { get { return mutekiCount < mutekiTime || HP == 0; } }
     public Gpt_InkColor PlayerColor { get { return playerColor.Color; } }
 
 
     public void DoRespawn(bool addHpDamage)
     {
-        if (addHpDamage) AddHPDamage(respawnDamage);
+        if (addHpDamage) AddHPDamage(respawnDamage, false);
     }
 
     // プロパティをいじる関数
     public void AddHP(int value) { HP = intValueLimit(0, HPMax, HP + value); }
-    public void AddHPDamage(int value)
+    public void AddHPDamage(int value, bool setMuteki = true)
     {
         if (!IsMuteki)
         {
             AddHP(-value);
-            mutekiCount = 0;
+            if(setMuteki) mutekiCount = 0;
         }
     }
+    public void AddHPDamage_Attack(int value, Vector3 hitPosition)
+    {
+        if (!IsMuteki)
+        {
+            AddHPDamage(value);
+            Vector3 look = hitPosition;
+            look.y = this.transform.position.y;
+            playerUtillity.LookAt(look);
+            playerColor.StartMutekiFlush(mutekiTime);
+        }
+    }
+
     public void AddFeever(float value) { Feever = floatValueLimit(0f, feeverMax, Feever + value); }
 
     public void StartFeever() { IsFeever = true; }
@@ -74,14 +88,14 @@ public class Gpt_PlayerState : MonoBehaviour
     public void AddYellowCombo() { yellowCombo.AddCombo(); }
     public void AddRainbowCombo() { Debug.Log("RaibowColorComboとは?"); }
 
-    public bool IsDead()
-    {
-        return HP <= 0;
-    }
+    public bool IsDead() { return HP <= 0; }
+    public bool IsDamaging() { return mutekiCount < damageTime; }
 
     public void MaxStatusSet()
     {
+        float inf = 10000000;
         HP = HPMax;
+        mutekiCount = inf;
     }
     
     void Start()

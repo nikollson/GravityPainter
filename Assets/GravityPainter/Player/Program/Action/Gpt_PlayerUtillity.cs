@@ -16,6 +16,17 @@ public class Gpt_PlayerUtillity : MonoBehaviour
 
     }
 
+    public Vector3 GetForward()
+    {
+        return transform.right;
+    }
+
+    public void LookAt(Vector3 position)
+    {
+        this.transform.LookAt(position);
+        this.transform.Rotate(0, -90, 0);
+    }
+
     public Vector3 GetAnalogpadMove()
     {
         Vector3 camForward = camera.transform.forward;

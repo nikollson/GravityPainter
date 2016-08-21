@@ -15,6 +15,10 @@ public class Gpt_PlayerColor : MonoBehaviour
     public Material blueFudeMaterial;
     public Material yellowFudeMaterial;
 
+    public Material mutekiMaterial;
+    public float mutekiFlushOnTime = 0.2f;
+    public float mutekiFlushOffTime = 0.2f;
+
     public Renderer[] hairRenders;
     public Renderer[] bodyRenderes;
     public Renderer[] fudeRenderes;
@@ -22,14 +26,43 @@ public class Gpt_PlayerColor : MonoBehaviour
     public Gpt_InkColor startColor = Gpt_InkColor.RED;
     public Gpt_InkColor Color { get; private set; }
 
+    private float flushLength = 0;
+    private float flushTime = 0;
+    private bool flushing = false;
+
     void Start()
     {
         SetColor(startColor);
     }
 
+    void Update()
+    {
+        if (flushing)
+        {
+            flushTime += Time.deltaTime;
+
+            float allTime = mutekiFlushOnTime + mutekiFlushOffTime;
+            float amari = flushTime - (int)(flushTime / allTime) * allTime;
+
+            if (amari < mutekiFlushOnTime) SetFlushColor();
+            else SetColor(Color);
+
+            if (flushTime > flushLength) flushing = false;
+        }
+        else
+        {
+            SetColor(Color);
+        }
+    }
+
+    void SetFlushColor()
+    {
+        SetColor(Gpt_InkColor.NONE);
+    }
+
     public void SetColor(Gpt_InkColor color)
     {
-        Color = color;
+        if (color != Gpt_InkColor.NONE) Color = color;
         Material hairMaterial = redHairMaterial;
         Material bodyMaterial = redBodyMaterial;
         Material fudeMaterial = redFudeMaterial;
@@ -46,6 +79,13 @@ public class Gpt_PlayerColor : MonoBehaviour
             hairMaterial = yellowHairMaterial;
             bodyMaterial = yellowBodyMaterial;
             fudeMaterial = yellowFudeMaterial;
+        }
+
+        if(color == Gpt_InkColor.NONE)
+        {
+            hairMaterial = mutekiMaterial;
+            bodyMaterial = mutekiMaterial;
+            fudeMaterial = mutekiMaterial;
         }
 
         for (int i = 0; i < hairRenders.Length; i++) hairRenders[i].sharedMaterial = hairMaterial;
@@ -67,5 +107,12 @@ public class Gpt_PlayerColor : MonoBehaviour
         if (tmpColor == Gpt_InkColor.RED) SetColor(Gpt_InkColor.BLUE);
         if (tmpColor == Gpt_InkColor.BLUE) SetColor(Gpt_InkColor.YELLOW);
         if (tmpColor == Gpt_InkColor.YELLOW) SetColor(Gpt_InkColor.RED);
+    }
+
+    public void StartMutekiFlush(float flushTime)
+    {
+        this.flushing = true;
+        this.flushLength = flushTime;
+        this.flushTime = 0.0f;
     }
 }

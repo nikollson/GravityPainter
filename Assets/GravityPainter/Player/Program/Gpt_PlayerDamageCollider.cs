@@ -7,18 +7,23 @@ public class Gpt_PlayerDamageCollider : MonoBehaviour
     public HitManager attackCollider;
     public int damage = 3;
 
+    public Transform hitRoot;
+
     string playerTag = "Player";
     
     void Update()
     {
-        foreach (var a in attackCollider.HitColliders)
+        foreach (var b in attackCollider.CollisionData)
         {
+            var a = b.collider;
             if (a.tag == playerTag)
             {
                 var playerState = Gpt_ParentTracker.Track<Gpt_PlayerState>(a.gameObject);
                 if (playerState != null)
                 {
-                    playerState.AddHPDamage(damage);
+                    Vector3 position = this.transform.position;
+                    if (hitRoot != null) position = hitRoot.transform.position;
+                    playerState.AddHPDamage_Attack(damage, position);
                 }
             }
         }

@@ -5,6 +5,8 @@ public class Gpt_YukaBox : MonoBehaviour {
 
     public Renderer renderer;
     public new Collider collider;
+    public NavMeshObstacle navMeshObstacle;
+    
     
     public int HP { get; private set; }
     public Gpt_InkColor Color { get; private set; }
@@ -40,6 +42,12 @@ public class Gpt_YukaBox : MonoBehaviour {
         if (HP != 0) MaterialUpdate();
     }
 
+    public void ReverseTile()
+    {
+        reverseTime = 0;
+        reverseEndTime = 0;
+    }
+
     void MaterialUpdate()
     {
         renderer.sharedMaterial = tileSetting.GetMaterial(Color, HP, false);
@@ -50,6 +58,7 @@ public class Gpt_YukaBox : MonoBehaviour {
         fallStartY = this.transform.position.y;
         renderer.enabled = false;
         collider.enabled = false;
+        navMeshObstacle.enabled = true;
         this.transform.position += new Vector3(0, -tileSetting.fallDistance, 0);
         isFalling = true;
         isReversing = false;
@@ -67,12 +76,13 @@ public class Gpt_YukaBox : MonoBehaviour {
     void EndFall2()
     {
         this.transform.position = new Vector3(this.transform.position.x, fallStartY, this.transform.position.z);
+        navMeshObstacle.enabled = false;
         fallCount = 0;
     }
     
     public bool CanSetExplode()
     {
-        return !isExploding && !isReversing;
+        return !isExploding && !isReversing && !isFalling;
     }
     public void SetExplode(float flushTiming, float explodeTiming, float reverseTiming, float reverseEndTiming)
     {
@@ -121,8 +131,9 @@ public class Gpt_YukaBox : MonoBehaviour {
 
             if (fallCount > reverseTime)
             {
+                float EPS = 0.00001f;
                 Vector3 pos = this.transform.position;
-                float restTimeMax = reverseEndTime - reverseTime;
+                float restTimeMax = Mathf.Max(EPS, reverseEndTime - reverseTime);
                 float restTime = fallCount - reverseTime;
                 pos.y = pos.y + (fallStartY - pos.y) * (restTime / restTimeMax);
                 this.transform.position = pos;

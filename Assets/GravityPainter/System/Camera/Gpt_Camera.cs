@@ -80,6 +80,11 @@ public class Gpt_Camera : MonoBehaviour
     public float pushShakePower = 0.5f;
     private float shakePower = 0;
 
+
+
+    bool firstBossMovieFlg = true;
+    Vector3 BossStartMovie = new Vector3(-0.05f, 19.935f, 40.329f);
+
     // -------------------------------------------------- 大元関数 -------------------------------------------------- //
 
     // 初期化関数
@@ -116,8 +121,14 @@ public class Gpt_Camera : MonoBehaviour
             }
             else
             {
-                this.transform.position = player.transform.position * 1.5f;
-                Update_Look(new Vector3(0, 2, 0));
+                // 座標設定
+                Vector3 v = player.transform.position;
+                Vector3 vn = v;
+                vn.Normalize();
+                this.transform.position = player.transform.position * 1.2f + vn * 6.0f + new Vector3(0, 0.5f, 0);
+
+                // 注視点設定
+                Update_Look(new Vector3(0, 6.0f-v.magnitude*0.25f, 0));
             }
         }
         else if (state == (int)State.BossStartMovie)
@@ -129,27 +140,33 @@ public class Gpt_Camera : MonoBehaviour
                 stateStartFlg = false;
             }
 
-            if (this.transform.position.y < 9.0f)
+            if (this.transform.position.y < 14.0f)
             {
-                this.transform.position += new Vector3(0, Time.deltaTime, 0);
+                this.transform.position += new Vector3(0, Time.deltaTime*2, 0);
                 Update_Look(this.transform.position + new Vector3(0, 0, -1.0f));
             }
-            else if (this.transform.position.y < 9.1f)
+            else if (this.transform.position.y < 14.1f)
             {
                 this.transform.position += new Vector3(0, Time.deltaTime / 10.0f, 0);
                 Update_Look(this.transform.position + new Vector3(0, 0, -1.0f));
             }
             else {
-                Vector3 vec = new Vector3(-0.05f, 19.935f, 40.329f) - this.transform.position;
+                if (firstBossMovieFlg) {
+                    firstBossMovieFlg = false;
+                    player.GetComponent<Gpt_Player>().canControl = false;
+                }
+
+                Vector3 vec = BossStartMovie - this.transform.position;
                 this.transform.position += vec * Time.deltaTime;
                 Update_Look(this.transform.position + new Vector3(0, 0, -1.0f));
                 if(this.transform.position.z>firstPlayerPos.z) Update_Look(firstPlayerPos);
 
-                if (this.transform.position.z >= player.transform.position.z + distanceXZ*0.85f)
+                if (this.transform.position.z >= player.transform.position.z + distanceXZ*0.5f)
                 {
                     state = (int)State.BossBattle;
                     movieBar1.transform.position = notDrawPos;
                     movieBar2.transform.position = notDrawPos;
+                    player.GetComponent<Gpt_Player>().canControl = false;
                 }
             }
         }
