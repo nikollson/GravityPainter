@@ -217,7 +217,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         enemyTemp = 0;
                     }
 
-                    Debug.Log(enemySpeed);
+                    //Debug.Log(enemySpeed);
                     enemyTemp = enemySpeed;
                     enemyMove.x = moveVec.x * enemyTemp;
                     enemyMove.y = gravity;

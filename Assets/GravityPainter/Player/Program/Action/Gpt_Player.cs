@@ -104,7 +104,7 @@ public class Gpt_Player : MonoBehaviour
     {
         Mode = MODE.ATTACK;
         playerAttack.StartAttack(mode, Gpt_Input.AttackStartFrame);
-        playerAttackState.StartBullet(this.transform.right);
+        playerAttackState.StartBullet(this.transform.right, dir == ATTACK_DIRECTION.RIGHT);
         AttackDirection = dir;
         trailControl.StartTrail(playerColor.Color);
         playerInkManage.UseAttak();

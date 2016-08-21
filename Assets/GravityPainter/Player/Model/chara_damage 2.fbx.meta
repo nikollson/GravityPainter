@@ -1,0 +1,189 @@
+fileFormatVersion: 2
+guid: 7c3d3738b12345443a5d2f899b29a79d
+timeCreated: 1471754848
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: All_joint
+    100002: All_rig
+    100004: brush
+    100006: brush_2
+    100008: brush_3
+    100010: //RootNode
+    100012: chara_model_fix:brush
+    100014: chara_model_fix:chara_model
+    100016: hair_1
+    100018: hair_1_ctr
+    100020: hair_2
+    100022: hair_2_ctr
+    100024: head
+    100026: head_ctr
+    100028: hip_ctr
+    100030: ikHandle1
+    100032: ikHandle2
+    100034: ikHandle3
+    100036: ikHandle4
+    100038: L_ankle
+    100040: L_elbow
+    100042: L_foot
+    100044: L_foot_cns
+    100046: L_foot_ctr
+    100048: L_hand
+    100050: L_hand_cns
+    100052: L_hand_ctr
+    100054: L_instep
+    100056: L_instep_ctr
+    100058: L_knee
+    100060: L_shoulder
+    100062: L_thumb
+    100064: L_thumb_2
+    100066: L_wrist
+    100068: neck
+    100070: neck_ctr
+    100072: R_elbow
+    100074: R_foot
+    100076: R_foot_cns
+    100078: R_foot_ctr
+    100080: R_hand
+    100082: R_hand_cns
+    100084: R_hand_ctr
+    100086: R_instep
+    100088: R_instep 1
+    100090: R_instep_ctr
+    100092: R_knee
+    100094: R_shoulder
+    100096: R_thumb
+    100098: R_thumb_2
+    100100: R_wrist
+    100102: Upperbody
+    100104: Upperbody_1
+    100106: Upperbody_2
+    100108: upperbody_ctr
+    100110: waist_ctr
+    400000: All_joint
+    400002: All_rig
+    400004: brush
+    400006: brush_2
+    400008: brush_3
+    400010: //RootNode
+    400012: chara_model_fix:brush
+    400014: chara_model_fix:chara_model
+    400016: hair_1
+    400018: hair_1_ctr
+    400020: hair_2
+    400022: hair_2_ctr
+    400024: head
+    400026: head_ctr
+    400028: hip_ctr
+    400030: ikHandle1
+    400032: ikHandle2
+    400034: ikHandle3
+    400036: ikHandle4
+    400038: L_ankle
+    400040: L_elbow
+    400042: L_foot
+    400044: L_foot_cns
+    400046: L_foot_ctr
+    400048: L_hand
+    400050: L_hand_cns
+    400052: L_hand_ctr
+    400054: L_instep
+    400056: L_instep_ctr
+    400058: L_knee
+    400060: L_shoulder
+    400062: L_thumb
+    400064: L_thumb_2
+    400066: L_wrist
+    400068: neck
+    400070: neck_ctr
+    400072: R_elbow
+    400074: R_foot
+    400076: R_foot_cns
+    400078: R_foot_ctr
+    400080: R_hand
+    400082: R_hand_cns
+    400084: R_hand_ctr
+    400086: R_instep
+    400088: R_instep 1
+    400090: R_instep_ctr
+    400092: R_knee
+    400094: R_shoulder
+    400096: R_thumb
+    400098: R_thumb_2
+    400100: R_wrist
+    400102: Upperbody
+    400104: Upperbody_1
+    400106: Upperbody_2
+    400108: upperbody_ctr
+    400110: waist_ctr
+    4300000: chara_model_fix:chara_model
+    4300002: chara_model_fix:brush
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: chara_model_fix:brush
+    13700002: chara_model_fix:chara_model
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

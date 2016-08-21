@@ -9,6 +9,12 @@ public class Gpt_PlayerAttackState : MonoBehaviour
     //public HitManager attackCollider;
     public GameObject bulletPrefab;
     public GameObject hitEffectPrefab;
+    public GameObject redRightPrefab;
+    public GameObject redLeftPrefab;
+    public GameObject blueRightPrefab;
+    public GameObject blueLeftPrefab;
+    public GameObject yellowRightPrefab;
+    public GameObject yellowLeftPrefab;
     public AudioClip hitSound;
     public AudioClip attackSound;
     public string enemyTag = "Enemy";
@@ -29,7 +35,7 @@ public class Gpt_PlayerAttackState : MonoBehaviour
 
     void Awake() { playerUtillity = this.GetComponent<Gpt_PlayerUtillity>(); }
 
-    public void StartBullet(Vector3 forward)
+    public void StartBullet(Vector3 forward, bool isRightAttack)
     {
         ResetBullets();
         Vector3 eularAngle = this.transform.rotation.eulerAngles;
@@ -48,6 +54,16 @@ public class Gpt_PlayerAttackState : MonoBehaviour
         willScreenShake = false;
         screenShaked = false;
         playerUtillity.audioSource.PlayOneShot(attackSound);
+
+        if (playerState.PlayerColor == Gpt_InkColor.RED) MakeAttackPrefab(isRightAttack ? redRightPrefab: redLeftPrefab);
+        if (playerState.PlayerColor == Gpt_InkColor.BLUE) MakeAttackPrefab(isRightAttack ? blueRightPrefab : blueLeftPrefab);
+        if (playerState.PlayerColor == Gpt_InkColor.YELLOW) MakeAttackPrefab(isRightAttack ? yellowRightPrefab : yellowLeftPrefab);
+    }
+
+    void MakeAttackPrefab(GameObject prefab)
+    {
+        var obj = (GameObject)Instantiate(prefab, this.transform.position, Quaternion.identity);
+        obj.transform.LookAt(obj.transform.position + this.transform.right);
     }
 
     void ResetBullets()
