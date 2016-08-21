@@ -4,7 +4,7 @@ using System.Collections;
 public class Gpt_ToPlayerColl : MonoBehaviour {
 
     public GameObject player;
-    public GameObject boss;
+    //public GameObject boss;
 
     void Start () {
 	}

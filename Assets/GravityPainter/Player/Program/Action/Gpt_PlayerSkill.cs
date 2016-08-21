@@ -96,7 +96,8 @@ public class Gpt_PlayerSkill : MonoBehaviour
 
         public override void Start()
         {
-            Vector3 force = startVelocity * playerUtillity.GetAnalogpadMove() - rigidbody.velocity;
+            Vector3 dir = playerUtillity.HasAnalogpadMove() ? playerUtillity.GetAnalogpadMove() : playerUtillity.GetForward();
+            Vector3 force = startVelocity * dir - rigidbody.velocity;
             rigidbody.AddForce(force, ForceMode.VelocityChange);
             count = 0;
         }
@@ -104,7 +105,7 @@ public class Gpt_PlayerSkill : MonoBehaviour
         {
             count += Time.deltaTime;
 
-            Vector3 dir = playerUtillity.HasAnalogpadMove() ? playerUtillity.GetAnalogpadMove() : rigidbody.transform.forward;
+            Vector3 dir = playerUtillity.HasAnalogpadMove() ? playerUtillity.GetAnalogpadMove() : playerUtillity.GetForward();
             Vector3 force = accelPower * dir - friction * (rigidbody.velocity - new Vector3(0, rigidbody.velocity.y, 0));
             rigidbody.AddForce(force, ForceMode.Acceleration);
 
