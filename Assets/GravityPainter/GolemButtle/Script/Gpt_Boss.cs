@@ -18,6 +18,8 @@ public class Gpt_Boss : MonoBehaviour
         Atk3,
     }
     State state = State.Search;
+    public GameObject camera;
+    public GameObject se;
 
     const float maxHp = 10.0f;
     float hp = 10.0f;
@@ -41,6 +43,8 @@ public class Gpt_Boss : MonoBehaviour
     const float READY_TIME_MAX = 2.25f;
     float attackTime = 0.0f;
     const float ATTACK_TIME_MAX = 3.5f;
+
+    float screenShake = 7.0f;
 
     int targetYukaNum = 0;        // もくひょうゆかばんごう
 
@@ -152,6 +156,8 @@ public class Gpt_Boss : MonoBehaviour
             {
                 if (attackTime >= 3.0f)
                 {
+                    se.GetComponent<AudioSource>().Play();
+                    camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
                     yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
                     attackTime += 10.0f;
                 }
@@ -184,6 +190,8 @@ public class Gpt_Boss : MonoBehaviour
             {
                 if (attackTime >= 3.0f && attackTime<=10.0f)
                 {
+                    se.GetComponent<AudioSource>().Play();
+                    camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
                     yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
                     attackTime += 10.0f;
                 }
@@ -215,16 +223,22 @@ public class Gpt_Boss : MonoBehaviour
             {
                 if (attackTime >= 2.0f && attackTime <= 2.99f)
                 {
+                    se.GetComponent<AudioSource>().Play();
+                    camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
                     yuka[(targetYukaNum +1) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
                     attackTime += 1.0f;
                 }
                 else if (attackTime >= 4.5f && attackTime <= 5.49f)
                 {
+                    se.GetComponent<AudioSource>().Play();
+                    camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
                     yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
                     attackTime += 1.0f;
                 }
                 else if (attackTime >= 7.0f && attackTime <= 7.99f)
                 {
+                    se.GetComponent<AudioSource>().Play();
+                    camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
                     yuka[(targetYukaNum - 1) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
                     attackTime += 1.0f;
                 }
