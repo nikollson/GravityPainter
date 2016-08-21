@@ -6,6 +6,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
 
     public Gpt_EnemyAttack EnemyAttack;
+    public GameObject Animator;
+    private Gpt_EnemyAnimation EnemyAnimation;
     //走行スピード
     public float enemySpeed;
     private float preserveEnemySpeed;
@@ -81,6 +83,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        EnemyAnimation = Animator.GetComponent<Gpt_EnemyAnimation>();
         Character = GetComponent<CharacterController>();
         player = GameObject.Find("Player");
         myTransform = transform;
@@ -219,6 +222,11 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         enemyTemp = 0;
                     }
 
+                    //ダメージモーション中は動かない
+                    if (EnemyAnimation.isOkiAction)
+                    {
+                        enemyTemp = 0;
+                    }
                     //Debug.Log(enemySpeed);
                     
                     enemyMove.x = moveVec.x * enemyTemp;

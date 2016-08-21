@@ -6,6 +6,8 @@ public class Gpt_Enemy : MonoBehaviour {
     public Gpt_EnemyMove EnemyMove;
     public Gpt_EnemyColor EnemyColor;
     public Gpt_EnemyAttack EnemyAttack;
+    public GameObject animationObject;
+    private Gpt_EnemyAnimation EnemyAnimation;
     public Collider collider;
     private GameObject ManegerObject;
     public Rigidbody rigid;
@@ -136,6 +138,8 @@ public class Gpt_Enemy : MonoBehaviour {
         Character = this.GetComponent<CharacterController>();
         //Debug.Log(EnemyGravityManeger.ListIndex(this));
         CanSetColor = true;
+
+        EnemyAnimation=animationObject.GetComponent<Gpt_EnemyAnimation>();
     }
 
     void OnCollisionEnter(Collision collision)
@@ -298,6 +302,7 @@ public class Gpt_Enemy : MonoBehaviour {
 
             damageCount += 0.1f;
             CanSetColor = false;
+            EnemyAnimation.IsOkiAction(damageTime);
             if (damageCount > damageTime)
             {
                 EnemyColor.IsDamageFalse();
@@ -398,7 +403,7 @@ public class Gpt_Enemy : MonoBehaviour {
                 }
                 motionTime2 += 0.2f;
                 EnemyColor.IsDamage();
-
+                EnemyAnimation.IsOkiAction(revivalTime);
                 
                 if (revivalCount > revivalTime)
                 {
@@ -622,7 +627,10 @@ public class Gpt_Enemy : MonoBehaviour {
         isTopExplode = false ;
         CanSetColor = true;
         navAgent.enabled = true;
+        //敵同士のあたり判定を戻す
         this.gameObject.layer = LayerMask.NameToLayer("Default");
+        //起き上がるモーションを入れる。
+        
     }
 
     //爆風のダメージ
