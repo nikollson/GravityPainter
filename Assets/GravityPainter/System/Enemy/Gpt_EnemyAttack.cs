@@ -36,10 +36,16 @@ public class Gpt_EnemyAttack : MonoBehaviour {
     //攻撃モーションに入ってから攻撃判定に入るまでの時間
     public float startAttackTime=1f;
     //攻撃判定が消える時間
-    public float endAttackTime=0.5f;
-    private float attackTime;
+    public float duringAttackTime=0.5f;
+    //攻撃判定後の時間
+    public float endAttackTime = 0.8f;
+    //攻撃後の再攻撃するまでの時間
+    public float coolTime = 2f;
+    private float cool;
 
-    public float jumpTime;
+    public bool CanAttack{get;private set;}
+
+    private float attackTime;
     private float jump;
     private Vector3 jumpVec;
 
@@ -57,7 +63,11 @@ public class Gpt_EnemyAttack : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        
+        cool+=0.1f;
+        if(cool>coolTime){
+            CanAttack=true;
+        }
+
         //Debug.Log("Attack:"+isAttack);
         //攻撃フラグが立つときにアクション
         if (isAttack)
@@ -75,12 +85,18 @@ public class Gpt_EnemyAttack : MonoBehaviour {
                     this.transform.position=this.transform.position+jumpVec;
                 }
 
-                if (attackTime > startAttackTime + endAttackTime)
+                if (attackTime > startAttackTime + duringAttackTime)
                 {
                     proxRenderer.enabled = false;
                     proxCollider.enabled = false;
+                }
+
+                if (attackTime > startAttackTime + duringAttackTime+endAttackTime)
+                {
                     StopAttack();
                 }
+                    
+                    
                 ////Debug.Log("aa:"+attackSpeed);
                 //if (attack%attackSpeed==0)
                 //{
@@ -145,11 +161,14 @@ public class Gpt_EnemyAttack : MonoBehaviour {
     {
         isAttack = false;
         proxCollider.enabled = false;
+        proxRenderer.enabled = false;
         beam = 0;
         motionTime1 = 0;
         motionTime2 = 0;
         attackTime = 0;
         jump = 0;
+        cool=0;
+        CanAttack=false;
     }
 
     

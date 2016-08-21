@@ -1,10 +1,7 @@
 fileFormatVersion: 2
-guid: 973146e0ae1315f42bd8730b5f534366
-labels:
-- Wall
-- Water
-timeCreated: 1471506899
-licenseType: Pro
+guid: 19db159f12f7e5948ad98b5df0b0401d
+timeCreated: 1471713406
+licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -63,59 +60,7 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: Take 001
-      takeName: Take 001
-      firstFrame: 0
-      lastFrame: 32
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: joint1
-        weight: 1
-      - path: joint1/body
-        weight: 1
-      - path: joint1/joint2
-        weight: 1
-      - path: joint1/nurbsCircle1
-        weight: 1
-      - path: joint1/nurbsCircle1/joint5
-        weight: 1
-      - path: joint1/nurbsCircle1/joint5/foot_r
-        weight: 1
-      - path: joint1/nurbsCircle1/joint5/joint6
-        weight: 1
-      - path: joint1/nurbsCircle2
-        weight: 1
-      - path: joint1/nurbsCircle2/joint3
-        weight: 1
-      - path: joint1/nurbsCircle2/joint3/foot_l
-        weight: 1
-      - path: joint1/nurbsCircle2/joint3/joint4
-        weight: 1
-      maskType: 0
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
