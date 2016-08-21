@@ -134,7 +134,7 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
 
         }
 
-        Debug.Log(enemyNumCount);
+        //Debug.Log(enemyNumCount);
     }
 
 

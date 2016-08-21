@@ -26,7 +26,7 @@ public class Gpt_EnemyAnimation : MonoBehaviour {
     void Update(){
     
         //Debug.Log("Anime:"+EnemyAttack.GetAttack());
-        if (EnemyAttack.GetAttack())
+        if (EnemyAttack.isAttack_)
         {
             animator.SetBool("IsAttack", true);
         }else
@@ -36,6 +36,11 @@ public class Gpt_EnemyAnimation : MonoBehaviour {
 
         }
         //animator.SetBool("IsAttack", true);
+
+        if (EnemyAttack.isOki)
+        {
+            animator.SetTrigger("IsOk");
+        }
 
     }
 
