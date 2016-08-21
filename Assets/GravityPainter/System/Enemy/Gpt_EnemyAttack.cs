@@ -49,6 +49,7 @@ public class Gpt_EnemyAttack : MonoBehaviour {
     private float jump;
     private Vector3 jumpVec;
 
+
 	// Use this for initialization
 	void Start () {
         firstProxRotation = proxObject.transform.rotation;
@@ -78,7 +79,7 @@ public class Gpt_EnemyAttack : MonoBehaviour {
                 jump+=0.1f;
                 if (attackTime > startAttackTime)
                 {
-                    proxRenderer.enabled = true;           
+                    //proxRenderer.enabled = true;           
                     proxCollider.enabled = true;
                     //if(jumpTime<jump)
                     jumpVec=new Vector3(0,0.1f,0);
@@ -87,14 +88,23 @@ public class Gpt_EnemyAttack : MonoBehaviour {
 
                 if (attackTime > startAttackTime + duringAttackTime)
                 {
-                    proxRenderer.enabled = false;
+                    //proxRenderer.enabled = false;
                     proxCollider.enabled = false;
                 }
 
-                if (attackTime > startAttackTime + duringAttackTime+endAttackTime)
+                if (attackTime > startAttackTime + duringAttackTime+endAttackTime+3f)//アニメーション開始
                 {
                     StopAttack();
+
                 }
+
+                if (attackTime > startAttackTime + duringAttackTime + endAttackTime + 3f)//アニメーション終了
+                {
+                    StopAttack();
+
+                }
+
+
                     
                     
                 ////Debug.Log("aa:"+attackSpeed);
