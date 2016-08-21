@@ -34,12 +34,16 @@ public class Gpt_Boss : MonoBehaviour
     public GameObject player;
     public Animator anim;
     public Transform[] AtkTargetPos = new Transform[8];
+    public GameObject[] yuka = new GameObject[8];
     Transform targetPos;        // プレイヤーから一番近い座標
 
     float readyTime = 0.0f;
     const float READY_TIME_MAX = 2.25f;
     float attackTime = 0.0f;
     const float ATTACK_TIME_MAX = 0.5f;
+
+    int targetYukaNum = 0;        // もくひょうゆかばんごう
+
 
     void Start()
     {
@@ -48,8 +52,6 @@ public class Gpt_Boss : MonoBehaviour
     void Update()
     {
         cnt += Time.deltaTime;
-
-        //Debug.Log(state);
 
         // プレイヤーを探す
         if (state == State.Search)
@@ -143,11 +145,13 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Atk1)
         {
             attackTime += Time.deltaTime;
-            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime>=0.5f)
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime >= 0.5f)
             {
                 anim.SetBool("Atk_L_Flg", false);
                 state = State.Search;
-            }
+
+                yuka[(targetYukaNum+2)%8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+            }    
         }
         // 攻撃R
         else if (state == State.Atk2)
@@ -191,7 +195,7 @@ public class Gpt_Boss : MonoBehaviour
     {
         // プレイヤーと最も近い場所を探す
         float min = 99999.9f;
-        int num = 0;
+        targetYukaNum = 0;
         for (int i = 0; i < AtkTargetPos.Length; i++)
         {
             Vector3 vec = AtkTargetPos[i].position - player.transform.position;
@@ -199,10 +203,10 @@ public class Gpt_Boss : MonoBehaviour
             if (min > vec.magnitude)
             {
                 min = vec.magnitude;
-                num = i;
+                targetYukaNum = i;
             }
         }
         // プレイヤーと最も近い場所保存
-        targetPos = AtkTargetPos[num];
+        targetPos = AtkTargetPos[(targetYukaNum + 2)%8];
     }
 }
