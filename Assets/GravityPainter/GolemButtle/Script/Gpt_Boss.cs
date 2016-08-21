@@ -35,8 +35,11 @@ public class Gpt_Boss : MonoBehaviour
     public Animator anim;
     public Transform[] AtkTargetPos = new Transform[8];
     Transform targetPos;        // プレイヤーから一番近い座標
+
     float readyTime = 0.0f;
     const float READY_TIME_MAX = 2.25f;
+    float attackTime = 0.0f;
+    const float ATTACK_TIME_MAX = 0.5f;
 
     void Start()
     {
@@ -45,7 +48,6 @@ public class Gpt_Boss : MonoBehaviour
     void Update()
     {
         cnt += Time.deltaTime;
-        Debug.Log("ENUM_STATE: "+state);
 
         // プレイヤーを探す
         if (state == State.Search)
@@ -67,6 +69,7 @@ public class Gpt_Boss : MonoBehaviour
             {
                 // 一定時間経過でステート変更
                 state = State.SelectAtk;
+                readyTime = 0.0f;
             }
         }
         // 攻撃方法を選ぶ
@@ -78,11 +81,13 @@ public class Gpt_Boss : MonoBehaviour
                 if (rnd < 50.0f)
                 {
                     state = State.Atk1;
+                    attackTime = 0.0f;
                     anim.SetBool("Atk_L_Flg", true);
                 }
                 else
                 {
                     state = State.Atk2;
+                    attackTime = 0.0f;
                     anim.SetBool("Atk_R_Flg", true);
                 }
             }
@@ -91,16 +96,19 @@ public class Gpt_Boss : MonoBehaviour
                 if (rnd < 33.33f)
                 {
                     state = State.Atk1;
+                    attackTime = 0.0f;
                     anim.SetBool("Atk_L_Flg", true);
                 }
                 else if (rnd < 66.66f)
                 {
                     state = State.Atk2;
+                    attackTime = 0.0f;
                     anim.SetBool("Atk_R_Flg", true);
                 }
                 else
                 {
                     state = State.Atk3;
+                    attackTime = 0.0f;
                     anim.SetBool("Atk_Nagi_Flg", true);
                 }
             }
@@ -132,7 +140,8 @@ public class Gpt_Boss : MonoBehaviour
         // 攻撃L
         else if (state == State.Atk1)
         {
-            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select"))
+            attackTime += Time.deltaTime;
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime>=0.5f)
             {
                 anim.SetBool("Atk_L_Flg", false);
                 state = State.Search;
@@ -141,7 +150,8 @@ public class Gpt_Boss : MonoBehaviour
         // 攻撃R
         else if (state == State.Atk2)
         {
-            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select"))
+            attackTime += Time.deltaTime;
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime >= 0.5f)
             {
                 anim.SetBool("Atk_R_Flg", false);
                 state = State.Search;
@@ -150,7 +160,8 @@ public class Gpt_Boss : MonoBehaviour
         // なぎ払い攻撃
         else if (state == State.Atk3)
         {
-            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select"))
+            attackTime += Time.deltaTime;
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime >= 0.5f)
             {
                 anim.SetBool("Atk_Nagi_Flg", false);
                 state = State.Search;
@@ -191,7 +202,5 @@ public class Gpt_Boss : MonoBehaviour
         }
         // プレイヤーと最も近い場所保存
         targetPos = AtkTargetPos[num];
-
-        //Debug.Log("AAA"+num);
     }
 }
