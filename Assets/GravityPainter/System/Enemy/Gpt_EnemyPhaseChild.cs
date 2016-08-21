@@ -7,7 +7,7 @@ public class Gpt_EnemyPhaseChild : MonoBehaviour {
     public GameObject effectPrefab;
 
     public float comeTimeSetting = 10.0f;
-    public bool isRandomTimeCome = false;
+    public bool isRandomTimeCome = true;
 
     float count = 0;
     float comeTime = 0;
