@@ -142,7 +142,7 @@ public class Gpt_PlayerAttackState : MonoBehaviour
     bool CanDrawEnemy(Gpt_EnemyColor enemyColorScript)
     {
         Gpt_InkColor enemyColor = GetEnemyColor(enemyColorScript);
-        return enemyColor == Gpt_InkColor.NONE;
+        return enemyColor == Gpt_InkColor.NONE && enemyColorScript.EnemyClass.CanSetColor;
     }
     void DrawEnemy(Gpt_EnemyColor enemyColorScript)
     {

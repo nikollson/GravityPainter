@@ -107,7 +107,7 @@ public class Gpt_Enemy : MonoBehaviour {
     public float firstHeight;
 
     //転がっているか
-    private bool CanSetColor { get; set; }
+    public bool CanSetColor { get; set; }
 
     //地面下に落ちたか
     private bool isRakka;
