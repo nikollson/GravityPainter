@@ -64,6 +64,7 @@ public class Gpt_PlayerState : MonoBehaviour
             Vector3 look = hitPosition;
             look.y = this.transform.position.y;
             playerUtillity.LookAt(look);
+            playerColor.StartMutekiFlush(mutekiTime);
         }
     }
 
