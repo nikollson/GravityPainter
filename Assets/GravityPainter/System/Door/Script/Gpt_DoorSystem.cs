@@ -7,6 +7,8 @@ public class Gpt_DoorSystem : MonoBehaviour {
 
     public GameObject cameraObj;
     public GameObject[] doorObj = new GameObject[2];
+
+    private Gpt_Player player;
     AudioSource se;
 
     enum State
@@ -19,9 +21,15 @@ public class Gpt_DoorSystem : MonoBehaviour {
     const float MOVE_DOOR_VAL = -4.0f;       // ドア移動範囲
     public float ROT_SPD = 75.0f;       // ドア回転速度
 
-    void Start () {
+    void Start()
+    {
         state = State.CLOSE;
         se = this.GetComponent<AudioSource>();
+        foreach (var a in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            var b = a.GetComponent<Gpt_Player>();
+            if (b != null) { player = b; break; }
+        }
     }
 	
 	void Update () {
@@ -38,11 +46,12 @@ public class Gpt_DoorSystem : MonoBehaviour {
 
                 //OpeningDoorTns();
                 OpeningDoorRot();
-
+                player.canControl = false;
                 break;
 
             case State.OPEN:
 
+                player.canControl = true;
                 //
 
                 break;
@@ -69,6 +78,7 @@ public class Gpt_DoorSystem : MonoBehaviour {
         }
         else {
             cameraObj.GetComponent<Gpt_Camera>().state = 0;
+            state = State.OPEN;
         }
     }
 
