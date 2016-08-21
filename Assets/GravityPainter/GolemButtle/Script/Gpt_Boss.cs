@@ -49,6 +49,8 @@ public class Gpt_Boss : MonoBehaviour
     {
         cnt += Time.deltaTime;
 
+        //Debug.Log(state);
+
         // プレイヤーを探す
         if (state == State.Search)
         {
@@ -76,7 +78,7 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.SelectAtk)
         {
             float rnd = UnityEngine.Random.Range(0.0f,100.0f);
-            if (hp >= 70.0f)
+            if (hp >= 7.0f)
             {
                 if (rnd < 50.0f)
                 {
