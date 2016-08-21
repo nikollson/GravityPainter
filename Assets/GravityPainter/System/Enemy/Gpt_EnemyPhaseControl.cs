@@ -7,6 +7,7 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
     public PhaseInfo[] PhaseEnemyParent;
     public Gpt_DoorSystem doorSystem;
 
+
     bool opended = false;
 
     public float loadEnemyTime = 3f;
@@ -19,6 +20,12 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
 
     void Update()
     {
+        if (!opended && IsEndAllPhase())
+        {
+            DoEndPhase();
+            opended = true;
+        }
+
         if (CanLoadPhase())
         {
             LoadPhase(currentfaseNum + 1);
@@ -34,7 +41,7 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
     bool CanLoadPhase()
     {
         changeWait -= Time.deltaTime;
-        return changeWait < 0 && IsEndPhase() && currentfaseNum + 1 < PhaseEnemyParent.Length;
+        return !IsEndAllPhase() && changeWait < 0 && IsEndPhase() && currentfaseNum + 1 < PhaseEnemyParent.Length;
     }
 
     void LoadPhase(int num)
@@ -53,36 +60,29 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
             loaded = true;
             PhaseEnemyParent[currentfaseNum].parent.SetActive(true);
         }
-
-
-        if (!opended && IsEndAllPhase())
-        {
-            doorSystem.OpenDoor();
-            foreach(var a in enemyGravityManager.GetEnemyList())
-            {
-                Destroy(a.gameObject);
-            }
-            opended = true;
-        }
     }
 
     bool IsEndPhase()
     {
         if (currentfaseNum < 0) return true;
-        if(currentfaseNum < PhaseEnemyParent.Length - 1)
+        return enemyGravityManager.GetEnemyNumCount() >= PhaseEnemyParent[currentfaseNum].changeNextRest;
+    }
+
+    void DoEndPhase()
+    {
+        doorSystem.OpenDoor();
+        foreach (var a in enemyGravityManager.GetEnemyList())
         {
-            return enemyGravityManager.GetEnemyList().Count <= PhaseEnemyParent[currentfaseNum].changeNextRest;
+            Destroy(a.gameObject);
         }
-        if(currentfaseNum == PhaseEnemyParent.Length - 1)
-        {
-            return enemyGravityManager.GetEnemyNumCount() >= PhaseEnemyParent[currentfaseNum].changeNextRest;
-        }
-        return false;
     }
 
     public bool IsEndAllPhase()
     {
-        return changeWait < 0 && IsEndPhase() && currentfaseNum + 1 >= PhaseEnemyParent.Length;
+        if (!(changeWait < 0)) return false;
+        if (enemyGravityManager.GetEnemyNumCount() >= GetAllClearEnemyNum()) return true;
+        if (currentfaseNum >= PhaseEnemyParent.Length) return true;
+        return false;
     }
 
     public int GetPhaseNum()
@@ -108,7 +108,7 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
 
     public int GetAllClearEnemyNum()
     {
-        return PhaseEnemyParent[PhaseEnemyParent.Length - 1].changeNextRest;
+        return PhaseEnemyParent[PhaseEnemyParent.Length-1].changeNextRest;
     }
 
     [System.Serializable]

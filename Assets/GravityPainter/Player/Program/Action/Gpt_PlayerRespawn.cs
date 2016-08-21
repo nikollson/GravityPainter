@@ -10,6 +10,7 @@ public class Gpt_PlayerRespawn : MonoBehaviour {
 
     Vector3 respawnPosition;
     float count = 0;
+    bool respawned = false;
 
     const float INF = 1000000000;
 
@@ -25,6 +26,7 @@ public class Gpt_PlayerRespawn : MonoBehaviour {
         MakeFloor();
         count = 0;
         player.canControl = false;
+        respawned = false;
     }
 
     public void MakeFloor()
@@ -35,6 +37,10 @@ public class Gpt_PlayerRespawn : MonoBehaviour {
     void Update()
     {
         count += Time.deltaTime;
-        if (count > cantMoveTime) player.canControl = true;
+        if (!respawned && count > cantMoveTime)
+        {
+            player.canControl = true;
+            respawned = true;
+        }
     }
 }
