@@ -121,8 +121,14 @@ public class Gpt_Camera : MonoBehaviour
             }
             else
             {
-                this.transform.position = player.transform.position * 1.5f;
-                Update_Look(new Vector3(0, 2, 0));
+                // 座標設定
+                Vector3 v = player.transform.position;
+                Vector3 vn = v;
+                vn.Normalize();
+                this.transform.position = player.transform.position * 1.2f + vn * 6.0f + new Vector3(0, 0.5f, 0);
+
+                // 注視点設定
+                Update_Look(new Vector3(0, 6.0f-v.magnitude*0.25f, 0));
             }
         }
         else if (state == (int)State.BossStartMovie)
