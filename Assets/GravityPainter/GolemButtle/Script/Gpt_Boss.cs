@@ -152,7 +152,7 @@ public class Gpt_Boss : MonoBehaviour
             {
                 if (attackTime >= 3.0f)
                 {
-                    yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+                    yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
                     attackTime += 10.0f;
                 }
             }
@@ -176,7 +176,7 @@ public class Gpt_Boss : MonoBehaviour
             {
                 if (attackTime >= 3.0f && attackTime<=10.0f)
                 {
-                    yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+                    yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
                     attackTime += 10.0f;
                 }
             }
