@@ -45,6 +45,7 @@ public class Gpt_Player : MonoBehaviour
 
     void UpdateMode()
     {
+        if (IsSlow()) return;
         if (Mode == MODE.WAIT) UpdateMode_Wait();
         if (Mode == MODE.RUN) UpdateMode_Run();
         if (Mode == MODE.ATTACK) UpdateMode_Attack();
@@ -74,8 +75,7 @@ public class Gpt_Player : MonoBehaviour
             playerRespawn.DoRespawn();
         }
     }
-
-
+    
     bool CanStartMove() { return canControl && playerUtillity.HasAnalogpadMove(); }
     bool CanStartAttack() { return canControl && Gpt_Input.Attack && playerInkManage.CanUseAttack() && playerAttack.CanFirstAttack(Gpt_Input.AttackStartFrame); }
     bool CanStartDetonate() { return canControl && Gpt_Input.Detonate && playerInkManage.CanUseDetonate() && playerDetonate.CanStartDetonate(Gpt_Input.DetonateStartFrame); }
@@ -83,6 +83,7 @@ public class Gpt_Player : MonoBehaviour
     bool CanStartJump() { return canControl && Gpt_Input.Jump && playerJump.CanStartJump(Gpt_Input.JumpStartFrame); }
     bool IsDead() { return state.IsDead(); }
     bool IsDamaging() { return state.IsDamaging(); }
+    bool IsSlow() { return Time.timeScale < 0.01f; }
 
     void UpdateMode_StartRun()
     {
