@@ -11,7 +11,7 @@ public class Gpt_Enemy : MonoBehaviour {
     public Rigidbody rigid;
     public NavMeshAgent navAgent;
     private Gpt_EnemyGravityManeger EnemyGravityManeger;
-
+    private Gpt_YukaManager YukaManager;
     private CharacterController Character;
     public bool IsTop { get; private set; }
     private bool isTopExplode;
@@ -109,12 +109,22 @@ public class Gpt_Enemy : MonoBehaviour {
     //転がっているか
     private bool CanSetColor { get; set; }
 
+    //地面下に落ちたか
+    private bool isRakka;
+
+    //何割地面に落ちるか(全て落ちる場合は100)
+    public float fallProb=30f;
+
     // Use this for initialization
     void Start () {
 
         //シーン上にあるGravityManegerを自動取得する。（プレハブから一つ生成する。）
         ManegerObject = GameObject.Find("GravityManeger");
         EnemyGravityManeger = ManegerObject.GetComponent<Gpt_EnemyGravityManeger>();
+
+        ManegerObject = GameObject.Find("YukaManager");
+        YukaManager = ManegerObject.GetComponent<Gpt_YukaManager>();
+
         EnemyGravityManeger.AddEnemyList(this);
         //Speed(2f);
         EnemyAttack.SetEnemyPattern(enemyPattern);
@@ -137,18 +147,19 @@ public class Gpt_Enemy : MonoBehaviour {
             
             if (collision.gameObject.tag == "Enemy")
             {
-                Debug.Log("Enemy");
+                //Debug.Log("Enemy");
                 //自分の相手の座標からどちらかにのみ爆発オブジェクト生成
-                if (this.transform.position.x * this.transform.position.z > collision.gameObject.transform.position.x * collision.gameObject.transform.position.z)
-                {
-                    // インスタンス生成
-                    float temp = Random.Range(-0.01f, 0.01f);
-                    Vector3 trans = collision.gameObject.transform.position+new Vector3(temp,temp,temp);//バグ防止
-                    GameObject gameObj = Instantiate(exploder, trans, Quaternion.identity) as GameObject;
-                    Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
-                    targetExploder.SetColor(GetColor());
-                    touchFlag = true;
-                }
+                //爆発範囲が無限ならこの処理はいらない
+                //if (this.transform.position.x * this.transform.position.z > collision.gameObject.transform.position.x * collision.gameObject.transform.position.z)
+                //{
+                //    // インスタンス生成
+                //    float temp = Random.Range(-0.01f, 0.01f);
+                //    Vector3 trans = collision.gameObject.transform.position+new Vector3(temp,temp,temp);//バグ防止
+                //    GameObject gameObj = Instantiate(exploder, trans, Quaternion.identity) as GameObject;
+                //    Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
+                //    targetExploder.SetColor(GetColor());
+                //    touchFlag = true;
+                //}
 
             }
 
@@ -185,25 +196,34 @@ public class Gpt_Enemy : MonoBehaviour {
             //IsExplode();
         }
 
+        //下に床が無ければnavmeshを消す
+        if (!YukaManager.HasTile(this.transform.position))
+        {
+            navAgent.enabled = false;
+        }
+        
 
         if (IsTop)
         {
-            this.transform.position = topSettedPosition;
-            //中心に爆発オブジェクト生成
-            Character.enabled = false;
-            rigid.isKinematic = true;
-            rigid.useGravity = false;
-            navAgent.enabled = false;
-            if (!isTopExplode)
+            if (!isExplode)
             {
-                GameObject gameObj = Instantiate(exploder, this.transform.position, Quaternion.identity) as GameObject;
-                Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
-                targetExploder.SetColor(GetColor());
-                touchFlag = true;
+                this.transform.position = topSettedPosition;
+                //中心に爆発オブジェクト生成
+                Character.enabled = false;
+                rigid.isKinematic = true;
+                rigid.useGravity = false;
+                navAgent.enabled = false;
+                if (!isTopExplode)
+                {
+                    GameObject gameObj = Instantiate(exploder, this.transform.position, Quaternion.identity) as GameObject;
+                    Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
+                    targetExploder.SetColor(GetColor());
+                    touchFlag = true;
+                }
+                isTopExplode = true;
+                EnemyAttack.StopAttack();
             }
-            isTopExplode = true;
-            EnemyAttack.StopAttack();
-
+            
         }
 
         //始めの敵ならその位置固定
@@ -220,7 +240,12 @@ public class Gpt_Enemy : MonoBehaviour {
         if (gravityFlag)
         {
             gravityTime += 0.1f;
-            rigid.AddForce(-preserveVec * gravity/100, ForceMode.VelocityChange);
+            if (isRakka)
+            {
+                Debug.Log("rakka");
+                preserveVec = new Vector3(0,300f,0);
+            }
+            rigid.AddForce(-preserveVec * gravity / 100, ForceMode.VelocityChange);
             //coll.isTrigger = true;
             firmCount += 0.1f;
             if (firmCount > firmTime&&!isExplode)
@@ -239,25 +264,38 @@ public class Gpt_Enemy : MonoBehaviour {
             EnemyColor.IsDamage();
             EnemyAttack.StopAttack();
             Vector3 waveVec = (waveExploderPosition - this.transform.position).normalized;
+            //Character.enabled = false;
+            //coll.enabled = true;
+            //rigid.useGravity = true;
+            //rigid.isKinematic = false;
+            //navAgent.enabled = false;
+
             Character.enabled = false;
             coll.enabled = true;
-            rigid.useGravity = true;
             rigid.isKinematic = false;
-            waveVec.y = -1f + motionTime2;
+            rigid.useGravity = true;
+            navAgent.enabled = false;
+            //waveVec.y = -1f + motionTime2;
             //爆風でふっとぶ調整
             if (damageCount == 0f)
             {
 
-                
+                Debug.Log("Damage");
                 waveVec.y = 0;
-                rigid.AddForce(waveVec * forceSpeed/4, ForceMode.VelocityChange);
-                rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
-                //this.transform.position = this.transform.position + waveVec * 50f;
+                //waveVec.y=2000f;
+                waveVec = new Vector3(0,0,0);
+                //rigid.AddForce(waveVec * forceSpeed/4, ForceMode.VelocityChange);
+                rigid.AddForce(waveVec * forceSpeed * 10f, ForceMode.VelocityChange);
+                rigid.AddForce(new Vector3(0, forceHeight / 10f, 0), ForceMode.VelocityChange);
             }
-            //Debug.Log(waveVec);
             
-            //rigid.AddForce(waveVec * forceSpeed / 4, ForceMode.VelocityChange);
-            //rigid.AddForce(new Vector3(200, forceHeight, 200), ForceMode.VelocityChange);
+            //何故か↑のコードで吹っ飛ばないので暫定的に
+            if (damageCount < 0.2f)
+            {
+                rigid.AddForce(-waveVec * forceSpeed * 8f, ForceMode.VelocityChange);
+                rigid.AddForce(new Vector3(0, forceHeight / 10f, 0), ForceMode.VelocityChange);
+            }
+
             damageCount += 0.1f;
             CanSetColor = false;
             if (damageCount > damageTime)
@@ -268,10 +306,11 @@ public class Gpt_Enemy : MonoBehaviour {
             }
         }
 
+
         //爆発モーション
         if (isExplode)
         {
-
+            
             if (IsTop)
             {
                 IsTop = false;
@@ -331,6 +370,7 @@ public class Gpt_Enemy : MonoBehaviour {
 
                 if (motionTime2 == 0)
                 {
+                    this.gameObject.layer = LayerMask.NameToLayer("EnemyBody");
                     hitPoint--;
                     if (hitPoint <= 0)
                     {
@@ -338,9 +378,23 @@ public class Gpt_Enemy : MonoBehaviour {
                         exVec.y=0;
                         
                     }
+                    float rand = Random.Range(0, 100f);
                     exVec.y = 0;
-                    rigid.AddForce(exVec * forceSpeed, ForceMode.VelocityChange);
-                    rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
+                    //Debug.Log("DD:" + rand);
+                    if (rand < fallProb)
+                    {
+
+                        rigid.AddForce(exVec * forceSpeed, ForceMode.VelocityChange);
+                        rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
+                    }
+                    else
+                    {
+
+                        rigid.AddForce(exVec * forceSpeed * 10f, ForceMode.VelocityChange);
+                        rigid.AddForce(new Vector3(0, forceHeight / 10f, 0), ForceMode.VelocityChange);
+                    }
+                    
+                    
                 }
                 motionTime2 += 0.2f;
                 EnemyColor.IsDamage();
@@ -380,6 +434,23 @@ public class Gpt_Enemy : MonoBehaviour {
             EnemyAttack.StopAttack();
         }
 
+        if (this.transform.position.y < YukaManager.transform.position.y - 0.4f)
+        {
+            isRakka = true;
+        }
+
+
+        if (isRakka)
+        {
+            Character.enabled = false;
+            rigid.isKinematic = false;
+            rigid.useGravity = false;
+            navAgent.enabled = false;
+            Debug.Log("rakka");
+            preserveVec = new Vector3(0, 300f, 0);
+            rigid.AddForce(-preserveVec * gravity / 100, ForceMode.VelocityChange);
+        }
+        
         
         //爆発・爆風での力制御
     }
@@ -412,6 +483,19 @@ public class Gpt_Enemy : MonoBehaviour {
         }
         //Debug.Log("Gravity");
         gravityFlag = true;
+
+        //床の位置より低かったらそのまま落下
+        if (this.transform.position.y < YukaManager.transform.position.y-0.4f)
+        {
+            isRakka = true;
+            //EnemyReset();
+            //Character.enabled = false;
+            //rigid.isKinematic = false;
+            //navAgent.enabled = false;
+            //rigid.useGravity = true;
+            //Vector3 rakka = new Vector3(0, 10f, 0);
+            //rigid.AddForce(rakka, ForceMode.VelocityChange);
+        }
 
         if(!isExplode){
             Speed(0);
@@ -538,6 +622,7 @@ public class Gpt_Enemy : MonoBehaviour {
         isTopExplode = false ;
         CanSetColor = true;
         navAgent.enabled = true;
+        this.gameObject.layer = LayerMask.NameToLayer("Default");
     }
 
     //爆風のダメージ
@@ -604,7 +689,7 @@ public class Gpt_Enemy : MonoBehaviour {
     Vector3 topSettedPosition;
     public void SetTop()
     {
-        topSettedPosition = this.transform.position + new Vector3(0,1,0);
+        topSettedPosition = this.transform.position + new Vector3(0,0.2f,0);
         IsTop = true;
     }
 }
