@@ -147,18 +147,19 @@ public class Gpt_Enemy : MonoBehaviour {
             
             if (collision.gameObject.tag == "Enemy")
             {
-                Debug.Log("Enemy");
+                //Debug.Log("Enemy");
                 //自分の相手の座標からどちらかにのみ爆発オブジェクト生成
-                if (this.transform.position.x * this.transform.position.z > collision.gameObject.transform.position.x * collision.gameObject.transform.position.z)
-                {
-                    // インスタンス生成
-                    float temp = Random.Range(-0.01f, 0.01f);
-                    Vector3 trans = collision.gameObject.transform.position+new Vector3(temp,temp,temp);//バグ防止
-                    GameObject gameObj = Instantiate(exploder, trans, Quaternion.identity) as GameObject;
-                    Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
-                    targetExploder.SetColor(GetColor());
-                    touchFlag = true;
-                }
+                //爆発範囲が無限ならこの処理はいらない
+                //if (this.transform.position.x * this.transform.position.z > collision.gameObject.transform.position.x * collision.gameObject.transform.position.z)
+                //{
+                //    // インスタンス生成
+                //    float temp = Random.Range(-0.01f, 0.01f);
+                //    Vector3 trans = collision.gameObject.transform.position+new Vector3(temp,temp,temp);//バグ防止
+                //    GameObject gameObj = Instantiate(exploder, trans, Quaternion.identity) as GameObject;
+                //    Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
+                //    targetExploder.SetColor(GetColor());
+                //    touchFlag = true;
+                //}
 
             }
 
@@ -433,7 +434,7 @@ public class Gpt_Enemy : MonoBehaviour {
             EnemyAttack.StopAttack();
         }
 
-        if (this.transform.position.y < YukaManager.transform.position.y - 0.1f)
+        if (this.transform.position.y < YukaManager.transform.position.y - 0.4f)
         {
             isRakka = true;
         }
@@ -484,7 +485,7 @@ public class Gpt_Enemy : MonoBehaviour {
         gravityFlag = true;
 
         //床の位置より低かったらそのまま落下
-        if (this.transform.position.y < YukaManager.transform.position.y-0.1f)
+        if (this.transform.position.y < YukaManager.transform.position.y-0.4f)
         {
             isRakka = true;
             //EnemyReset();
