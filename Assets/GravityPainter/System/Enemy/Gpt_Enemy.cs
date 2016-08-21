@@ -11,7 +11,7 @@ public class Gpt_Enemy : MonoBehaviour {
     public Rigidbody rigid;
     public NavMeshAgent navAgent;
     private Gpt_EnemyGravityManeger EnemyGravityManeger;
-
+    private Gpt_YukaManager YukaManager;
     private CharacterController Character;
     public bool IsTop { get; private set; }
     private bool isTopExplode;
@@ -115,6 +115,10 @@ public class Gpt_Enemy : MonoBehaviour {
         //シーン上にあるGravityManegerを自動取得する。（プレハブから一つ生成する。）
         ManegerObject = GameObject.Find("GravityManeger");
         EnemyGravityManeger = ManegerObject.GetComponent<Gpt_EnemyGravityManeger>();
+
+        ManegerObject = GameObject.Find("YukaManager");
+        YukaManager = ManegerObject.GetComponent<Gpt_YukaManager>();
+
         EnemyGravityManeger.AddEnemyList(this);
         //Speed(2f);
         EnemyAttack.SetEnemyPattern(enemyPattern);
@@ -412,6 +416,12 @@ public class Gpt_Enemy : MonoBehaviour {
         }
         //Debug.Log("Gravity");
         gravityFlag = true;
+
+        //床の位置より低かったらそのまま落下
+        if (this.transform.position.y < YukaManager.transform.position.y)
+        {
+            gravityFlag = false;
+        }
 
         if(!isExplode){
             Speed(0);
