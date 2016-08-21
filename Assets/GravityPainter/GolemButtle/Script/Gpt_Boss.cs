@@ -49,8 +49,6 @@ public class Gpt_Boss : MonoBehaviour
     {
         cnt += Time.deltaTime;
 
-        //Debug.Log(state);
-
         // プレイヤーを探す
         if (state == State.Search)
         {
@@ -204,5 +202,6 @@ public class Gpt_Boss : MonoBehaviour
         }
         // プレイヤーと最も近い場所保存
         targetPos = AtkTargetPos[num];
+        targetPos = AtkTargetPos[(num+2)%8];
     }
 }
