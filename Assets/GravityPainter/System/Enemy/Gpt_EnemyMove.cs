@@ -133,6 +133,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 if (Vector3.Distance(player.transform.position, this.transform.position) < searchArea&&
                     Vector3.Distance(tempPlayerVec, tempEnemyVec) < 4f)
                 {
+                    navMesh.enabled = true;
                     if (!EnemyAttack.GetAttack())
                     {
                         //moveVec = Vector3.Slerp(moveVec, player.transform.position - this.transform.position, 0.75f);
@@ -157,6 +158,11 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     //moveVec = player.transform.position - this.transform.position;
                     moveVec = moveVec.normalized;
                     move = 0;
+                }
+                else//範囲外の場合ナビゲーションはオフにする
+                {
+                    navMesh.enabled = false;
+
                 }
                 //Debug.Log("Beforenemy:" + enemyTemp);
 
@@ -183,7 +189,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 {
                     enemyTemp += enemyAccelerate;
                     enemyTemp = enemyTemp < enemySpeed ? enemyTemp : enemySpeed;
-                    //遠隔攻撃の射程に入った時
+                    //攻撃の射程に入った時
                     if ((Vector3.Distance(player.transform.position, this.transform.position) < attackArea||EnemyAttack.GetAttack())&&EnemyAttack.CanAttack)
                     {
                         //Debug.Log("attack");
@@ -211,7 +217,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         enemyTemp = 0;
                     }
 
-                    
+                    Debug.Log(enemySpeed);
+                    enemyTemp = enemySpeed;
                     enemyMove.x = moveVec.x * enemyTemp;
                     enemyMove.y = gravity;
                     enemyMove.z = moveVec.z * enemyTemp;
