@@ -200,14 +200,16 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         
                     }
 
+                    enemyTemp = enemySpeed;
+
                     if (navMesh != null && navMesh.enabled)
                     {
                         enemyTemp = 0;
                         breakTime = 0;
                     }
-                    else//攻撃時減速
+                    else if (EnemyAttack.GetAttack())//攻撃時減速
                     {
-                        breakTime += 0.02f;
+                        breakTime += 0.01f;
                         breakTime= breakTime > 1f ? 1f : breakTime;
                         enemyTemp*=1f-breakTime;
                     }
@@ -217,8 +219,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         enemyTemp = 0;
                     }
 
-                    Debug.Log(enemySpeed);
-                    enemyTemp = enemySpeed;
+                    //Debug.Log(enemySpeed);
+                    
                     enemyMove.x = moveVec.x * enemyTemp;
                     enemyMove.y = gravity;
                     enemyMove.z = moveVec.z * enemyTemp;
