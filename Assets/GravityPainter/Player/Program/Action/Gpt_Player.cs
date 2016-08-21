@@ -410,15 +410,21 @@ public class Gpt_Player : MonoBehaviour
     void UpdateMode_Damage()
     {
         playerDamage.UpdateDamage();
-        
-        if (!IsDamaging())
+        bool endDamage = false;
+        if (IsDead())
         {
-            playerDamage.EndDamage();
+            endDamage = true;
+            UpdateMode_StartDead();
+        }
+        else if (!IsDamaging())
+        {
+            endDamage = true;
 
             if (IsDead()) UpdateMode_StartDamage();
             else if (!playerUtillity.IsGround() ) UpdateMode_StartJump();
             else if (!CanStartMove()) UpdateMode_StartWait();
             else if (CanStartMove()) UpdateMode_StartRun();
         }
+        if(endDamage) playerDamage.EndDamage();
     }
 }
