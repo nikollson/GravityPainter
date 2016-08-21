@@ -45,6 +45,7 @@ public class Gpt_Boss : MonoBehaviour
     void Update()
     {
         cnt += Time.deltaTime;
+        Debug.Log("ENUM_STATE: "+state);
 
         // プレイヤーを探す
         if (state == State.Search)
@@ -190,5 +191,7 @@ public class Gpt_Boss : MonoBehaviour
         }
         // プレイヤーと最も近い場所保存
         targetPos = AtkTargetPos[num];
+
+        //Debug.Log("AAA"+num);
     }
 }
