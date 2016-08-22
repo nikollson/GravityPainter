@@ -17,6 +17,7 @@ public class Gpt_FadeManager : MonoBehaviour
     public GameObject fadeOutWhite;
     public GameObject fadeInBlack;
     public GameObject fadeOutBlack;
+    public GameObject fadeInOutBlack;
 
     public Mode defaultMode;
 
@@ -32,6 +33,12 @@ public class Gpt_FadeManager : MonoBehaviour
         sceneLoadFunc = func;
         settedMode = Mode.BLACK;
         MakeFade(_this.fadeInBlack);
+    }
+
+    public static void FadeInOutBlack(Action func)
+    {
+        sceneLoadFunc = func;
+        MakeFade(_this.fadeInOutBlack);
     }
 
     void Awake()

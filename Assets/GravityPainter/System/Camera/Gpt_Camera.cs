@@ -12,6 +12,7 @@ public class Gpt_Camera : MonoBehaviour
         BossStartMovie = 2,
         BossBattle = 3,
         BossDie = 4,
+        PositionLook = 5
     }
     public int state = (int)State.Normal;
     public GameObject door;
@@ -24,6 +25,8 @@ public class Gpt_Camera : MonoBehaviour
     public GameObject movieBar2;
     Vector3  movieBar1pos;
     Vector3  movieBar2pos;
+    Transform positionLook_Position;
+    Transform positionLook_Look;
 
     /* スティック入力情報変数 */
     float oldCamMoveX = 0.0f;           // スティックX移動量(1フレーム前)
@@ -74,8 +77,7 @@ public class Gpt_Camera : MonoBehaviour
     float stopMoveY;                    // 停止時のXZ移動方向
     public float addStopTimeY = 3.0f;   // 停止までの時間倍率(小さいほど長くなる)
     public float stopSpdY = 0.05f;      // 停止速度
-
-
+    
     /* 画面揺れ系 */
     private Vector3 screenShake = Vector3.zero;
     public float shakeFriction = 0.8f;
@@ -96,8 +98,8 @@ public class Gpt_Camera : MonoBehaviour
     void Start()
     {
         firstPlayerPos = player.transform.position;
-        movieBar1pos = movieBar1.transform.position;
-        movieBar2pos = movieBar2.transform.position;
+        if (movieBar1 != null) movieBar1pos = movieBar1.transform.position;
+        if (movieBar2 != null) movieBar2pos = movieBar2.transform.position;
     }
 
     //レンダリング前更新関数
@@ -185,6 +187,11 @@ public class Gpt_Camera : MonoBehaviour
 
             this.transform.position = bossDieCamPos.position;
             Update_Look(boss.transform.position + new Vector3(0,3.5f,0));
+        }
+        else if(state == (int)State.PositionLook)
+        {
+            this.transform.position = positionLook_Position.position;
+            Update_Look(positionLook_Look.position);
         }
     }
 
@@ -355,6 +362,18 @@ public class Gpt_Camera : MonoBehaviour
         // 限界回転値を超えたら戻す
         if (rotY > MAX_ROTY) rotY = MAX_ROTY;
         if (rotY < MIN_ROTY) rotY = MIN_ROTY;
+    }
+
+    public void StartPositionLook(Transform position, Transform look)
+    {
+        state = (int)State.PositionLook;
+        this.positionLook_Position = position;
+        this.positionLook_Look = look;
+    }
+
+    public void EndPositionLook()
+    {
+        state = (int)State.Normal;
     }
 
     // -------------------------------------------------- 画面揺れ -------------------------------------------------- //
