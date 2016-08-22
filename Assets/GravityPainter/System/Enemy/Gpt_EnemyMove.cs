@@ -106,6 +106,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 isWalked = true;
                 isMoved = true;
                 navMesh.enabled = true;
+
             }
             gravity = 0;
 
@@ -117,10 +118,11 @@ public class Gpt_EnemyMove : MonoBehaviour {
             //2回目の落下でナビメッシュ除外
             if (isMoved)
             {
-                navMesh.enabled = false;
+
+                //navMesh.enabled = false;
             }
         }
-
+        Debug.Log(navMesh.enabled);
 
         Vector3 enemyMove;
                 
@@ -281,6 +283,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
         }
         
+
     }
 
     //移動方向の設定
