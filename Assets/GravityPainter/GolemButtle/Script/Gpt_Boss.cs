@@ -16,6 +16,8 @@ public class Gpt_Boss : MonoBehaviour
         Atk1,
         Atk2,
         Atk3,
+
+        Die,
     }
     State state = State.Search;
     public GameObject camera;
@@ -54,7 +56,7 @@ public class Gpt_Boss : MonoBehaviour
     public float screenShake = 4.0f;
 
     int targetYukaNum = 0;        // もくひょうゆかばんごう
-
+    float dieCnt = 0.0f;
 
     void Start()
     {
@@ -138,6 +140,12 @@ public class Gpt_Boss : MonoBehaviour
             {
                 state = State.Up;
                 this.hp -= magmaDmg;
+
+                // 死んだら
+                if (this.hp <= 0.0f)
+                {
+                    state = State.Die;
+                }
             }
         }
         // 上昇ステート(簡易制御)
@@ -294,6 +302,21 @@ public class Gpt_Boss : MonoBehaviour
                 anim.SetBool("Atk_Nagi_Flg", false);
                 state = State.Search;
                 attackTime = 0.0f;
+            }
+        }
+        else if (state == State.Die)
+        {
+            dieCnt += Time.deltaTime;
+            this.transform.position += new Vector3(0, -Time.deltaTime * fallSpd * 0.25f, 0);
+            camera.GetComponent<Gpt_Camera>().state = 4;
+
+            if (dieCnt >= 6.0f)
+            {
+                Gpt_FadeManager.SetFade_White(() => { Gpt_SceneManager.LoadScene("Ending_Staffroll", false); });
+            }
+            if(dieCnt >= 9.0f)
+            {
+                Application.LoadLevel("Ending_Staffroll");
             }
         }
 
