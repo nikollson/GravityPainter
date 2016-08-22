@@ -32,7 +32,7 @@ public class Gpt_Boss : MonoBehaviour
     float fallSpd = 4.0f;      // 落下速度
     float upSpd = 25.0f;        // 上昇速度
     float fallY = -20.0f;       // マグマY位置()
-    float magmaDmg = 2.5f;
+    float magmaDmg = 3.34f;
     float cnt = 0.0f;
     public Vector3 firstBossPos;
     public GameObject player;
