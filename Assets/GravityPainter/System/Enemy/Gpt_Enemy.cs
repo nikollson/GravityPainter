@@ -210,7 +210,7 @@ public class Gpt_Enemy : MonoBehaviour {
         //下に床が無ければnavmeshを消す
         if (!YukaManager.HasTile(this.transform.position))
         {
-            navAgent.enabled = false;
+            //navAgent.enabled = false;
         }
         
 

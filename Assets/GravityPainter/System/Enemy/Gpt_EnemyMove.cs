@@ -122,7 +122,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 //navMesh.enabled = false;
             }
         }
-        Debug.Log(navMesh.enabled);
+        //Debug.Log("nav:"+navMesh.enabled);
 
         Vector3 enemyMove;
                 
@@ -145,12 +145,15 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
                 Vector3 tempEnemyVec = new Vector3(0, this.transform.position.y, 0);
                 Vector3 tempPlayerVec = new Vector3(0, player.transform.position.y, 0);
+
+                //Debug.Log(Vector3.Distance(player.transform.position, this.transform.position));
                 //索敵処理
                 //高さの判定を入れてリスポーン時は敵が引き寄せられない。
                 if (Vector3.Distance(player.transform.position, this.transform.position) < searchArea&&
                     Vector3.Distance(tempPlayerVec, tempEnemyVec) < 4f)
                 {
                     navMesh.enabled = true;
+                    
                     if (!EnemyAttack.GetAttack())
                     {
                         //moveVec = Vector3.Slerp(moveVec, player.transform.position - this.transform.position, 0.75f);
@@ -182,6 +185,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
                 }
                 //Debug.Log("Beforenemy:" + enemyTemp);
+
+                
 
                 if (navMesh.enabled)
                 {
@@ -221,6 +226,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
                     if (navMesh != null && navMesh.enabled)
                     {
+                        //Debug.Log(enemyTemp);
                         enemyTemp = 0;
                         breakTime = 0;
                     }
@@ -241,7 +247,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     {
                         enemyTemp = 0;
                     }
-                    //Debug.Log(enemySpeed);
+                    
                     
                     enemyMove.x = moveVec.x * enemyTemp;
                     enemyMove.y = gravity;
@@ -280,6 +286,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 enemyMove.z = 0;
                 Character.Move(enemyMove * Time.deltaTime);
             }
+            //navMesh.enabled = true;
 
         }
         
