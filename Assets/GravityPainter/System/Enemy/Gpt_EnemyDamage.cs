@@ -5,6 +5,8 @@ public class Gpt_EnemyDamage : MonoBehaviour
 {
     private Gpt_EnemyAttack EnemyAttack;
     public HitManager attackCollider;
+    public Transform hitRoot;
+
     public int damage = 3;
 
     string playerTag = "Player";
@@ -28,7 +30,9 @@ public class Gpt_EnemyDamage : MonoBehaviour
                 {
                     if (EnemyAttack.GetAttack())
                     {
-                        playerState.AddHPDamage(damage);
+                        Vector3 position = this.transform.position;
+                        if (hitRoot != null) position = hitRoot.transform.position;
+                        playerState.AddHPDamage_Attack(damage, position);
                     }
                 }
             }
@@ -42,13 +46,13 @@ public class Gpt_EnemyDamage : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             hitAttack = true;
-            Debug.Log("!!!!!!!");
+            //Debug.Log("!!!!!!!");
         }
     }
 
     void OnTriggerExit(Collider collision)
     {
-        Debug.Log("??????");
+        //Debug.Log("??????");
         if (collision.gameObject.tag == "player")
         {
             hitAttack = false;

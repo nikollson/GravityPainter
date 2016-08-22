@@ -23,6 +23,7 @@ public class Gpt_PlayerAnimator : MonoBehaviour {
         animator.SetBool("IsJumping", player.Mode == Gpt_Player.MODE.AIR || player.Mode == Gpt_Player.MODE.JUMP);
         animator.SetBool("IsDetonating", player.Mode == Gpt_Player.MODE.DETONATE);
         animator.SetBool("IsDamaging", player.Mode == Gpt_Player.MODE.DAMAGE);
+        animator.SetBool("IsDead", player.Mode == Gpt_Player.MODE.DEAD);
 
         for (int i = 0; i < animationMoveRepeat; i++) animator.Update(EPS);
     }

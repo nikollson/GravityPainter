@@ -6,6 +6,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
 
     public Gpt_EnemyAttack EnemyAttack;
+    public GameObject Animator;
+    private Gpt_EnemyAnimation EnemyAnimation;
     //走行スピード
     public float enemySpeed;
     private float preserveEnemySpeed;
@@ -81,6 +83,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        EnemyAnimation = Animator.GetComponent<Gpt_EnemyAnimation>();
         Character = GetComponent<CharacterController>();
         player = GameObject.Find("Player");
         myTransform = transform;
@@ -200,14 +203,16 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         
                     }
 
+                    enemyTemp = enemySpeed;
+
                     if (navMesh != null && navMesh.enabled)
                     {
                         enemyTemp = 0;
                         breakTime = 0;
                     }
-                    else//攻撃時減速
+                    else if (EnemyAttack.GetAttack())//攻撃時減速
                     {
-                        breakTime += 0.02f;
+                        breakTime += 0.01f;
                         breakTime= breakTime > 1f ? 1f : breakTime;
                         enemyTemp*=1f-breakTime;
                     }
@@ -217,8 +222,13 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         enemyTemp = 0;
                     }
 
-                    Debug.Log(enemySpeed);
-                    enemyTemp = enemySpeed;
+                    //ダメージモーション中は動かない
+                    if (EnemyAnimation.isOkiAction)
+                    {
+                        enemyTemp = 0;
+                    }
+                    //Debug.Log(enemySpeed);
+                    
                     enemyMove.x = moveVec.x * enemyTemp;
                     enemyMove.y = gravity;
                     enemyMove.z = moveVec.z * enemyTemp;
