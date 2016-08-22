@@ -6,6 +6,7 @@ public class Gpt_YukaBox : MonoBehaviour {
     public Renderer renderer;
     public new Collider collider;
     public NavMeshObstacle navMeshObstacle;
+    public NavMeshObstacle[] subNavMeshObstacles;
     
     
     public int HP { get; private set; }
@@ -59,6 +60,7 @@ public class Gpt_YukaBox : MonoBehaviour {
         renderer.enabled = false;
         collider.enabled = false;
         navMeshObstacle.enabled = true;
+        foreach (var a in subNavMeshObstacles) a.enabled = true;
         this.transform.position += new Vector3(0, -tileSetting.fallDistance, 0);
         isFalling = true;
         isReversing = false;
@@ -77,6 +79,7 @@ public class Gpt_YukaBox : MonoBehaviour {
     {
         this.transform.position = new Vector3(this.transform.position.x, fallStartY, this.transform.position.z);
         navMeshObstacle.enabled = false;
+        foreach (var a in subNavMeshObstacles) a.enabled = false;
         fallCount = 0;
     }
     
