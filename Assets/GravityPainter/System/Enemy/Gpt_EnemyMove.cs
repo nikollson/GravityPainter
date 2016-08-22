@@ -90,6 +90,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
         enemyVector= new Vector3(0, 0, 0);
         preserveEnemySpeed = enemySpeed;
         beforePosition = this.transform.position;
+        navMesh.enabled=false;
     }
 
     // Update is called once per frame
@@ -101,6 +102,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
             if(!isMoved){
                 isWalked = true;
                 isMoved = true;
+                navMesh.enabled = true;
             }
             gravity = 0;
         }
