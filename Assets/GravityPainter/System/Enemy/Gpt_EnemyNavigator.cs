@@ -42,6 +42,7 @@ public class Gpt_EnemyNavigator : MonoBehaviour {
 
         if (navigator.enabled)
         {
+            //Debug.Log(target.transform.position);
             navigator.SetDestination(target.transform.position);
         }
         
