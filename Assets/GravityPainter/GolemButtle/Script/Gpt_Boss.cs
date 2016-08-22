@@ -44,7 +44,7 @@ public class Gpt_Boss : MonoBehaviour
     float attackTime = 0.0f;
     const float ATTACK_TIME_MAX = 3.5f;
 
-    float screenShake = 7.0f;
+    public float screenShake = 4.0f;
 
     int targetYukaNum = 0;        // もくひょうゆかばんごう
 
