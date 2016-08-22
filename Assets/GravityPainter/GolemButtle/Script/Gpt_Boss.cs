@@ -168,8 +168,7 @@ public class Gpt_Boss : MonoBehaviour
             attackTime += Time.deltaTime;
 
             // 途中で床は壊れる
-            // プレイヤーが下にいる
-            if (player.transform.position.y < 12.0f && attackTime <= 10.0f)
+            if (attackTime <= 10.0f)
             {
                 if (attackTime >= 3.0f)
                 {
@@ -207,9 +206,6 @@ public class Gpt_Boss : MonoBehaviour
             attackTime += Time.deltaTime;
 
             // 途中で床は壊れる
-            // プレイヤーが下にいる
-            if (player.transform.position.y < 12.0f)
-            {
                 if (attackTime >= 3.0f && attackTime<=10.0f)
                 {
                     se.GetComponent<AudioSource>().Play();
@@ -223,7 +219,6 @@ public class Gpt_Boss : MonoBehaviour
 
                     attackTime += 10.0f;
                 }
-            }
 
             // 落下判定
             if (FallCheck(true))        // 本来はfalseだが今は左手でしか攻撃しないためtrue
@@ -247,8 +242,6 @@ public class Gpt_Boss : MonoBehaviour
 
             // 途中で床は壊れる
             // プレイヤーが下にいる
-            if (player.transform.position.y < 12.0f)
-            {
                 if (attackTime >= 3.0f && attackTime <= 3.99f)
                 {
                     se.GetComponent<AudioSource>().Play();
@@ -276,7 +269,6 @@ public class Gpt_Boss : MonoBehaviour
 
                     attackTime += 1.0f;
                 }
-            }
 
             // 落下判定
             if (FallCheck(false))
