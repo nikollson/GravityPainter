@@ -25,8 +25,8 @@ public class Gpt_BossBattleManager : MonoBehaviour {
         if (cnt >= ENEMYRES_TIME)
         {
             cnt = 0.0f;
-            if(Random.Range(0.0f,1.0f)>=0.5f)Instantiate(enemy, resPos,Quaternion.identity);
-            else Instantiate(enemy, resPos2, Quaternion.identity);
+            //if(Random.Range(0.0f,1.0f)>=0.5f)Instantiate(enemy, resPos,Quaternion.identity);
+            //else Instantiate(enemy, resPos2, Quaternion.identity);
         }
 
         if (player.transform.position.y < fallY)
