@@ -122,6 +122,7 @@ public class Gpt_Enemy : MonoBehaviour {
     public GameObject pointEffect_blue;
     public GameObject pointEffect_yellow;
     private GameObject pointEffect;
+    private Gpt_PointEffect pointScript;
 
     // Use this for initialization
     void Start () {
@@ -234,12 +235,15 @@ public class Gpt_Enemy : MonoBehaviour {
                     {
                         case 1:
                             pointEffect = Instantiate(pointEffect_red, this.transform.position - new Vector3(0,0.4f,0), Quaternion.identity) as GameObject;
+                            pointScript=pointEffect.GetComponent<Gpt_PointEffect>();
                             break;
                         case 2:
                             pointEffect = Instantiate(pointEffect_blue, this.transform.position - new Vector3(0, 0.4f, 0), Quaternion.identity) as GameObject;
+                            pointScript = pointEffect.GetComponent<Gpt_PointEffect>();
                             break;
                         case 3:
                             pointEffect = Instantiate(pointEffect_yellow, this.transform.position - new Vector3(0, 0.4f, 0), Quaternion.identity) as GameObject;
+                            pointScript = pointEffect.GetComponent<Gpt_PointEffect>();
                             break;
                     }
                     
@@ -338,7 +342,7 @@ public class Gpt_Enemy : MonoBehaviour {
             //ポイントオブジェクトの削除
             if (pointEffect != null)
             {
-                Object.Destroy(pointEffect.gameObject);
+                pointScript.isDelete=true;
             }
             
             if (IsTop)

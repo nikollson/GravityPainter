@@ -3,10 +3,14 @@ using System.Collections;
 
 public class Gpt_PointEffect : MonoBehaviour {
     public ParticleSystem ps;
+    public ParticleSystem ps2;
 
     //止まる時間
     public float stopTime = 4f;
     private float stop;
+
+    public bool isDelete { get; set; }
+
     // Use this for initialization
     void Start()
     {
@@ -21,6 +25,14 @@ public class Gpt_PointEffect : MonoBehaviour {
         if (stop > stopTime)
         {
             ps.Pause();
+        }
+
+        if (isDelete)
+        {
+            Debug.Log("afafas");
+            ps.Play();
+            ps2.Stop();
+            Object.Destroy(this.gameObject, 4f);
         }
     }
 }
