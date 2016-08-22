@@ -15,7 +15,7 @@ public class Gpt_BossHPBar : MonoBehaviour {
 	
 	void Update () {
 
-        this.transform.localScale = new Vector3(Boss.GetComponent<Gpt_Boss>().GetHp() / maxHp* firstScaleX, firstScaleY, 0.0f);
+        if(Boss.GetComponent<Gpt_Boss>().GetHp()>=0) this.transform.localScale = new Vector3(Boss.GetComponent<Gpt_Boss>().GetHp() / maxHp* firstScaleX, firstScaleY, 0.0f);
 
     }
 }
