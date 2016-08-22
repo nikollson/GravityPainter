@@ -4,6 +4,7 @@ using System.Collections;
 public class Gpt_PauseMenuUI : MonoBehaviour {
 
     public GameObject Parent;
+    public GameObject normalParent;
 
     private int selectNum = 0;
 
@@ -71,17 +72,17 @@ public class Gpt_PauseMenuUI : MonoBehaviour {
 
     void StartPause()
     {
-        Debug.Log("sttt");
         isOpened = true;
         Parent.SetActive(true);
+        normalParent.SetActive(false);
         Time.timeScale = slowTimeScale;
     }
 
     void ClosePause()
     {
-        Debug.Log("clcls");
         isOpened = false;
         Parent.SetActive(false);
+        normalParent.SetActive(true);
         Time.timeScale = normalTimeScale;
     }
 
