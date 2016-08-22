@@ -7,6 +7,7 @@ public class Gpt_YukaBox : MonoBehaviour {
     public new Collider collider;
     public NavMeshObstacle navMeshObstacle;
     public NavMeshObstacle[] subNavMeshObstacles;
+    public FlushSetting flushSetting;
     
     
     public int HP { get; private set; }
@@ -27,6 +28,13 @@ public class Gpt_YukaBox : MonoBehaviour {
     float reverseEndTime = 0;
     float fallStartY = 0;
     bool isReversing = false;
+
+    bool isFlushing = false;
+    float flushCount = 0;
+    GameObject flushObject;
+    bool flushingTimeStop = false;
+    public float flushTimeLong = 1.2f;
+    float flushTime;
 
     Gpt_InkColor nextColor = Gpt_InkColor.NONE;
     
@@ -106,6 +114,16 @@ public class Gpt_YukaBox : MonoBehaviour {
 
     void Update()
     {
+        if (isFlushing)
+        {
+            flushCount += Time.deltaTime;
+            if(flushCount > flushTime)
+            {
+                Destroy(flushObject);
+                isFlushing = flushingTimeStop = false;
+            }
+        }
+
         if (isExploding)
         {
             explodeCount += Time.deltaTime;
@@ -125,7 +143,7 @@ public class Gpt_YukaBox : MonoBehaviour {
 
         if (isFalling)
         {
-            fallCount += Time.deltaTime;
+            if(!(isFlushing && flushingTimeStop)) fallCount += Time.deltaTime;
             if(!isReversing && fallCount > reverseTime)
             {
                 EndFall1();
@@ -162,4 +180,27 @@ public class Gpt_YukaBox : MonoBehaviour {
         SetColor(color);
     }
 
+    public bool IsFalling()
+    {
+        return isFalling || isExploding;
+    }
+    public void MakeFlushLong()
+    {
+        flushObject = (GameObject)Instantiate(flushSetting.flushLong, this.transform.position, Quaternion.identity);
+        flushObject.transform.parent = this.transform;
+        flushObject.transform.localScale = new Vector3(1,1,1);
+
+        isFlushed = true;
+        flushCount = 0;
+        flushingTimeStop = true;
+        flushTime = flushTimeLong;
+    }
+
+    [System.Serializable]
+    public class FlushSetting
+    {
+        public GameObject flushLong;
+
+        public float flushTime;
+    }
 }

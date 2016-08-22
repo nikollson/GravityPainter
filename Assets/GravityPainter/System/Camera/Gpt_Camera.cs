@@ -399,6 +399,12 @@ public class Gpt_Camera : MonoBehaviour
 
     public void StartPositionLook(Transform position, Transform look)
     {
+        StartPositionLook(position, look, this.lookStlength, this.lookStlength);
+    }
+    public void StartPositionLook(Transform position, Transform look, float stlengthLook, float stlengthPosition)
+    {
+        this.lookStlength = stlengthLook;
+        this.positionStlength = stlengthPosition;
         state = (int)State.PositionLook;
         this.positionLook_Position = position;
         this.positionLook_Look = look;
