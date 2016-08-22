@@ -81,7 +81,7 @@ public class Gpt_PauseMenuUI : MonoBehaviour {
     {
         isOpened = true;
         Parent.SetActive(true);
-        normalParent.SetActive(false);
+        if(normalParent!=null) normalParent.SetActive(false);
         Time.timeScale = slowTimeScale;
     }
 
@@ -89,7 +89,7 @@ public class Gpt_PauseMenuUI : MonoBehaviour {
     {
         isOpened = false;
         Parent.SetActive(false);
-        normalParent.SetActive(true);
+        if(normalParent!=null) normalParent.SetActive(true);
         Time.timeScale = normalTimeScale;
     }
 
