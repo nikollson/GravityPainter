@@ -85,6 +85,11 @@ public class Gpt_Camera : MonoBehaviour
     public float pushShakePower = 0.5f;
     private float shakePower = 0;
 
+    /* PositionLook強度 */
+    public float lookStlength = 0.5f;
+    public float positionStlength = 0.5f;
+    public float positionSpeedMax = 5;
+
 
 
     bool firstBossMovieFlg = true;
@@ -111,8 +116,8 @@ public class Gpt_Camera : MonoBehaviour
         if (state == (int)State.Normal)
         {
             Update_Rotation();
-            Update_Position();
-            Update_Look(player.transform.position + playerZure);
+            Update_Positioning();
+            Update_Look(GetPlayerCameraPosition(), player.transform.position + playerZure, lookStlength);
         }
         else if (state == (int)State.Door)
         {
@@ -124,7 +129,7 @@ public class Gpt_Camera : MonoBehaviour
             // 高い位置にいればカメラ操作しない
             if (player.transform.position.y >= 15.0f)
             {
-                Update_Position();
+                Update_Positioning();
                 Update_Rotation();
                 Update_Look(player.transform.position);
             }
@@ -188,10 +193,11 @@ public class Gpt_Camera : MonoBehaviour
             this.transform.position = bossDieCamPos.position;
             Update_Look(boss.transform.position + new Vector3(0,3.5f,0));
         }
+        // TransformからTransformをながめるカメラ
         else if(state == (int)State.PositionLook)
         {
-            this.transform.position = positionLook_Position.position;
-            Update_Look(positionLook_Look.position);
+            Update_Look(positionLook_Position.position, positionLook_Look.position, lookStlength);
+            Update_Position(positionLook_Position.position, positionStlength);
         }
     }
 
@@ -217,19 +223,46 @@ public class Gpt_Camera : MonoBehaviour
     }
 
     // 最終的な座標を決定する関数
-    void Update_Position()
+    Vector3 GetPlayerCameraPosition()
     {
         float x = Mathf.Cos(angToRad(rotY)) * distanceXZ * Mathf.Cos(rotXZ);
         float y = Mathf.Sin(angToRad(rotY)) * distanceY;
         float z = Mathf.Cos(angToRad(rotY)) * distanceXZ * Mathf.Sin(rotXZ);
-        this.transform.position = player.transform.position + new Vector3(x, y, z);
+        return player.transform.position + new Vector3(x, y, z);
+    }
+    void Update_Positioning()
+    {
+        Update_Position(GetPlayerCameraPosition(), positionStlength);
     }
 
     // 注視点設定関数
-    void Update_Look(Vector3 pos)
+
+    void Update_Look(Vector3 lookPos, float stlength = 1.0f)
     {
-        this.transform.LookAt(pos);
+        Update_Look(this.transform.position, lookPos, stlength);
+    }
+    /// <summary>
+    /// カメラの方向を目標の位置にゆっくりと向ける
+    /// </summary>
+    /// <param name="cameraPos">カメラの位置</param>
+    /// <param name="lookPos">見るオブジェクトの位置</param>
+    /// <param name="stlength">補間強度（1.0fなら１フレームでLook終了）</param>
+    void Update_Look(Vector3 cameraPos, Vector3 lookPos, float stlength = 1.0f)
+    {
+        Quaternion target = Quaternion.LookRotation(lookPos - cameraPos);
+        Quaternion next = Quaternion.Slerp(this.transform.rotation, target, stlength);
+
+        this.transform.rotation = next;
         this.transform.Rotate(screenShake);
+    }
+
+    // カメラ位置設定関数(stlength=1.0fなら1フレームで移動終了)
+    void Update_Position(Vector3 pos, float stlength = 1.0f)
+    {
+        Vector3 diff = pos - this.transform.position;
+        Vector3 move = diff * stlength;
+        move = move / move.magnitude * Mathf.Min(move.magnitude, positionSpeedMax);
+        this.transform.position = this.transform.position + move;
     }
 
     // -------------------------------------------------- 回転系関数 -------------------------------------------------- //
