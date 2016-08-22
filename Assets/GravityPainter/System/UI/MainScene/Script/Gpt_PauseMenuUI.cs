@@ -11,6 +11,8 @@ public class Gpt_PauseMenuUI : MonoBehaviour {
     public GameObject[] selectOn1;
     public GameObject[] selectOn2;
 
+    public string title_name = "Stage_Title";
+
     bool isOpened = false;
     int frameMemo = 0;
     const float slowTimeScale = 0.000001f;
@@ -81,7 +83,7 @@ public class Gpt_PauseMenuUI : MonoBehaviour {
     {
         isOpened = true;
         Parent.SetActive(true);
-        normalParent.SetActive(false);
+        if(normalParent!=null) normalParent.SetActive(false);
         Time.timeScale = slowTimeScale;
     }
 
@@ -89,13 +91,15 @@ public class Gpt_PauseMenuUI : MonoBehaviour {
     {
         isOpened = false;
         Parent.SetActive(false);
-        normalParent.SetActive(true);
+        if(normalParent!=null) normalParent.SetActive(true);
         Time.timeScale = normalTimeScale;
     }
 
     void EndGame()
     {
-        Application.Quit();
+        //Gpt_FadeManager.SetFade_White(() => { Gpt_SceneManager.LoadScene(title_name, false); });
+        ClosePause();
+        Application.LoadLevel(title_name);
     }
 
     void SelectObjects(GameObject[] obj)

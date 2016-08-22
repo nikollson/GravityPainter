@@ -119,9 +119,9 @@
               <Node>
                 <CommonValues>
                   <Life>
-                    <Center>120</Center>
-                    <Max>120</Max>
-                    <Min>120</Min>
+                    <Center>10</Center>
+                    <Max>10</Max>
+                    <Min>10</Min>
                   </Life>
                 </CommonValues>
                 <LocationValues>
@@ -157,9 +157,9 @@
                         <Value>18</Value>
                       </MaxGeneration>
                       <Life>
-                        <Center>50</Center>
-                        <Max>50</Max>
-                        <Min>50</Min>
+                        <Center>10</Center>
+                        <Max>10</Max>
+                        <Min>10</Min>
                       </Life>
                       <GenerationTime>
                         <Center>2</Center>
@@ -244,6 +244,7 @@
                       <Type>4</Type>
                       <Ring>
                         <VertexCount>36</VertexCount>
+                        <ViewingAngle_Fixed>180</ViewingAngle_Fixed>
                         <Inner_Fixed>
                           <Location>
                             <X>0</X>
@@ -363,9 +364,9 @@
               <Node>
                 <CommonValues>
                   <Life>
-                    <Center>120</Center>
-                    <Max>120</Max>
-                    <Min>120</Min>
+                    <Center>10</Center>
+                    <Max>10</Max>
+                    <Min>10</Min>
                   </Life>
                 </CommonValues>
                 <RotationValues>
@@ -380,11 +381,14 @@
                 <Children>
                   <Node>
                     <CommonValues>
+                      <MaxGeneration>
+                        <Infinite>True</Infinite>
+                      </MaxGeneration>
                       <RemoveWhenParentIsRemoved>True</RemoveWhenParentIsRemoved>
                       <Life>
-                        <Center>45</Center>
-                        <Max>45</Max>
-                        <Min>45</Min>
+                        <Center>10</Center>
+                        <Max>10</Max>
+                        <Min>10</Min>
                       </Life>
                     </CommonValues>
                     <RotationValues>
@@ -924,6 +928,6 @@
   <ToolVersion>1.20</ToolVersion>
   <Version>3</Version>
   <StartFrame>0</StartFrame>
-  <EndFrame>30</EndFrame>
+  <EndFrame>10</EndFrame>
   <IsLoop>True</IsLoop>
 </EffekseerProject>

@@ -11,6 +11,7 @@ public class Gpt_Camera : MonoBehaviour
         Door = 1,
         BossStartMovie = 2,
         BossBattle = 3,
+        BossDie = 4,
     }
     public int state = (int)State.Normal;
     public GameObject door;
@@ -21,6 +22,8 @@ public class Gpt_Camera : MonoBehaviour
     Vector3 firstPlayerPos;
     public GameObject movieBar1;
     public GameObject movieBar2;
+    Vector3  movieBar1pos;
+    Vector3  movieBar2pos;
 
     /* スティック入力情報変数 */
     float oldCamMoveX = 0.0f;           // スティックX移動量(1フレーム前)
@@ -84,6 +87,8 @@ public class Gpt_Camera : MonoBehaviour
 
     bool firstBossMovieFlg = true;
     Vector3 BossStartMovie = new Vector3(-0.05f, 19.935f, 40.329f);
+    public Transform bossDieCamPos;
+    public GameObject boss;
 
     // -------------------------------------------------- 大元関数 -------------------------------------------------- //
 
@@ -91,6 +96,8 @@ public class Gpt_Camera : MonoBehaviour
     void Start()
     {
         firstPlayerPos = player.transform.position;
+        movieBar1pos = movieBar1.transform.position;
+        movieBar2pos = movieBar2.transform.position;
     }
 
     //レンダリング前更新関数
@@ -128,7 +135,7 @@ public class Gpt_Camera : MonoBehaviour
                 this.transform.position = player.transform.position * 1.2f + vn * 6.0f + new Vector3(0, 0.5f, 0);
 
                 // 注視点設定
-                Update_Look(new Vector3(0, 6.0f-v.magnitude*0.25f, 0));
+                Update_Look(new Vector3(0, 7.0f-v.magnitude*0.25f, 0));
             }
         }
         else if (state == (int)State.BossStartMovie)
@@ -169,6 +176,15 @@ public class Gpt_Camera : MonoBehaviour
                     player.GetComponent<Gpt_Player>().canControl = true;
                 }
             }
+        }
+        // ボス死亡時カメラ
+        else if(state == (int)State.BossDie)
+        {
+            movieBar1.transform.position = movieBar1pos;
+            movieBar2.transform.position = movieBar2pos;
+
+            this.transform.position = bossDieCamPos.position;
+            Update_Look(boss.transform.position + new Vector3(0,3.5f,0));
         }
     }
 
