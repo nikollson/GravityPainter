@@ -38,7 +38,7 @@ public class Gpt_DoorSystem : MonoBehaviour {
     void Update()
     {
 
-        Debug.Log("AAAAA" + cameraHitManager.IsHit);
+        //Debug.Log("AAAAA" + cameraHitManager.IsHit);
         foreach (var a in meshRenderer)
         {
             a.enabled = !cameraHitManager.IsHit;
