@@ -18,11 +18,11 @@
         <Children>
           <Node>
             <CommonValues>
-              <GenerationTimeOffset>
-                <Center>40</Center>
-                <Max>40</Max>
-                <Min>40</Min>
-              </GenerationTimeOffset>
+              <Life>
+                <Center>99</Center>
+                <Max>99</Max>
+                <Min>99</Min>
+              </Life>
             </CommonValues>
             <LocationValues>
               <Fixed>
@@ -401,6 +401,6 @@
   <ToolVersion>1.20</ToolVersion>
   <Version>3</Version>
   <StartFrame>0</StartFrame>
-  <EndFrame>70</EndFrame>
+  <EndFrame>30</EndFrame>
   <IsLoop>True</IsLoop>
 </EffekseerProject>
