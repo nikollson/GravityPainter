@@ -36,7 +36,14 @@ public class Gpt_Boss : MonoBehaviour
     public GameObject player;
     public Animator anim;
     public Transform[] AtkTargetPos = new Transform[8];
-    public GameObject[] yuka = new GameObject[8];
+
+    /* 床関連 */
+    public GameObject[] yuka = new GameObject[8];       // 床オブジェクト
+    float [] yukaDieCnt = new float[8];                 // 床が死んでからのカウント(兼フラグ)
+    public float YUKA_RESP_TIME = 5.0f;                 // 床復活タイム
+
+
+
     Transform targetPos;        // プレイヤーから一番近い座標
 
     float readyTime = 0.0f;
@@ -51,6 +58,7 @@ public class Gpt_Boss : MonoBehaviour
 
     void Start()
     {
+        for (int i = 0; i < yuka.Length; i++) yukaDieCnt[i] = 0.0f;
     }
 
     void Update()
@@ -62,8 +70,8 @@ public class Gpt_Boss : MonoBehaviour
         {
             // targetPos(プレイヤーから一番近い座標)取得
             Search_PlayerNearPos();
-            // ステート変更
-            state = State.Move;
+            // ステート変更(プレイヤーが下にいる時だけ)
+            if(player.transform.position.y < 12.0f)state = State.Move;
         }
         // プレイヤーの方向を向く
         else if (state == State.Move)
@@ -158,7 +166,12 @@ public class Gpt_Boss : MonoBehaviour
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
+
+                    if (yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().HP==1) {
+                        yukaDieCnt[(targetYukaNum) % 8] = 0.1f;
+                    }
                     yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+
                     attackTime += 10.0f;
                 }
             }
@@ -192,7 +205,13 @@ public class Gpt_Boss : MonoBehaviour
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
+
+                    if (yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().HP == 1)
+                    {
+                        yukaDieCnt[(targetYukaNum) % 8] = 0.1f;
+                    }
                     yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+
                     attackTime += 10.0f;
                 }
             }
@@ -225,21 +244,39 @@ public class Gpt_Boss : MonoBehaviour
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
-                    yuka[(targetYukaNum +1) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+
+                    if (yuka[(targetYukaNum+1) % 8].GetComponent<Gpt_YukaBox>().HP == 1)
+                    {
+                        yukaDieCnt[(targetYukaNum+1) % 8] = 0.1f;
+                    }
+                    yuka[(targetYukaNum+1) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+
                     attackTime += 1.0f;
                 }
                 else if (attackTime >= 4.5f && attackTime <= 5.49f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
+
+                    if (yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().HP == 1)
+                    {
+                        yukaDieCnt[(targetYukaNum) % 8] = 0.1f;
+                    }
                     yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+
                     attackTime += 1.0f;
                 }
                 else if (attackTime >= 7.0f && attackTime <= 7.99f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
-                    yuka[(targetYukaNum - 1) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+
+                    if (yuka[(targetYukaNum-1) % 8].GetComponent<Gpt_YukaBox>().HP == 1)
+                    {
+                        yukaDieCnt[(targetYukaNum-1) % 8] = 0.1f;
+                    }
+                    yuka[(targetYukaNum-1) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+
                     attackTime += 1.0f;
                 }
             }
@@ -259,6 +296,9 @@ public class Gpt_Boss : MonoBehaviour
                 attackTime = 0.0f;
             }
         }
+
+        // 最後に床の更新
+        YukaUpdate();
     }
 
     public float GetMaxHp()
@@ -303,5 +343,25 @@ public class Gpt_Boss : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    // 床更新
+    void YukaUpdate()
+    {
+        for (int i = 0; i < yuka.Length; i++)
+        {
+            // 死んでいる状態であれば
+            if (yukaDieCnt[i] > 0.0f)
+            {
+                // 時間経過
+                yukaDieCnt[i] += Time.deltaTime;
+                // 一定時間経過で復活
+                if (yukaDieCnt[i] >= YUKA_RESP_TIME)
+                {
+                    yuka[i].GetComponent<Gpt_YukaBox>().ReverseTile();
+                    yukaDieCnt[i] = 0.0f;
+                }
+            }
+        }
     }
 }
