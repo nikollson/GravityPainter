@@ -15,7 +15,7 @@ public class Gpt_TutorialManager : MonoBehaviour
         count += Time.deltaTime;
         if(count > inputStartTime)
         {
-            if (Gpt_Input.Option)
+            if (Gpt_Input.HasAnyKey())
             {
                 Gpt_SceneManager.LoadScene(nextSceneName);
             }

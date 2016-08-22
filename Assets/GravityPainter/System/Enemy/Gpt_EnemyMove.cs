@@ -122,7 +122,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 //navMesh.enabled = false;
             }
         }
-        Debug.Log(navMesh.enabled);
+        //Debug.Log(navMesh.enabled);
 
         Vector3 enemyMove;
                 

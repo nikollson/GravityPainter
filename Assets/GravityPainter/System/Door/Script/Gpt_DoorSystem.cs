@@ -8,6 +8,9 @@ public class Gpt_DoorSystem : MonoBehaviour {
     public GameObject cameraObj;
     public GameObject[] doorObj = new GameObject[2];
 
+    public MeshRenderer[] meshRenderer;
+    public HitManager cameraHitManager;
+
     private Gpt_Player player;
     AudioSource se;
 
@@ -31,10 +34,18 @@ public class Gpt_DoorSystem : MonoBehaviour {
             if (b != null) { player = b; break; }
         }
     }
-	
-	void Update () {
 
-        switch (state) {
+    void Update()
+    {
+
+        Debug.Log("AAAAA" + cameraHitManager.IsHit);
+        foreach (var a in meshRenderer)
+        {
+            a.enabled = !cameraHitManager.IsHit;
+        }
+
+        switch (state)
+        {
 
             case State.CLOSE:
 
