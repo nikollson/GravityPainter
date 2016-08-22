@@ -8,7 +8,7 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
     public Gpt_DoorSystem doorSystem;
 
 
-    bool opended = false;
+    public bool opended { get; private set; }
 
     public float loadEnemyTime = 3f;
     int currentfaseNum = -1;
