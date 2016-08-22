@@ -170,7 +170,7 @@ public class Gpt_Boss : MonoBehaviour
                     if (yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().HP==1) {
                         yukaDieCnt[(targetYukaNum) % 8] = 0.1f;
                     }
-                    yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+                    yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().SetExplode(0.0f, 1.0f, 10.0f, 13.0f);
 
                     attackTime += 10.0f;
                 }
@@ -210,7 +210,7 @@ public class Gpt_Boss : MonoBehaviour
                     {
                         yukaDieCnt[(targetYukaNum) % 8] = 0.1f;
                     }
-                    yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+                    yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().SetExplode(0.0f, 1.0f, 10.0f, 13.0f);
 
                     attackTime += 10.0f;
                 }
@@ -249,7 +249,7 @@ public class Gpt_Boss : MonoBehaviour
                     {
                         yukaDieCnt[(targetYukaNum+1) % 8] = 0.1f;
                     }
-                    yuka[(targetYukaNum+1) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+                    yuka[(targetYukaNum + 1) % 8].GetComponent<Gpt_YukaBox>().SetExplode(0.0f, 1.0f, 10.0f, 13.0f);
 
                     attackTime += 1.0f;
                 }
@@ -262,7 +262,7 @@ public class Gpt_Boss : MonoBehaviour
                     {
                         yukaDieCnt[(targetYukaNum) % 8] = 0.1f;
                     }
-                    yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+                    yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().SetExplode(0.0f, 1.0f, 10.0f, 13.0f);
 
                     attackTime += 1.0f;
                 }
@@ -275,7 +275,7 @@ public class Gpt_Boss : MonoBehaviour
                     {
                         yukaDieCnt[(targetYukaNum-1) % 8] = 0.1f;
                     }
-                    yuka[(targetYukaNum-1) % 8].GetComponent<Gpt_YukaBox>().AddDamage(1);
+                    yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().SetExplode(0.0f, 1.0f, 10.0f, 13.0f);
 
                     attackTime += 1.0f;
                 }
@@ -298,7 +298,7 @@ public class Gpt_Boss : MonoBehaviour
         }
 
         // 最後に床の更新
-        YukaUpdate();
+        //YukaUpdate();
     }
 
     public float GetMaxHp()
