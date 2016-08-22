@@ -4,10 +4,12 @@ using System.Collections;
 public class Gpt_PauseMenuUI : MonoBehaviour {
 
     public GameObject Parent;
+    public GameObject normalParent;
 
     private int selectNum = 0;
 
-    public GameObject[] selector;
+    public GameObject[] selectOn1;
+    public GameObject[] selectOn2;
 
     bool isOpened = false;
     int frameMemo = 0;
@@ -52,9 +54,15 @@ public class Gpt_PauseMenuUI : MonoBehaviour {
             if (selectNum == 1) EndGame();
         }
 
-        for (int i = 0; i < selector.Length; i++)
+        if (selectNum == 0)
         {
-            selector[i].SetActive(i == selectNum);
+            SelectObjects(selectOn1);
+            UnSelectObjects(selectOn2);
+        }
+        if (selectNum == 1)
+        {
+            UnSelectObjects(selectOn1);
+            SelectObjects(selectOn2);
         }
     }
 
@@ -71,22 +79,38 @@ public class Gpt_PauseMenuUI : MonoBehaviour {
 
     void StartPause()
     {
-        Debug.Log("sttt");
         isOpened = true;
         Parent.SetActive(true);
+        normalParent.SetActive(false);
         Time.timeScale = slowTimeScale;
     }
 
     void ClosePause()
     {
-        Debug.Log("clcls");
         isOpened = false;
         Parent.SetActive(false);
+        normalParent.SetActive(true);
         Time.timeScale = normalTimeScale;
     }
 
     void EndGame()
     {
         Application.Quit();
+    }
+
+    void SelectObjects(GameObject[] obj)
+    {
+        foreach (var a in obj)
+        {
+            a.SetActive(true);
+        }
+    }
+
+    void UnSelectObjects(GameObject[] obj)
+    {
+        foreach(var a in obj)
+        {
+            a.SetActive(false);
+        }
     }
 }

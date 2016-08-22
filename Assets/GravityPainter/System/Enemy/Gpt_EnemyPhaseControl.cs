@@ -22,7 +22,7 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
     {
         if (!opended && IsEndAllPhase())
         {
-            DoEndPhase();
+            DoEndAll();
             opended = true;
         }
 
@@ -68,12 +68,16 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
         return enemyGravityManager.GetEnemyNumCount() >= PhaseEnemyParent[currentfaseNum].changeNextRest;
     }
 
-    void DoEndPhase()
+    void DoEndAll()
     {
         doorSystem.OpenDoor();
         foreach (var a in enemyGravityManager.GetEnemyList())
         {
             Destroy(a.gameObject);
+        }
+        foreach(var a in PhaseEnemyParent)
+        {
+            Destroy(a.parent);
         }
     }
 
