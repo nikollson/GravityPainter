@@ -31,7 +31,8 @@ public class Gpt_Boss : MonoBehaviour
 
     float fallSpd = 4.0f;      // 落下速度
     float upSpd = 25.0f;        // 上昇速度
-    float fallY = -20.0f;       // マグマY位置()
+    float firstUpSpd;
+    float fallY = -40.0f;       // マグマY位置()
     float magmaDmg = 3.34f;
     float cnt = 0.0f;
     public Vector3 firstBossPos;
@@ -58,10 +59,12 @@ public class Gpt_Boss : MonoBehaviour
 
     int targetYukaNum = 0;        // もくひょうゆかばんごう
     float dieCnt = 0.0f;
+    float upGrav = 0.0f;        // 上昇時重力
 
     void Start()
     {
         for (int i = 0; i < yuka.Length; i++) yukaDieCnt[i] = 0.0f;
+        firstUpSpd = upSpd;
     }
 
     void Update()
@@ -135,12 +138,14 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Fall)
         {
             // 落下ベクトルを足す
+            fallSpd += Time.deltaTime*20.0f;
             this.transform.position += new Vector3(0, -Time.deltaTime * fallSpd, 0);
             // 一定まで落ちると被ダメ
             if (this.transform.position.y < fallY)
             {
                 state = State.Up;
                 this.hp -= magmaDmg;
+                fallSpd = 4.0f;
 
                 // 死んだら
                 if (this.hp <= 0.0f)
@@ -153,13 +158,15 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Up)
         {
             // 上昇ベクトルを足す
+            upSpd -= Time.deltaTime * 6.0f;
             this.transform.position += new Vector3(0, Time.deltaTime * upSpd, 0);
 
             // 元々いた位置まで上昇すれば
-            if (this.transform.position.y < firstBossPos.y)
+            if (this.transform.position.y < firstBossPos.y && upSpd<0.0f)
             {
                 this.transform.position = new Vector3(0, firstBossPos.y, 0);
                 state = State.Search;
+                upSpd = firstUpSpd;
             }
         }
         // 攻撃L
