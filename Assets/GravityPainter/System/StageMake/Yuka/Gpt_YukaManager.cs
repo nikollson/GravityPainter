@@ -231,9 +231,12 @@ public class Gpt_YukaManager : MonoBehaviour {
 
     public void ReverseAllTiles()
     {
-        foreach(var a in tiles)
+        if (tiles != null)
         {
-            a.ReverseTile();
+            foreach (var a in tiles)
+            {
+                a.ReverseTile();
+            }
         }
     }
     
