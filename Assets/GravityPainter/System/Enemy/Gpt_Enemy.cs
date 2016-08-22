@@ -117,6 +117,13 @@ public class Gpt_Enemy : MonoBehaviour {
     //何割地面に落ちるか(全て落ちる場合は100)
     public float fallProb=30f;
 
+    //ポイントエフェクト
+    public GameObject pointEffect_red;
+    public GameObject pointEffect_blue;
+    public GameObject pointEffect_yellow;
+    private GameObject pointEffect;
+    private Gpt_PointEffect pointScript;
+
     // Use this for initialization
     void Start () {
 
@@ -223,6 +230,23 @@ public class Gpt_Enemy : MonoBehaviour {
                     Gpt_Exploder targetExploder = gameObj.GetComponent<Gpt_Exploder>();
                     targetExploder.SetColor(GetColor());
                     touchFlag = true;
+
+                    switch (GetColor())
+                    {
+                        case 1:
+                            pointEffect = Instantiate(pointEffect_red, this.transform.position - new Vector3(0,0.4f,0), Quaternion.identity) as GameObject;
+                            pointScript=pointEffect.GetComponent<Gpt_PointEffect>();
+                            break;
+                        case 2:
+                            pointEffect = Instantiate(pointEffect_blue, this.transform.position - new Vector3(0, 0.4f, 0), Quaternion.identity) as GameObject;
+                            pointScript = pointEffect.GetComponent<Gpt_PointEffect>();
+                            break;
+                        case 3:
+                            pointEffect = Instantiate(pointEffect_yellow, this.transform.position - new Vector3(0, 0.4f, 0), Quaternion.identity) as GameObject;
+                            pointScript = pointEffect.GetComponent<Gpt_PointEffect>();
+                            break;
+                    }
+                    
                 }
                 isTopExplode = true;
                 EnemyAttack.StopAttack();
@@ -315,6 +339,11 @@ public class Gpt_Enemy : MonoBehaviour {
         //爆発モーション
         if (isExplode)
         {
+            //ポイントオブジェクトの削除
+            if (pointEffect != null)
+            {
+                pointScript.isDelete=true;
+            }
             
             if (IsTop)
             {

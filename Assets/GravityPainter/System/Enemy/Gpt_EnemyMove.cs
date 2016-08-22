@@ -90,6 +90,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
         enemyVector= new Vector3(0, 0, 0);
         preserveEnemySpeed = enemySpeed;
         beforePosition = this.transform.position;
+        navMesh.enabled=false;
     }
 
     // Update is called once per frame
@@ -98,15 +99,26 @@ public class Gpt_EnemyMove : MonoBehaviour {
         //始めて地面に着いたときに移動
         if (Character.isGrounded)
         {
-            if(!isMoved){
+            
+
+            //1回目の落下では動かない＆ナビメッシュは適用しない
+            if (!isMoved){
                 isWalked = true;
                 isMoved = true;
+                navMesh.enabled = true;
             }
             gravity = 0;
+
         }
         else
         {
+            
             gravity -= GRAVITY * Time.deltaTime;
+            //2回目の落下でナビメッシュ除外
+            if (isMoved)
+            {
+                navMesh.enabled = false;
+            }
         }
 
 
