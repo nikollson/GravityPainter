@@ -34,6 +34,9 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
     public float enemyUnderTime = 1f;
     private int enemyNumCount;
 
+    //爆風範囲
+    public float explodeRange=7f;
+
     void Start()
     {
         Application.targetFrameRate = 30; //30FPSに設定
@@ -203,7 +206,10 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
             for (int j = 0; j < EnemyList.Count; j++)
             {
                 //爆風に近い範囲でダメージ
-                if (Vector3.Distance(ExplodeList[i].gameObject.transform.position, EnemyList[j].gameObject.transform.position) < 7f)
+                //爆破の範囲は地面から
+                Vector3 exPosition = new Vector3(ExplodeList[i].gameObject.transform.position.x, EnemyList[j].gameObject.transform.position.y,
+                                        ExplodeList[i].gameObject.transform.position.z);
+                if (Vector3.Distance(exPosition, EnemyList[j].gameObject.transform.position) < explodeRange)
                 {
                     //引力状態にない敵のみダメージ
                     if (!EnemyList[j].GetGravity())

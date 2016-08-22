@@ -72,7 +72,7 @@ public class Gpt_Enemy : MonoBehaviour {
     private float firmCount;
 
     //爆風ダメージ時の点滅時間
-    private float damageTime = 5f;
+    public float damageTime = 5f;
     private float damageCount;
     //爆風ダメージ時の点滅フラグ
     private bool damageFlag;
@@ -291,7 +291,10 @@ public class Gpt_Enemy : MonoBehaviour {
         {
             EnemyColor.IsDamage();
             EnemyAttack.StopAttack();
-            Vector3 waveVec = (waveExploderPosition - this.transform.position).normalized;
+
+            //吹き飛びを派手にするために斜め上のベクトルを作る(床より下の位置からベクトルを作る)
+            Vector3 underPosition = waveExploderPosition - new Vector3(0, YukaManager.transform.position.y-1f, 0);
+            Vector3 waveVec = (underPosition - this.transform.position).normalized;
             //Character.enabled = false;
             //coll.enabled = true;
             //rigid.useGravity = true;
@@ -309,9 +312,9 @@ public class Gpt_Enemy : MonoBehaviour {
             {
 
                 Debug.Log("Damage");
-                waveVec.y = 0;
+                //waveVec.y = 0;
                 //waveVec.y=2000f;
-                waveVec = new Vector3(0,0,0);
+                //waveVec = new Vector3(0,0,0);
                 //rigid.AddForce(waveVec * forceSpeed/4, ForceMode.VelocityChange);
                 rigid.AddForce(waveVec * forceSpeed * 10f, ForceMode.VelocityChange);
                 rigid.AddForce(new Vector3(0, forceHeight / 10f, 0), ForceMode.VelocityChange);
@@ -320,7 +323,7 @@ public class Gpt_Enemy : MonoBehaviour {
             //何故か↑のコードで吹っ飛ばないので暫定的に
             if (damageCount < 0.2f)
             {
-                rigid.AddForce(-waveVec * forceSpeed * 8f, ForceMode.VelocityChange);
+                rigid.AddForce(-waveVec * forceSpeed * 6f, ForceMode.VelocityChange);
                 rigid.AddForce(new Vector3(0, forceHeight / 10f, 0), ForceMode.VelocityChange);
             }
 
