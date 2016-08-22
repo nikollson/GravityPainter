@@ -1,0 +1,330 @@
+fileFormatVersion: 2
+guid: 6ca56a602a549854f82b2a0fb92a4cef
+timeCreated: 1471832556
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: ikHandle1
+    100004: ikHandle2
+    100006: joint1
+    100008: joint14
+    100010: joint14 1
+    100012: joint15
+    100014: joint15 1
+    100016: joint19
+    100018: joint19 1
+    100020: joint2
+    100022: joint23
+    100024: joint23 1
+    100026: joint24
+    100028: joint24 1
+    100030: joint25
+    100032: joint25 1
+    100034: joint26
+    100036: joint26 1
+    100038: joint27
+    100040: joint27 1
+    100042: joint28
+    100044: joint28 1
+    100046: joint29
+    100048: joint29 1
+    100050: joint3
+    100052: joint30
+    100054: joint30 1
+    100056: joint31
+    100058: joint31 1
+    100060: joint32
+    100062: joint32 1
+    100064: joint33
+    100066: joint33 1
+    100068: joint34
+    100070: joint35
+    100072: joint36
+    100074: joint37
+    100076: joint38
+    100078: joint39
+    100080: joint4
+    100082: joint5
+    100084: nurbsCircle1
+    100086: nurbsCircle10
+    100088: nurbsCircle11
+    100090: nurbsCircle12
+    100092: nurbsCircle3
+    100094: nurbsCircle5
+    100096: nurbsCircle6
+    100098: nurbsCircle7
+    100100: nurbsCircle8
+    100102: nurbsCircle9
+    100104: pasted__pCylinder1
+    100106: pCone2
+    100108: pCone2 1
+    100110: pCube25
+    100112: pCube25 1
+    100114: pCube26
+    100116: pCube26 1
+    100118: pCube27
+    100120: pCube27 1
+    100122: pCube28
+    100124: pCube28 1
+    100126: pCube29
+    100128: pCube29 1
+    100130: pCylinder2
+    100132: pCylinder3
+    100134: pCylinder4
+    100136: pCylinder5
+    100138: polySurface1
+    100140: polySurface2
+    100142: polySurface4
+    100144: polySurface5
+    100146: pSphere10
+    100148: pSphere2
+    100150: pSphere2 1
+    100152: pSphere5
+    100154: pSphere6
+    100156: pSphere7
+    100158: pSphere8
+    100160: pSphere9
+    100162: transform2
+    100164: transform2 1
+    100166: transform3
+    100168: transform3 1
+    400000: //RootNode
+    400002: ikHandle1
+    400004: ikHandle2
+    400006: joint1
+    400008: joint14
+    400010: joint14 1
+    400012: joint15
+    400014: joint15 1
+    400016: joint19
+    400018: joint19 1
+    400020: joint2
+    400022: joint23
+    400024: joint23 1
+    400026: joint24
+    400028: joint24 1
+    400030: joint25
+    400032: joint25 1
+    400034: joint26
+    400036: joint26 1
+    400038: joint27
+    400040: joint27 1
+    400042: joint28
+    400044: joint28 1
+    400046: joint29
+    400048: joint29 1
+    400050: joint3
+    400052: joint30
+    400054: joint30 1
+    400056: joint31
+    400058: joint31 1
+    400060: joint32
+    400062: joint32 1
+    400064: joint33
+    400066: joint33 1
+    400068: joint34
+    400070: joint35
+    400072: joint36
+    400074: joint37
+    400076: joint38
+    400078: joint39
+    400080: joint4
+    400082: joint5
+    400084: nurbsCircle1
+    400086: nurbsCircle10
+    400088: nurbsCircle11
+    400090: nurbsCircle12
+    400092: nurbsCircle3
+    400094: nurbsCircle5
+    400096: nurbsCircle6
+    400098: nurbsCircle7
+    400100: nurbsCircle8
+    400102: nurbsCircle9
+    400104: pasted__pCylinder1
+    400106: pCone2
+    400108: pCone2 1
+    400110: pCube25
+    400112: pCube25 1
+    400114: pCube26
+    400116: pCube26 1
+    400118: pCube27
+    400120: pCube27 1
+    400122: pCube28
+    400124: pCube28 1
+    400126: pCube29
+    400128: pCube29 1
+    400130: pCylinder2
+    400132: pCylinder3
+    400134: pCylinder4
+    400136: pCylinder5
+    400138: polySurface1
+    400140: polySurface2
+    400142: polySurface4
+    400144: polySurface5
+    400146: pSphere10
+    400148: pSphere2
+    400150: pSphere2 1
+    400152: pSphere5
+    400154: pSphere6
+    400156: pSphere7
+    400158: pSphere8
+    400160: pSphere9
+    400162: transform2
+    400164: transform2 1
+    400166: transform3
+    400168: transform3 1
+    2300000: pasted__pCylinder1
+    2300002: pCone2
+    2300004: pCone2 1
+    2300006: pCube25
+    2300008: pCube25 1
+    2300010: pCube26
+    2300012: pCube26 1
+    2300014: pCube27
+    2300016: pCube27 1
+    2300018: pCube28
+    2300020: pCube28 1
+    2300022: pCube29
+    2300024: pCube29 1
+    2300026: pCylinder2
+    2300028: pCylinder3
+    2300030: pCylinder4
+    2300032: pCylinder5
+    2300034: polySurface1
+    2300036: polySurface2
+    2300038: polySurface4
+    2300040: polySurface5
+    2300042: pSphere10
+    2300044: pSphere2
+    2300046: pSphere2 1
+    2300048: pSphere5
+    2300050: pSphere6
+    2300052: pSphere7
+    2300054: pSphere8
+    2300056: pSphere9
+    3300000: pasted__pCylinder1
+    3300002: pCone2
+    3300004: pCone2 1
+    3300006: pCube25
+    3300008: pCube25 1
+    3300010: pCube26
+    3300012: pCube26 1
+    3300014: pCube27
+    3300016: pCube27 1
+    3300018: pCube28
+    3300020: pCube28 1
+    3300022: pCube29
+    3300024: pCube29 1
+    3300026: pCylinder2
+    3300028: pCylinder3
+    3300030: pCylinder4
+    3300032: pCylinder5
+    3300034: polySurface1
+    3300036: polySurface2
+    3300038: polySurface4
+    3300040: polySurface5
+    3300042: pSphere10
+    3300044: pSphere2
+    3300046: pSphere2 1
+    3300048: pSphere5
+    3300050: pSphere6
+    3300052: pSphere7
+    3300054: pSphere8
+    3300056: pSphere9
+    4300000: pCylinder2
+    4300002: pCylinder3
+    4300004: pCylinder4
+    4300006: pCylinder5
+    4300008: pasted__pCylinder1
+    4300010: pSphere5
+    4300012: pSphere6
+    4300014: pSphere8
+    4300016: pSphere7
+    4300018: pSphere10
+    4300020: polySurface4
+    4300022: polySurface5
+    4300024: pSphere2
+    4300026: pCube29
+    4300028: pCube28
+    4300030: pCube27
+    4300032: pCube26
+    4300034: pCube25
+    4300036: pCone2
+    4300038: polySurface2
+    4300040: pSphere9
+    4300042: polySurface1
+    4300044: pCube29
+    4300046: pCube28
+    4300048: pCube27
+    4300050: pCube26
+    4300052: pCube25
+    4300054: pSphere2
+    4300056: pCone2
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

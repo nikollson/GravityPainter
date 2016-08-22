@@ -12,6 +12,13 @@
             </Location>
           </Fixed>
         </LocationValues>
+        <RotationValues>
+          <Fixed>
+            <Rotation>
+              <Z>90</Z>
+            </Rotation>
+          </Fixed>
+        </RotationValues>
         <IsRendered>False</IsRendered>
         <Name>SwordContainer</Name>
         <Children>
@@ -58,20 +65,20 @@
                     <Z>
                       <Key0>
                         <Frame>0</Frame>
-                        <Value>-53.16946</Value>
+                        <Value>-74.76947</Value>
                         <LeftX>-10.99822</LeftX>
-                        <LeftY>-53.12919</LeftY>
+                        <LeftY>-74.7292</LeftY>
                         <RightX>7.481544</RightX>
-                        <RightY>-53.19686</RightY>
+                        <RightY>-74.79688</RightY>
                         <InterpolationType>0</InterpolationType>
                       </Key0>
                       <Key1>
                         <Frame>32</Frame>
-                        <Value>-82.44484</Value>
+                        <Value>-6.844841</Value>
                         <LeftX>21.40898</LeftX>
-                        <LeftY>-81.45676</LeftY>
+                        <LeftY>-5.856758</LeftY>
                         <RightX>58.33892</RightX>
-                        <RightY>-84.90212</RightY>
+                        <RightY>-9.302124</RightY>
                         <InterpolationType>0</InterpolationType>
                       </Key1>
                       <Key2>
@@ -379,11 +386,6 @@
                         <Max>45</Max>
                         <Min>45</Min>
                       </Life>
-                      <GenerationTimeOffset>
-                        <Center>35</Center>
-                        <Max>35</Max>
-                        <Min>35</Min>
-                      </GenerationTimeOffset>
                     </CommonValues>
                     <RotationValues>
                       <Type>1</Type>
@@ -922,6 +924,6 @@
   <ToolVersion>1.20</ToolVersion>
   <Version>3</Version>
   <StartFrame>0</StartFrame>
-  <EndFrame>70</EndFrame>
+  <EndFrame>30</EndFrame>
   <IsLoop>True</IsLoop>
 </EffekseerProject>
