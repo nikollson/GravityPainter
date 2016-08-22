@@ -2,9 +2,7 @@
 using System.Collections;
 
 public class Gpt_PlayerRespawn : MonoBehaviour {
-
-    public GameObject respawnFloorPrefab;
-    public Transform respawnFloorPosition;
+    
     public float cantMoveTime = 0.3f;
     public Gpt_Player player;
 
@@ -16,22 +14,14 @@ public class Gpt_PlayerRespawn : MonoBehaviour {
 
     void Start()
     {
-
-        respawnPosition = respawnFloorPosition.position;
         count = INF;
     }
 
     public void DoRespawn()
     {
-        MakeFloor();
         count = 0;
         player.canControl = false;
         respawned = false;
-    }
-
-    public void MakeFloor()
-    {
-        Instantiate(respawnFloorPrefab, respawnPosition, Quaternion.identity);
     }
 
     void Update()

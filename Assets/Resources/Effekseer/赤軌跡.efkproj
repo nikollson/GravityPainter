@@ -24,13 +24,13 @@
               </GenerationTime>
             </CommonValues>
             <RotationValues>
-              <Type>5</Type>
+              <Type>1</Type>
               <PVA>
                 <Velocity>
                   <Z>
-                    <Center>40</Center>
-                    <Max>40</Max>
-                    <Min>40</Min>
+                    <Center>5</Center>
+                    <Max>5</Max>
+                    <Min>5</Min>
                   </Z>
                 </Velocity>
               </PVA>
@@ -112,9 +112,9 @@
               <Node>
                 <CommonValues>
                   <Life>
-                    <Center>120</Center>
-                    <Max>120</Max>
-                    <Min>120</Min>
+                    <Center>10</Center>
+                    <Max>10</Max>
+                    <Min>10</Min>
                   </Life>
                 </CommonValues>
                 <LocationValues>
@@ -150,9 +150,9 @@
                         <Value>18</Value>
                       </MaxGeneration>
                       <Life>
-                        <Center>50</Center>
-                        <Max>50</Max>
-                        <Min>50</Min>
+                        <Center>10</Center>
+                        <Max>10</Max>
+                        <Min>10</Min>
                       </Life>
                       <GenerationTime>
                         <Center>2</Center>
@@ -237,6 +237,7 @@
                       <Type>4</Type>
                       <Ring>
                         <VertexCount>36</VertexCount>
+                        <ViewingAngle_Fixed>180</ViewingAngle_Fixed>
                         <Inner_Fixed>
                           <Location>
                             <X>0</X>
@@ -357,9 +358,9 @@
               <Node>
                 <CommonValues>
                   <Life>
-                    <Center>120</Center>
-                    <Max>120</Max>
-                    <Min>120</Min>
+                    <Center>10</Center>
+                    <Max>10</Max>
+                    <Min>10</Min>
                   </Life>
                 </CommonValues>
                 <RotationValues>
@@ -374,17 +375,15 @@
                 <Children>
                   <Node>
                     <CommonValues>
+                      <MaxGeneration>
+                        <Infinite>True</Infinite>
+                      </MaxGeneration>
                       <RemoveWhenParentIsRemoved>True</RemoveWhenParentIsRemoved>
                       <Life>
-                        <Center>45</Center>
-                        <Max>45</Max>
-                        <Min>45</Min>
+                        <Center>10</Center>
+                        <Max>10</Max>
+                        <Min>10</Min>
                       </Life>
-                      <GenerationTimeOffset>
-                        <Center>35</Center>
-                        <Max>35</Max>
-                        <Min>35</Min>
-                      </GenerationTimeOffset>
                     </CommonValues>
                     <RotationValues>
                       <Type>1</Type>
@@ -531,15 +530,15 @@
           <Node>
             <CommonValues>
               <GenerationTimeOffset>
-                <Center>40</Center>
-                <Max>40</Max>
-                <Min>40</Min>
+                <Center>20</Center>
+                <Max>20</Max>
+                <Min>20</Min>
               </GenerationTimeOffset>
             </CommonValues>
             <LocationValues>
               <Fixed>
                 <Location>
-                  <X>-5.5</X>
+                  <X>5.5</X>
                   <Y>3</Y>
                 </Location>
               </Fixed>
@@ -594,6 +593,7 @@
                   <ColorTexture>re_dot.png</ColorTexture>
                   <AlphaBlend>2</AlphaBlend>
                 </RendererCommonValues>
+                <IsRendered>False</IsRendered>
                 <Name>Hit</Name>
                 <Children />
               </Node>
@@ -685,6 +685,7 @@
                     </ColorAll_Fixed>
                   </Sprite>
                 </DrawingValues>
+                <IsRendered>False</IsRendered>
                 <Name>Hit2</Name>
                 <Children />
               </Node>
@@ -792,6 +793,7 @@
                     </ColorAll_Random>
                   </Sprite>
                 </DrawingValues>
+                <IsRendered>False</IsRendered>
                 <Name>Splash</Name>
                 <Children />
               </Node>
@@ -800,7 +802,6 @@
                   <MaxGeneration>
                     <Value>10</Value>
                   </MaxGeneration>
-                  <RotationEffectType>0</RotationEffectType>
                   <GenerationTime>
                     <Center>0.8</Center>
                     <Max>0.8</Max>
@@ -923,6 +924,6 @@
   <ToolVersion>1.20</ToolVersion>
   <Version>3</Version>
   <StartFrame>0</StartFrame>
-  <EndFrame>70</EndFrame>
+  <EndFrame>10</EndFrame>
   <IsLoop>True</IsLoop>
 </EffekseerProject>

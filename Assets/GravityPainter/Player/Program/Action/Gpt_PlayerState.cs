@@ -7,6 +7,7 @@ public class Gpt_PlayerState : MonoBehaviour
     public Gpt_PlayerUtillity playerUtillity;
     public Gpt_PlayerColor playerColor;
     public Gpt_PlayerInkManage playerInkManage;
+    public GameObject damagedEffectPrefab;
 
     public int HPMax = 12;
     public float feeverMax = 1;
@@ -54,6 +55,7 @@ public class Gpt_PlayerState : MonoBehaviour
         {
             AddHP(-value);
             if(setMuteki) mutekiCount = 0;
+            MakeDamageEffect();
         }
     }
     public void AddHPDamage_Attack(int value, Vector3 hitPosition)
@@ -66,6 +68,11 @@ public class Gpt_PlayerState : MonoBehaviour
             playerUtillity.LookAt(look);
             playerColor.StartMutekiFlush(mutekiTime);
         }
+    }
+
+    void MakeDamageEffect()
+    {
+        var obj = (GameObject)Instantiate(damagedEffectPrefab, this.transform.position, Quaternion.identity);
     }
 
     public void AddFeever(float value) { Feever = floatValueLimit(0f, feeverMax, Feever + value); }

@@ -1,5 +1,7 @@
 fileFormatVersion: 2
-guid: 31765ad60cc79c14eadd82ba986011d1
+guid: 9d45c1c62d458854290ec5b9da54dff5
+timeCreated: 1471744388
+licenseType: Free
 PluginImporter:
   serializedVersion: 1
   iconMap: {}
@@ -28,7 +30,7 @@ PluginImporter:
       settings:
         CPU: None
     LinuxUniversal:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: x86
     OSXIntel:

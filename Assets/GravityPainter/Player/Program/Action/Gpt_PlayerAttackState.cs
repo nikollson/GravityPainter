@@ -6,6 +6,7 @@ public class Gpt_PlayerAttackState : MonoBehaviour
 {
     private Gpt_PlayerUtillity playerUtillity;
     public Gpt_PlayerState playerState;
+    public Transform attackEffectPosition;
     //public HitManager attackCollider;
     public GameObject bulletPrefab;
     public GameObject hitEffectPrefab;
@@ -62,7 +63,7 @@ public class Gpt_PlayerAttackState : MonoBehaviour
 
     void MakeAttackPrefab(GameObject prefab)
     {
-        var obj = (GameObject)Instantiate(prefab, this.transform.position, Quaternion.identity);
+        var obj = (GameObject)Instantiate(prefab, this.attackEffectPosition.position, Quaternion.identity);
         obj.transform.LookAt(obj.transform.position + this.transform.right);
     }
 
