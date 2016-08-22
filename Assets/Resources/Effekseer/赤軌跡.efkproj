@@ -237,6 +237,7 @@
                       <Type>4</Type>
                       <Ring>
                         <VertexCount>36</VertexCount>
+                        <ViewingAngle_Fixed>180</ViewingAngle_Fixed>
                         <Inner_Fixed>
                           <Location>
                             <X>0</X>

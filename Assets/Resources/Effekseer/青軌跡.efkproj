@@ -237,6 +237,7 @@
                       <Type>4</Type>
                       <Ring>
                         <VertexCount>36</VertexCount>
+                        <ViewingAngle_Fixed>120</ViewingAngle_Fixed>
                         <Inner_Fixed>
                           <Location>
                             <X>0</X>
@@ -355,9 +356,9 @@
               <Node>
                 <CommonValues>
                   <Life>
-                    <Center>120</Center>
-                    <Max>120</Max>
-                    <Min>120</Min>
+                    <Center>30</Center>
+                    <Max>30</Max>
+                    <Min>30</Min>
                   </Life>
                 </CommonValues>
                 <RotationValues>
