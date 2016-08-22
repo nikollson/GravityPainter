@@ -166,7 +166,7 @@ public class Gpt_Camera : MonoBehaviour
                     state = (int)State.BossBattle;
                     movieBar1.transform.position = notDrawPos;
                     movieBar2.transform.position = notDrawPos;
-                    player.GetComponent<Gpt_Player>().canControl = false;
+                    player.GetComponent<Gpt_Player>().canControl = true;
                 }
             }
         }
