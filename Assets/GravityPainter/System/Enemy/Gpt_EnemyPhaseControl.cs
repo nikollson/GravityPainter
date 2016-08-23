@@ -31,7 +31,16 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
     bool opened = false;
     bool enemyRemoved = false;
     public float enemyRemoveTime = 2.5f;
+    public float effectStartTime = 2.0f;
+    bool effectStarted = false;
 
+    public float shakeStartTime = 0.4f;
+    public float shakeEndTime = 1.5f;
+    public float shakePower = 0.5f;
+
+
+    public bool started = false;
+    bool doorOpened = false;
 
     void Start()
     {
@@ -42,36 +51,51 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
 
     void Update()
     {
-        if (!opended && IsEndAllPhase())
+        if (started)
         {
-            DoEndAll();
-            opended = true;
-        }
-
-        if (CanLoadPhase())
-        {
-            LoadPhase(currentfaseNum + 1);
-        }
-
-        if (currentfaseNum != -1)
-        {
-            UpdatePhase();
-        }
-
-        if (cleared)
-        {
-            clearCount += Time.deltaTime;
-            if(!enemyRemoved && clearCount > enemyRemoveTime)
+            if (!opended && IsEndAllPhase())
             {
-                enemyRemoved = true;
-                RemoveAllEnemy2();
+                DoEndAll();
+                opended = true;
             }
-            if(clearCount > clearDoorTime)
+
+            if (CanLoadPhase())
             {
-                doorSystem.OpenDoor();
+                LoadPhase(currentfaseNum + 1);
+            }
+
+            if (currentfaseNum != -1)
+            {
+                UpdatePhase();
+            }
+
+            if (cleared)
+            {
+                clearCount += Time.deltaTime;
+                if (!enemyRemoved && clearCount > enemyRemoveTime)
+                {
+                    enemyRemoved = true;
+                    RemoveAllEnemy2();
+                    yukaManager.ReverseAllTiles();
+                }
+                if (!doorOpened && clearCount > clearDoorTime)
+                {
+                    doorSystem.OpenDoor();
+                    doorOpened = true;
+                }
+                if (shakeStartTime < clearCount && clearCount < shakeEndTime)
+                {
+                    camera.SetScreenShake(shakePower);
+                }
+                if (!effectStarted && clearCount > effectStartTime)
+                {
+                    RemoveAllEnemy1();
+                    effectStarted = true;
+                }
             }
         }
-        
+
+
     }
 
     bool CanLoadPhase()
@@ -106,7 +130,6 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
 
     void DoEndAll()
     {
-        RemoveAllEnemy1();
         
         yukaManager.MakeClaerFlush();
         camera.StartPositionLook(clearCameraPosition, clearCameraLook);
