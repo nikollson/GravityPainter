@@ -146,7 +146,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 //地面に床がない場合落下
                 if (!YukaManager.HasTile(this.transform.position))
                 {
-                    Debug.Log(YukaManager.HasTile(this.transform.position));
+                    //Debug.Log(YukaManager.HasTile(this.transform.position));
                     enemySpeed = 0;
                     rigid.useGravity = true;
                     rigid.isKinematic = false;
@@ -284,7 +284,11 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         enemyMove.x = moveVec.x * enemyTemp;
                         enemyMove.y = gravity;
                         enemyMove.z = moveVec.z * enemyTemp;
-                        Character.Move(enemyMove * Time.deltaTime);
+                        if (Character.enabled)
+                        {
+                            Character.Move(enemyMove * Time.deltaTime);
+                        }
+                        
                     }
                     //停止処理
                     else
@@ -296,8 +300,10 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         enemyMove.x = moveVec.x * enemyTemp;
                         enemyMove.y = gravity;
                         enemyMove.z = moveVec.z * enemyTemp;
-                        Character.Move(enemyMove * Time.deltaTime);
-
+                        if (Character.enabled)
+                        {
+                            Character.Move(enemyMove * Time.deltaTime);
+                        }
 
                         if (stop > stopTime)
                         {
@@ -317,8 +323,10 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 enemyMove.x = 0;
                 enemyMove.y = gravity;
                 enemyMove.z = 0;
-                Character.Move(enemyMove * Time.deltaTime);
-
+                if (Character.enabled)
+                {
+                    Character.Move(enemyMove * Time.deltaTime);
+                }
             }
 
         }
