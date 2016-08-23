@@ -204,7 +204,7 @@ public class Gpt_Boss : MonoBehaviour
             // 途中で床は壊れる
             if (attackTime <= 10.0f)
             {
-                if (attackTime >= 3.0f)
+                if (attackTime >= 2.4f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
@@ -240,7 +240,7 @@ public class Gpt_Boss : MonoBehaviour
             attackTime += Time.deltaTime;
 
             // 途中で床は壊れる
-                if (attackTime >= 3.0f && attackTime<=10.0f)
+                if (attackTime >= 2.4f && attackTime<=10.0f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
