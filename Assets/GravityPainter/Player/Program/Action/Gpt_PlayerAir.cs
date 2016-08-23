@@ -11,6 +11,9 @@ public class Gpt_PlayerAir : MonoBehaviour
     public float frictionXZ = 10;
     public float downForce = 200;
 
+    public AudioClip groundSound;
+    bool isGroundPrev = false;
+
 
     float airCount = 0;
 
@@ -53,6 +56,16 @@ public class Gpt_PlayerAir : MonoBehaviour
 
         Vector3 allPower = frictionPower + downPower;
         rigidbody.AddForce(Time.deltaTime * allPower, ForceMode.Acceleration);
+    }
+
+
+    void Update()
+    {
+        if(!isGroundPrev && playerUtillity.IsGround())
+        {
+            playerUtillity.audioSource.PlayOneShot(groundSound);
+        }
+        isGroundPrev = playerUtillity.IsGround();
     }
     
 }
