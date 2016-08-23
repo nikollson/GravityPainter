@@ -15,10 +15,13 @@ public class Gpt_RestEnemyUI : MonoBehaviour
     private Gpt_PlayerState playState;
 
     public Sprite[] Count;
+    public Sprite[] ColorSelect;
+    public GameObject Color;
     public GameObject GcountTen;
     public GameObject GcountOne;
     public GameObject GcountTenParent;
     public GameObject GcountOneParent;
+    private Image color;
     private Image countTen;
     private Image countOne;
     private Image countTenParent;
@@ -54,7 +57,7 @@ public class Gpt_RestEnemyUI : MonoBehaviour
 
         if (phaseControl == null)
         {
-            Debug.Log("faffafasasfasfafa");
+            //Debug.Log("faffafasasfasfafa");
             //this.gameObject.SetActive(false);
         }
         
@@ -68,7 +71,7 @@ public class Gpt_RestEnemyUI : MonoBehaviour
             //enemyNumText.text = "" + Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount());
             
         }
-        Debug.Log(playColor);
+//        Debug.Log(playState.PlayerColor);
         if (!count)
         {
             Maxcount = Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount());
@@ -76,8 +79,8 @@ public class Gpt_RestEnemyUI : MonoBehaviour
             tenPointParent = Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount()) / 10;
             onePointParent = Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount()) % 10;
 
-            Debug.Log("tenP:" + tenPointParent);
-            Debug.Log("oneP:" + onePointParent);
+            //Debug.Log("tenP:" + tenPointParent);
+            //Debug.Log("oneP:" + onePointParent);
             switch (tenPointParent)
             {
                 case 0:
@@ -149,11 +152,24 @@ public class Gpt_RestEnemyUI : MonoBehaviour
         
         tenPoint = Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount()) / 10;
         onePoint = Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount()) % 10;
-        Debug.Log("fff]"+tenPoint);
-        Debug.Log("ggg]" + onePoint);
+        //Debug.Log("fff]"+tenPoint);
+        //Debug.Log("ggg]" + onePoint);
+
+        switch (playState.PlayerColor)
+        {
+            case 0:
+                countTen.sprite = Count[0];
+                break;
+            case 1:
+                countTen.sprite = Count[1];
+                break;
+            case 2:
+                countTen.sprite = Count[2];
+                break;
+        }
 
         switch (tenPoint)
-        {
+        { 
             case 0:
                 countTen.sprite = Count[0];
                 break;
