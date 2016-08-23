@@ -20,14 +20,18 @@ public class Gpt_Boss : MonoBehaviour
         Die,
     }
     State state = State.Search;
+    //State state = State.Fall;
     public GameObject camera;
     public GameObject se;
+    public GameObject parentObj;
 
     const float maxHp = 10.0f;
     float hp = 10.0f;
 
     public GameObject hand1;
     public GameObject hand2;
+
+    bool firstFall = true;
 
     float fallSpd = 4.0f;      // 落下速度
     float upSpd = 25.0f;        // 上昇速度
@@ -142,6 +146,14 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Fall)
         {
             anim.SetBool("Atk_FallL_Flg", true);
+            if (firstFall)
+            {
+                parentObj.transform.position =
+                    new Vector3(parentObj.transform.position.x + 0.0f,
+                    parentObj.transform.position.y,
+                    parentObj.transform.position.z);
+                firstFall = false;
+            }
 
             // 落下ベクトルを足す
             fallSpd += Time.deltaTime*20.0f;
@@ -155,6 +167,12 @@ public class Gpt_Boss : MonoBehaviour
                 this.hp -= magmaDmg;
                 blinkFlg = true;
                 fallSpd = 4.0f;
+                firstFall = true;
+
+                parentObj.transform.position =
+    new Vector3(parentObj.transform.position.x - 0.0f,
+    parentObj.transform.position.y,
+    parentObj.transform.position.z);
 
                 // 死んだら
                 if (this.hp <= 0.0f)
@@ -359,7 +377,7 @@ public class Gpt_Boss : MonoBehaviour
 
     void SetEXP(int add=0)
     {
-        yuka[(targetYukaNum+add) % 8].GetComponent<Gpt_YukaBox>().SetExplode(0.0f, 1.0f, 10.0f, 13.0f);
+        yuka[(targetYukaNum + add) % 8].GetComponent<Gpt_YukaBox>().SetExplode(0.0f, 0.3f, 2.7f, 3.7f);
     }
 
     // プレイヤーと最も近い場所を探す
