@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Gpt_ContinueUI : MonoBehaviour
 {
     public GameObject parent;
+    public GameObject normalUI;
     public Image SelectorYes;
     public Image SelectorNo;
 
@@ -70,12 +71,14 @@ public class Gpt_ContinueUI : MonoBehaviour
     public void SetOn()
     {
         parent.SetActive(true);
+        normalUI.SetActive(false);
         isActive = true;
     }
 
     public void SetOff()
     {
         parent.SetActive(false);
+        normalUI.SetActive(true);
         isActive = false;
     }
 }
