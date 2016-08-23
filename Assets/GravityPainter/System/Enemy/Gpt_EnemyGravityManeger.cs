@@ -127,20 +127,33 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
                         //Debug.Log("Top!!");
                         //i番目へのベクトル
                         Vector3 objVec1 = EnemyList[i].transform.position - EnemyList[j].transform.position;
+                        Vector3 objVec2 = EnemyList[j].transform.position - EnemyList[i].transform.position;
 
-                        float topGravityPower = 1.5f;
-                        float scaleA = EnemyList[j].IsTop ? topGravityPower : 1f;
+                        if (EnemyList[i].IsTop)
+                        {
+                            //Debug.Log("i:Top is "+EnemyList[i].name);
+                        }
+                        else
+                        {
+                            //Debug.Log("j:Top is " + EnemyList[j].name);
+                        }
+
+                        float topGravityPower = 0.5f;
+                        float scaleA = EnemyList[j].IsTop ? topGravityPower : 0.5f;
                         Vector3 normVec1 = objVec1.normalized * scaleA;
+                        Vector3 normVec2 = objVec2.normalized * scaleA;
                         if (EnemyList[i].GetShake() != EnemyList[j].GetShake())
                         {
                             if (EnemyList[i].GetShake())
                             {
                                 EnemyList[i].SetGravity(normVec1);
+                                EnemyList[j].SetGravity(normVec2);
                             }
                         }
                         else
                         {
                             EnemyList[i].SetGravity(normVec1);
+                            EnemyList[j].SetGravity(normVec2);
                         }
 
                         //同時に2匹塗られた際に、Topが分からなくなるのを防ぐため

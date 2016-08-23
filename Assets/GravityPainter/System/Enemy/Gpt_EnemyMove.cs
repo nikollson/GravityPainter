@@ -144,18 +144,18 @@ public class Gpt_EnemyMove : MonoBehaviour {
             if (isWalked)
             {
                 //地面に床がない場合落下
-                if (!YukaManager.HasTile(this.transform.position))
-                {
-                    //Debug.Log(YukaManager.HasTile(this.transform.position));
-                    enemySpeed = 0;
-                    rigid.useGravity = true;
-                    rigid.isKinematic = false;
-                    rigid.AddForce(-transform.up*2f,ForceMode.VelocityChange);
-                    navMesh.enabled=false;
+                //if (!YukaManager.HasTile(this.transform.position))
+                //{
+                //    Debug.Log("DDDD"+YukaManager.HasTile(this.transform.position));
+                //    enemySpeed = 0;
+                //    rigid.useGravity = true;
+                //    rigid.isKinematic = false;
+                //    rigid.AddForce(-transform.up*2f,ForceMode.VelocityChange);
+                //    navMesh.enabled=false;
 
-                }
-                else
-                {
+                //}
+                //else
+                //{
                     if (moveAngle == -1)
                     {
                         moveAngle = Random.Range(0, 361);
@@ -279,7 +279,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         {
                             enemyTemp = 0;
                         }
-                        //Debug.Log(enemySpeed);
+                       // Debug.Log("Debug:"+enemyTemp);
 
                         enemyMove.x = moveVec.x * enemyTemp;
                         enemyMove.y = gravity;
@@ -313,7 +313,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                             enemyTemp = 0;
                         }
                     }
-                }
+                //}
                 //Debug.Log("enemy:"+enemyTemp);
                 
             }
