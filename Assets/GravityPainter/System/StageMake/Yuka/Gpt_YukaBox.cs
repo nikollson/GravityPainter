@@ -112,6 +112,16 @@ public class Gpt_YukaBox : MonoBehaviour {
         isFlushed = false;
     }
 
+    public void SetFlush()
+    {
+        renderer.material = tileSetting.GetMaterial(Color, HP, true);
+    }
+
+    public void UnSetFlush()
+    {
+        MaterialUpdate();
+    }
+
     void Update()
     {
         if (isFlushing)

@@ -87,13 +87,11 @@ public class Gpt_YukaManager : MonoBehaviour {
         Debug.Log(s);
         */
     }
-    
+
+    bool on = true;
     void Update()
     {
-        if (Gpt_Input.MovePush)
-        {
-            ReverseAllTiles();
-        }
+
     }
 
     public void DoExplode(int color, Vector3 point, float radius)
