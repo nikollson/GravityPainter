@@ -11,6 +11,9 @@ public class Gpt_RestEnemyUI : MonoBehaviour
     private Gpt_EnemyGravityManeger gravityManager;
     private Gpt_EnemyPhaseControl phaseControl;
 
+    private GameObject player;
+    private Gpt_PlayerState playState;
+
     public Sprite[] Count;
     public GameObject GcountTen;
     public GameObject GcountOne;
@@ -29,6 +32,8 @@ public class Gpt_RestEnemyUI : MonoBehaviour
     private bool count;
     private int Maxcount;
 
+    private Gpt_InkColor playColor;
+
     void Start()
     {
         gravityManager = gravityObject.GetComponent<Gpt_EnemyGravityManeger>();
@@ -40,7 +45,14 @@ public class Gpt_RestEnemyUI : MonoBehaviour
         //gravityManager = FindObjectOfType<Gpt_EnemyGravityManeger>();
         //phaseControl = FindObjectOfType<Gpt_EnemyPhaseControl>();
 
-        if(phaseControl == null)
+        player = GameObject.Find("Player");
+        playState = player.GetComponent<Gpt_PlayerState>();
+
+        playColor = playState.PlayerColor;
+
+        
+
+        if (phaseControl == null)
         {
             Debug.Log("faffafasasfasfafa");
             //this.gameObject.SetActive(false);
@@ -56,7 +68,7 @@ public class Gpt_RestEnemyUI : MonoBehaviour
             //enemyNumText.text = "" + Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount());
             
         }
-
+        Debug.Log(playColor);
         if (!count)
         {
             Maxcount = Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount());
