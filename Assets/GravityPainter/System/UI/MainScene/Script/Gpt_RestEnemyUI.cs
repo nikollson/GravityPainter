@@ -16,12 +16,12 @@ public class Gpt_RestEnemyUI : MonoBehaviour
 
     public Sprite[] Count;
     public Sprite[] ColorSelect;
-    public GameObject Color;
+    public GameObject Gcolor;
     public GameObject GcountTen;
     public GameObject GcountOne;
     public GameObject GcountTenParent;
     public GameObject GcountOneParent;
-    private Image color;
+    private Image colorImage;
     private Image countTen;
     private Image countOne;
     private Image countTenParent;
@@ -45,6 +45,7 @@ public class Gpt_RestEnemyUI : MonoBehaviour
         countOne = GcountOne.GetComponent<Image>();
         countTenParent = GcountTenParent.GetComponent<Image>();
         countOneParent = GcountOneParent.GetComponent<Image>();
+        colorImage = Gcolor.GetComponent<Image>();
         //gravityManager = FindObjectOfType<Gpt_EnemyGravityManeger>();
         //phaseControl = FindObjectOfType<Gpt_EnemyPhaseControl>();
 
@@ -157,14 +158,14 @@ public class Gpt_RestEnemyUI : MonoBehaviour
 
         switch (playState.PlayerColor)
         {
-            case 0:
-                countTen.sprite = Count[0];
+            case Gpt_InkColor.RED:
+                colorImage.sprite = ColorSelect[0];
                 break;
-            case 1:
-                countTen.sprite = Count[1];
+            case Gpt_InkColor.BLUE:
+                colorImage.sprite = ColorSelect[1];
                 break;
-            case 2:
-                countTen.sprite = Count[2];
+            case Gpt_InkColor.YELLOW:
+                colorImage.sprite = ColorSelect[2];
                 break;
         }
 
