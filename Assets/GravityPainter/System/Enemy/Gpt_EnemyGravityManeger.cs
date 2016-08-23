@@ -46,6 +46,10 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
     public GameObject phaseObject;
     private Gpt_EnemyPhaseControl phaseControl;
 
+    private bool[] hitColor=new bool[3];
+
+    private int[] previousHitted;
+
     void Start()
     {
         phaseControl=phaseObject.GetComponent<Gpt_EnemyPhaseControl>();
@@ -95,14 +99,20 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
                 }
             }
         }
-
+        int[] previousTemp =new int[EnemyList.Count];
+        previousHitted = new int[EnemyList.Count];
         //距離判定
+        //Debug.Log(previousHitted[1]);
         for (int i = 0; i < EnemyList.Count; i++)
         {
             EnemyList[i].SetUpTime(enemyUpTime);
             EnemyList[i].SetUnderTime(enemyUnderTime);
 
-            bool hitted = false;
+            int hitted = 0;
+            
+            previousTemp[i] = previousHitted[i];
+
+            bool targetHit=false;
 
             for (int j = 0; j < EnemyList.Count; j++)
             {
@@ -113,12 +123,13 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
                 {
                     if (EnemyList[i].GetColor() != 0 && EnemyList[i].GetColor() == EnemyList[j].GetColor())
                     {
-                        hitted = true;
+                        hitted++;
+                        //Debug.Log("Top!!");
                         //i番目へのベクトル
                         Vector3 objVec1 = EnemyList[i].transform.position - EnemyList[j].transform.position;
 
-                        float topGravityPower = 3;
-                        float scaleA = EnemyList[j].IsTop ? topGravityPower : 1;
+                        float topGravityPower = 1.5f;
+                        float scaleA = EnemyList[j].IsTop ? topGravityPower : 1f;
                         Vector3 normVec1 = objVec1.normalized * scaleA;
                         if (EnemyList[i].GetShake() != EnemyList[j].GetShake())
                         {
@@ -132,18 +143,18 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
                             EnemyList[i].SetGravity(normVec1);
                         }
 
+                        //同時に2匹塗られた際に、Topが分からなくなるのを防ぐため
+                        if (EnemyList[j].IsTop)
+                        {
+                            previousTemp[i]++;
+                        }
                         
                     }
                 }
 
                 
             }
-
-            if (!hitted && EnemyList[i].GetColor() != 0 && !EnemyList[i].IsTop)
-            {
-                EnemyList[i].SetTop();
-            }
-
+            
             switch (EnemyList[i].GetColor())
             {
                 case 1:
@@ -157,7 +168,14 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
                     break;
             }
 
-            //接触判定
+            if (previousTemp[i]==0 && EnemyList[i].GetColor() != 0 && !EnemyList[i].IsTop)
+            {
+                hitColor[0] = true;
+                EnemyList[i].SetTop();
+                break;
+            }
+            
+            previousHitted[i] = hitted;
         }
         recodeColorNum[0] = colorNum[0];
         recodeColorNum[1] = colorNum[1];
