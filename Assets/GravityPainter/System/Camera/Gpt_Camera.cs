@@ -264,7 +264,8 @@ public class Gpt_Camera : MonoBehaviour
     {
         Vector3 diff = pos - this.transform.position;
         Vector3 move = diff * stlength;
-        move = move / move.magnitude * Mathf.Min(move.magnitude, positionSpeedMax);
+        float EPS = 0.001f;
+        if (move.magnitude >= EPS) move = move / move.magnitude * Mathf.Min(move.magnitude, positionSpeedMax);
         this.transform.position = this.transform.position + move;
     }
 
