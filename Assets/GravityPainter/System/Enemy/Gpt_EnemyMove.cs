@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Gpt_EnemyMove : MonoBehaviour {
 
-
+    private Gpt_Enemy mainEnemy;
     public Gpt_EnemyAttack EnemyAttack;
     public GameObject Animator;
     private Gpt_EnemyAnimation EnemyAnimation;
@@ -83,6 +83,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        mainEnemy = this.gameObject.GetComponent<Gpt_Enemy>();
         EnemyAnimation = Animator.GetComponent<Gpt_EnemyAnimation>();
         Character = GetComponent<CharacterController>();
         player = GameObject.Find("Player");
@@ -122,7 +123,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 //navMesh.enabled = false;
             }
         }
-        //Debug.Log("nav:"+navMesh.enabled);
+        //Debug.Log(navMesh.enabled);
 
         Vector3 enemyMove;
                 
@@ -145,15 +146,14 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
                 Vector3 tempEnemyVec = new Vector3(0, this.transform.position.y, 0);
                 Vector3 tempPlayerVec = new Vector3(0, player.transform.position.y, 0);
-
-                //Debug.Log(Vector3.Distance(player.transform.position, this.transform.position));
                 //索敵処理
                 //高さの判定を入れてリスポーン時は敵が引き寄せられない。
                 if (Vector3.Distance(player.transform.position, this.transform.position) < searchArea&&
                     Vector3.Distance(tempPlayerVec, tempEnemyVec) < 4f)
                 {
-                    navMesh.enabled = true;
                     
+                    //Debug.Log(navMesh.enabled);
+
                     if (!EnemyAttack.GetAttack())
                     {
                         //moveVec = Vector3.Slerp(moveVec, player.transform.position - this.transform.position, 0.75f);
@@ -161,7 +161,15 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         preserveVec=moveVec;
                         if (navMesh!=null)
                         {
-                            navMesh.enabled = true;
+                            //ダメージ判定時は例外でfalse
+                            if (mainEnemy.damageFlag)
+                            {
+                                navMesh.enabled = false;
+                            }
+                            else
+                            {
+                                navMesh.enabled = true;
+                            }
                         }
                         
                     }
@@ -186,8 +194,6 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 }
                 //Debug.Log("Beforenemy:" + enemyTemp);
 
-                
-
                 if (navMesh.enabled)
                 {
                     //ナビゲーション用に回転
@@ -201,9 +207,13 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 }
                 else
                 {
-                    float angle = Mathf.Atan2(moveVec.z, moveVec.x);
-                    ////移動方向に回転
-                    this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle) + 90, 0));
+                    //ダメージモーション中は回転しない
+                    if (!mainEnemy.damageFlag)
+                    {
+                        float angle = Mathf.Atan2(moveVec.z, moveVec.x);
+                        ////移動方向に回転
+                        this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle) + 90, 0));
+                    }
                 }
 
                 //移動処理
@@ -226,7 +236,6 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
                     if (navMesh != null && navMesh.enabled)
                     {
-                        //Debug.Log(enemyTemp);
                         enemyTemp = 0;
                         breakTime = 0;
                     }
@@ -247,7 +256,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     {
                         enemyTemp = 0;
                     }
-                    
+                    //Debug.Log(enemySpeed);
                     
                     enemyMove.x = moveVec.x * enemyTemp;
                     enemyMove.y = gravity;
@@ -286,7 +295,6 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 enemyMove.z = 0;
                 Character.Move(enemyMove * Time.deltaTime);
             }
-            //navMesh.enabled = true;
 
         }
         

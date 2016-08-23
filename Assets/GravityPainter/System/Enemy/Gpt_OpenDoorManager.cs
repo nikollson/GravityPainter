@@ -10,10 +10,12 @@ public class Gpt_OpenDoorManager : MonoBehaviour {
 
     void Update()
     {
+        /*
         if (!opended && phaseControl.IsEndAllPhase())
         {
             doorSystem.OpenDoor();
             opended = true;
         }
+        */
     }
 }

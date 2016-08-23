@@ -72,10 +72,10 @@ public class Gpt_Enemy : MonoBehaviour {
     private float firmCount;
 
     //爆風ダメージ時の点滅時間
-    private float damageTime = 5f;
+    public float damageTime = 5f;
     private float damageCount;
     //爆風ダメージ時の点滅フラグ
-    private bool damageFlag;
+    public bool damageFlag{get;private set;}
 
     //小刻み処理の際の片側だけに引力が発生するのを防ぐ
     private bool shakeFlag;
@@ -251,6 +251,17 @@ public class Gpt_Enemy : MonoBehaviour {
                 isTopExplode = true;
                 EnemyAttack.StopAttack();
             }
+
+            //色の数が2以上で範囲をつける
+            if (GetColor() != 0)
+            {
+                if (EnemyGravityManeger.recodeColorNum[GetColor() - 1]>=2)
+                {
+                    Debug.Log("afafa");
+                    pointScript.isStart = true;
+                }
+            }
+            
             
         }
 
@@ -291,7 +302,10 @@ public class Gpt_Enemy : MonoBehaviour {
         {
             EnemyColor.IsDamage();
             EnemyAttack.StopAttack();
-            Vector3 waveVec = (waveExploderPosition - this.transform.position).normalized;
+
+            //吹き飛びを派手にするために斜め上のベクトルを作る(床より下の位置からベクトルを作る)
+            Vector3 underPosition = waveExploderPosition;// - new Vector3(0, YukaManager.transform.position.y-1f, 0);
+            Vector3 waveVec = (underPosition - this.transform.position).normalized;
             //Character.enabled = false;
             //coll.enabled = true;
             //rigid.useGravity = true;
@@ -309,10 +323,11 @@ public class Gpt_Enemy : MonoBehaviour {
             {
 
                 Debug.Log("Damage");
-                waveVec.y = 0;
+                //waveVec.y = 0;
                 //waveVec.y=2000f;
-                waveVec = new Vector3(0,0,0);
+                //waveVec = new Vector3(0,0,0);
                 //rigid.AddForce(waveVec * forceSpeed/4, ForceMode.VelocityChange);
+                waveVec.y = 0;
                 rigid.AddForce(waveVec * forceSpeed * 10f, ForceMode.VelocityChange);
                 rigid.AddForce(new Vector3(0, forceHeight / 10f, 0), ForceMode.VelocityChange);
             }
@@ -320,13 +335,14 @@ public class Gpt_Enemy : MonoBehaviour {
             //何故か↑のコードで吹っ飛ばないので暫定的に
             if (damageCount < 0.2f)
             {
-                rigid.AddForce(-waveVec * forceSpeed * 8f, ForceMode.VelocityChange);
+                waveVec.y = 0;
+                rigid.AddForce(-waveVec * forceSpeed * 10f, ForceMode.VelocityChange);
                 rigid.AddForce(new Vector3(0, forceHeight / 10f, 0), ForceMode.VelocityChange);
             }
 
             damageCount += 0.1f;
             CanSetColor = false;
-            EnemyAnimation.IsOkiAction(damageTime);
+            EnemyAnimation.IsOkiAction(damageTime+4.8f);//調整
             if (damageCount > damageTime)
             {
                 EnemyColor.IsDamageFalse();
@@ -335,7 +351,7 @@ public class Gpt_Enemy : MonoBehaviour {
             }
         }
 
-
+        //Debug.Log(Character.enabled);
         //爆発モーション
         if (isExplode)
         {
@@ -404,7 +420,7 @@ public class Gpt_Enemy : MonoBehaviour {
 
                 if (motionTime2 == 0)
                 {
-                    this.gameObject.layer = LayerMask.NameToLayer("EnemyBody");
+                    
                     hitPoint--;
                     if (hitPoint <= 0)
                     {
@@ -514,6 +530,7 @@ public class Gpt_Enemy : MonoBehaviour {
             rigid.useGravity = false;
             navAgent.enabled = false;
             rigid.AddForce(player.transform.right * faliingTime, ForceMode.VelocityChange);
+            this.gameObject.layer = LayerMask.NameToLayer("EnemyTrigger");
         }
         //Debug.Log("Gravity");
         gravityFlag = true;
@@ -657,7 +674,7 @@ public class Gpt_Enemy : MonoBehaviour {
         CanSetColor = true;
         navAgent.enabled = true;
         //敵同士のあたり判定を戻す
-        this.gameObject.layer = LayerMask.NameToLayer("Default");
+        this.gameObject.layer = LayerMask.NameToLayer("EnemyBody");
         //起き上がるモーションを入れる。
         
     }

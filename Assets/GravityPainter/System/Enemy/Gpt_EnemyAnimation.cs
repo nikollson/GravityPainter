@@ -54,7 +54,7 @@ public class Gpt_EnemyAnimation : MonoBehaviour {
         //Debug.Log("Anime:"+EnemyAttack.GetAttack());
         if (EnemyAttack.isAttack_)
         {
-            Debug.Log(this.transform.parent.parent.name);
+            //Debug.Log(this.transform.parent.parent.name);
             walkAnimator.SetBool("IsAttack", true);
             okiAnimator.SetBool("IsAttack", true);
         }else
@@ -103,7 +103,7 @@ public class Gpt_EnemyAnimation : MonoBehaviour {
                 
                 if (okiActionTemp > explodeTime+0.2f)
                 {
-                    Debug.Log("anime");   
+                    //Debug.Log("anime");   
                     isOkiAction = false;
                     walkAnimator.SetBool("IsAttack", false);
                     okiAnimator.SetBool("IsAttack", false);

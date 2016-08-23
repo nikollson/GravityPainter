@@ -30,6 +30,7 @@ public class Gpt_Input : MonoBehaviour
         ret |= Gpt_Input.ColorRight;
         ret |= Gpt_Input.CameraPush;
         ret |= Gpt_Input.MovePush;
+        ret |= Gpt_Input.Option;
         return ret;
     }
 

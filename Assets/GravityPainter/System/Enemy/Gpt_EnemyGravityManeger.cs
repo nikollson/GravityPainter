@@ -11,6 +11,8 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
     private List<Gpt_Exploder> ExplodeList = new List<Gpt_Exploder>();
     private List<Vector3> ExplodePosition = new List<Vector3>();
 
+    private List<Gpt_PointEffect> PointList = new List<Gpt_PointEffect>();
+
     public float gravityArea;
     // Use this for initialization
     public Gpt_DoorSystem doorSystem;
@@ -34,16 +36,35 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
     public float enemyUnderTime = 1f;
     private int enemyNumCount;
 
+    //爆風範囲
+    public float explodeRange=7f;
+
+    //各色の個数
+    private List<int> colorNum=new List<int>();
+    public List<int> recodeColorNum = new List<int>();
+
+    public GameObject phaseObject;
+    private Gpt_EnemyPhaseControl phaseControl;
+
     void Start()
     {
+        phaseControl=phaseObject.GetComponent<Gpt_EnemyPhaseControl>();
         Application.targetFrameRate = 30; //30FPSに設定
+        colorNum.Add(0);
+        colorNum.Add(0);
+        colorNum.Add(0);
+        recodeColorNum.Add(0);
+        recodeColorNum.Add(0);
+        recodeColorNum.Add(0);
     }
 
     // Update is called once per frame
     void Update()
     {
 
-
+        colorNum[0] = 0;
+        colorNum[1] = 0;
+        colorNum[2] = 0;
         //敵が一人以上いた時にカウントスタート
         if (EnemyList.Count > 0)
         {
@@ -110,9 +131,12 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
                         {
                             EnemyList[i].SetGravity(normVec1);
                         }
+
+                        
                     }
                 }
 
+                
             }
 
             if (!hitted && EnemyList[i].GetColor() != 0 && !EnemyList[i].IsTop)
@@ -120,10 +144,26 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
                 EnemyList[i].SetTop();
             }
 
+            switch (EnemyList[i].GetColor())
+            {
+                case 1:
+                    colorNum[0]++;
+                    break;
+                case 2:
+                    colorNum[1]++;
+                    break;
+                case 3:
+                    colorNum[2]++;
+                    break;
+            }
 
             //接触判定
         }
+        recodeColorNum[0] = colorNum[0];
+        recodeColorNum[1] = colorNum[1];
+        recodeColorNum[2] = colorNum[2];
 
+        
         //敵が一定値に満ちたらドアが開く
         if (isFloor && enemyNumCount >= enemyNum)
         {
@@ -134,6 +174,15 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
 
         }
 
+        //ドアが開かれたらエフェクトを全て消す
+
+        if (phaseControl.opended)
+        {
+            for (int i = 0; i < PointList.Count; i++)
+            {
+                PointList[i].isDelete = true;
+            }
+        }
         //Debug.Log(enemyNumCount);
     }
 
@@ -203,7 +252,10 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
             for (int j = 0; j < EnemyList.Count; j++)
             {
                 //爆風に近い範囲でダメージ
-                if (Vector3.Distance(ExplodeList[i].gameObject.transform.position, EnemyList[j].gameObject.transform.position) < 7f)
+                //爆破の範囲は地面から
+                Vector3 exPosition = new Vector3(ExplodeList[i].gameObject.transform.position.x, EnemyList[j].gameObject.transform.position.y,
+                                        ExplodeList[i].gameObject.transform.position.z);
+                if (Vector3.Distance(exPosition, EnemyList[j].gameObject.transform.position) < explodeRange)
                 {
                     //引力状態にない敵のみダメージ
                     if (!EnemyList[j].GetGravity())
@@ -269,4 +321,13 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
         enemyNumCount++;
     }
 
+    public void AddPointList(Gpt_PointEffect point)
+    {
+        PointList.Add(point);
+    }
+
+    public void RemovePointList(Gpt_PointEffect point)
+    {
+        PointList.Remove(point);
+    }
 }
