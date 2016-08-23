@@ -276,7 +276,7 @@ public class Gpt_Boss : MonoBehaviour
 
             // 途中で床は壊れる
             // プレイヤーが下にいる
-                if (attackTime >= 3.0f && attackTime <= 3.99f)
+                if (attackTime >= 2.0f && attackTime <= 2.99f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
@@ -285,7 +285,7 @@ public class Gpt_Boss : MonoBehaviour
 
                     attackTime += 1.0f;
                 }
-                else if (attackTime >= 5.5f && attackTime <= 6.49f)
+                else if (attackTime >= 4.5f && attackTime <= 5.49f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
@@ -294,7 +294,7 @@ public class Gpt_Boss : MonoBehaviour
 
                     attackTime += 1.0f;
                 }
-                else if (attackTime >= 8.0f && attackTime <= 8.99f)
+                else if (attackTime >= 6.5f && attackTime <= 7.49f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
