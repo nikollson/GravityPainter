@@ -295,7 +295,12 @@ public class Gpt_YukaManager : MonoBehaviour {
 
         return dist.magnitude < tileSize * 1.1;
     }
-    
+
+    public void MakeClaerFlush()
+    {
+        if (tiles == null) return;
+        foreach (var a in tiles) if (!a.CanSetExplode()) a.MakeFlushLong();
+    }
 
 #if UNITY_EDITOR
     void MakeTile()
@@ -406,11 +411,6 @@ public class Gpt_YukaManager : MonoBehaviour {
         return colors;
     }
 
-    public void MakeClaerFlush()
-    {
-        if (tiles == null) return;
-        foreach (var a in tiles) if (!a.CanSetExplode()) a.MakeFlushLong();
-    }
 #endif
 
     [System.Serializable]
