@@ -130,7 +130,7 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
 
                         Vector3 objVec2 = EnemyList[j].transform.position - EnemyList[i].transform.position;
 
-                        float topGravityPower = 2f;
+                        float topGravityPower = 4f;
                         float scaleA = EnemyList[j].IsTop ? topGravityPower : 0.8f;
                         Vector3 normVec1 = objVec1.normalized * scaleA;
                         Vector3 normVec2 = objVec2.normalized * scaleA;

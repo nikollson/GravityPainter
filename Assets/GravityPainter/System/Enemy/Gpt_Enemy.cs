@@ -23,8 +23,9 @@ public class Gpt_Enemy : MonoBehaviour {
     //雑魚パターン(0:近接 1:遠隔)
     public int enemyPattern=0;
     //重力エネルギー
-    public float gravity=0.13f;
-
+    public float maxGravity = 0.4f;
+    public float minGravity = 0.2f;
+    float gravity;
     //重力フラグ
     private bool gravityFlag;
     //接触フラグ
@@ -308,7 +309,7 @@ public class Gpt_Enemy : MonoBehaviour {
                 Debug.Log("rakka");
                 preserveVec = new Vector3(0,300f,0);
             }
-            rigid.AddForce(-preserveVec * gravity / 100, ForceMode.VelocityChange);
+            rigid.AddForce(-preserveVec * maxGravity / 100, ForceMode.VelocityChange);
             //coll.isTrigger = true;
             firmCount += 0.1f;
             if (firmCount > firmTime&&!isExplode)
@@ -383,6 +384,7 @@ public class Gpt_Enemy : MonoBehaviour {
         //爆発モーション
         if (isExplode)
         {
+            this.gameObject.layer = LayerMask.NameToLayer("EnemyTrigger");
             //ポイントオブジェクトの削除
             if (pointEffect != null)
             {
@@ -558,14 +560,14 @@ public class Gpt_Enemy : MonoBehaviour {
             preserveZ = this.transform.position.z;
             preserveVec = gravityVec;
             EnemyAttack.StopAttack();
-
+            gravity = maxGravity;
             //転ばせる
             Character.enabled = false;
             rigid.isKinematic = false;
             rigid.useGravity = false;
             navAgent.enabled = false;
             rigid.AddForce(player.transform.right * faliingTime, ForceMode.VelocityChange);
-            this.gameObject.layer = LayerMask.NameToLayer("EnemyTrigger");
+            
         }
         //Debug.Log("Gravity");
         gravityFlag = true;
@@ -607,15 +609,10 @@ public class Gpt_Enemy : MonoBehaviour {
                     EnemyAttack.StopAttack();
                 }
                 Vector3 exVec = (exploderPosition - this.transform.position).normalized;
+                gravity -= 0.04f;
+                gravity = gravity < minGravity ? minGravity : gravity;
                 //rigid.AddForce(-gravityVec * gravity, ForceMode.VelocityChange);
-                if (gravityTime < 4.5f)
-                {
-                    rigid.AddForce(exVec * gravity, ForceMode.VelocityChange);
-                }
-                else
-                {
-                    rigid.AddForce(exVec * gravity/1.5f, ForceMode.VelocityChange);
-                }
+                rigid.AddForce(exVec * gravity, ForceMode.VelocityChange);
                 
 
             }
