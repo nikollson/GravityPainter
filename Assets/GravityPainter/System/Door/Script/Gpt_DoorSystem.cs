@@ -22,6 +22,8 @@ public class Gpt_DoorSystem : MonoBehaviour {
     public Transform sceneLoadLook;
     public Transform camOpenPos;
     public Transform camOpenLook;
+    public Transform gameOverCam;
+    public Transform gameOverLook;
     
     private Gpt_Player player;
     AudioSource se;
@@ -58,7 +60,10 @@ public class Gpt_DoorSystem : MonoBehaviour {
     }
     void Update()
     {
-        
+        if (player.state.IsDead())
+        {
+            StartGameOverCamera();
+        }
 
         switch (state)
         {
@@ -154,5 +159,11 @@ public class Gpt_DoorSystem : MonoBehaviour {
         se.Play();
         warpHole.SetActive(true);
         cameraObj.GetComponent<Gpt_Camera>().StartPositionLook(camOpenPos, camOpenLook);
+    }
+
+    public void StartGameOverCamera()
+    {
+
+        cameraObj.GetComponent<Gpt_Camera>().StartPositionLook(gameOverCam, gameOverLook);
     }
 }

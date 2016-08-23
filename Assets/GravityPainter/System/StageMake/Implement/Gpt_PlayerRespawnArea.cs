@@ -55,12 +55,15 @@ public class Gpt_PlayerRespawnArea : MonoBehaviour
 
             if (!respawn && count > respawnTimte)
             {
+                respawn = true;
                 if (effectObject != null) Destroy(effectObject);
                 
                 MakeFloor();
                 player.DoRespawn(respawnPosition.position);
-                camera.state = 0;
-                respawn = true;
+                if (!player.state.IsDead())
+                {
+                    camera.state = 0;
+                }
                 hit = false;
             }
         }
