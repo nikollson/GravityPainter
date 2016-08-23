@@ -140,7 +140,7 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
         foreach (var a in enemys)
         {
             var obj = (GameObject)Instantiate(enemyNextPrefab, a.transform.position, Quaternion.identity);
-            obj.transform.parent = a.transform;
+            //obj.transform.parent = a.transform;
         }
     }
     public void RemoveAllEnemy2()
