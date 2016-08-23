@@ -156,7 +156,7 @@ public class Gpt_RestEnemyUI : MonoBehaviour
         //Debug.Log("fff]"+tenPoint);
         //Debug.Log("ggg]" + onePoint);
 
-        switch (playState.PlayerColor)
+        switch ((int)playState.PlayerColor)
         {
             case Gpt_InkColor.RED:
                 colorImage.sprite = ColorSelect[0];
