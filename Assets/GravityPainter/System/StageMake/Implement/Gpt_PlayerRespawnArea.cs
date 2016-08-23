@@ -36,8 +36,11 @@ public class Gpt_PlayerRespawnArea : MonoBehaviour
                 count = 0;
                 Gpt_FadeManager.FadeInOutBlack(null);
 
-                effectObject = (GameObject)Instantiate(playerDeleteEffect, player.transform.position, Quaternion.identity);
-                effectObject.transform.parent = player.transform;
+                if (playerDeleteEffect != null)
+                {
+                    effectObject = (GameObject)Instantiate(playerDeleteEffect, player.transform.position, Quaternion.identity);
+                    effectObject.transform.parent = player.transform;
+                }
             }
         }
 
@@ -45,9 +48,9 @@ public class Gpt_PlayerRespawnArea : MonoBehaviour
         {
             count += Time.deltaTime;
 
-            if(!respawn && count > respawnTimte)
+            if (!respawn && count > respawnTimte)
             {
-                Destroy(effectObject);
+                if (effectObject != null) Destroy(effectObject);
 
                 MakeFloor();
                 player.DoRespawn(respawnPosition.position);
