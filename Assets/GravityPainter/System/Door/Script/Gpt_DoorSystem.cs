@@ -25,6 +25,7 @@ public class Gpt_DoorSystem : MonoBehaviour {
     
     private Gpt_Player player;
     AudioSource se;
+    public AudioClip warpSound;
 
     float sceneLoadCount = 0;
     bool startSceneLoad = false;
@@ -88,6 +89,8 @@ public class Gpt_DoorSystem : MonoBehaviour {
                 startSceneLoad = true;
                 //SetCamera_SceneLoad();
                 player.canControl = false;
+                se.clip = warpSound;
+                se.Play();
             }
         }
 
