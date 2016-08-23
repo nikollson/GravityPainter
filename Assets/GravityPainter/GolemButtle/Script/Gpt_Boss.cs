@@ -20,14 +20,18 @@ public class Gpt_Boss : MonoBehaviour
         Die,
     }
     State state = State.Search;
+    //State state = State.Fall;
     public GameObject camera;
     public GameObject se;
+    public GameObject parentObj;
 
     const float maxHp = 10.0f;
     float hp = 10.0f;
 
     public GameObject hand1;
     public GameObject hand2;
+
+    bool firstFall = true;
 
     float fallSpd = 4.0f;      // 落下速度
     float upSpd = 25.0f;        // 上昇速度
@@ -60,6 +64,10 @@ public class Gpt_Boss : MonoBehaviour
     int targetYukaNum = 0;        // もくひょうゆかばんごう
     float dieCnt = 0.0f;
     float upGrav = 0.0f;        // 上昇時重力
+
+    bool blinkFlg = false;
+    bool blinks = true;     // 必ずtrueで開始する
+    float blinkCnt = 0.0f;
 
     void Start()
     {
@@ -137,6 +145,16 @@ public class Gpt_Boss : MonoBehaviour
         }
         else if (state == State.Fall)
         {
+            anim.SetBool("Atk_FallL_Flg", true);
+            if (firstFall)
+            {
+                parentObj.transform.position =
+                    new Vector3(parentObj.transform.position.x + 0.0f,
+                    parentObj.transform.position.y,
+                    parentObj.transform.position.z);
+                firstFall = false;
+            }
+
             // 落下ベクトルを足す
             fallSpd += Time.deltaTime*20.0f;
             this.transform.position += new Vector3(0, -Time.deltaTime * fallSpd, 0);
@@ -144,8 +162,17 @@ public class Gpt_Boss : MonoBehaviour
             if (this.transform.position.y < fallY)
             {
                 state = State.Up;
+                anim.SetBool("Atk_FallL_Flg", false);
+
                 this.hp -= magmaDmg;
+                blinkFlg = true;
                 fallSpd = 4.0f;
+                firstFall = true;
+
+                parentObj.transform.position =
+    new Vector3(parentObj.transform.position.x - 0.0f,
+    parentObj.transform.position.y,
+    parentObj.transform.position.z);
 
                 // 死んだら
                 if (this.hp <= 0.0f)
@@ -158,7 +185,7 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Up)
         {
             // 上昇ベクトルを足す
-            upSpd -= Time.deltaTime * 6.0f;
+            upSpd -= Time.deltaTime * 5.0f;
             this.transform.position += new Vector3(0, Time.deltaTime * upSpd, 0);
 
             // 元々いた位置まで上昇すれば
@@ -177,7 +204,7 @@ public class Gpt_Boss : MonoBehaviour
             // 途中で床は壊れる
             if (attackTime <= 10.0f)
             {
-                if (attackTime >= 3.0f)
+                if (attackTime >= 2.4f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
@@ -213,7 +240,7 @@ public class Gpt_Boss : MonoBehaviour
             attackTime += Time.deltaTime;
 
             // 途中で床は壊れる
-                if (attackTime >= 3.0f && attackTime<=10.0f)
+                if (attackTime >= 2.4f && attackTime<=10.0f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
@@ -249,7 +276,7 @@ public class Gpt_Boss : MonoBehaviour
 
             // 途中で床は壊れる
             // プレイヤーが下にいる
-                if (attackTime >= 3.0f && attackTime <= 3.99f)
+                if (attackTime >= 2.0f && attackTime <= 2.99f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
@@ -258,7 +285,7 @@ public class Gpt_Boss : MonoBehaviour
 
                     attackTime += 1.0f;
                 }
-                else if (attackTime >= 5.5f && attackTime <= 6.49f)
+                else if (attackTime >= 4.5f && attackTime <= 5.49f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
@@ -267,7 +294,7 @@ public class Gpt_Boss : MonoBehaviour
 
                     attackTime += 1.0f;
                 }
-                else if (attackTime >= 8.0f && attackTime <= 8.99f)
+                else if (attackTime >= 6.5f && attackTime <= 7.49f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
@@ -308,6 +335,27 @@ public class Gpt_Boss : MonoBehaviour
             }
         }
 
+        // 点滅
+        if (blinkFlg)
+        {
+            blinkCnt += Time.deltaTime;
+            if(blinks)
+            {
+                this.transform.position += new Vector3(-10000,0,0);
+                blinks = false;
+            }
+            else
+            {
+                this.transform.position += new Vector3(10000, 0, 0);
+                blinks = true;
+            }
+
+            if(Mathf.Abs(this.transform.position.x)<1000.0f && blinkCnt>= 4.5f)
+            {
+                blinkFlg = false;
+            }
+        }
+
         // 最後に床の更新
         //YukaUpdate();
     }
@@ -329,7 +377,7 @@ public class Gpt_Boss : MonoBehaviour
 
     void SetEXP(int add=0)
     {
-        yuka[(targetYukaNum+add) % 8].GetComponent<Gpt_YukaBox>().SetExplode(0.0f, 1.0f, 10.0f, 13.0f);
+        yuka[(targetYukaNum + add) % 8].GetComponent<Gpt_YukaBox>().SetExplode(0.0f, 0.3f, 2.7f, 3.7f);
     }
 
     // プレイヤーと最も近い場所を探す
