@@ -89,7 +89,8 @@ public class Gpt_Boss : MonoBehaviour
             // targetPos(プレイヤーから一番近い座標)取得
             Search_PlayerNearPos();
             // ステート変更(プレイヤーが下にいる時だけ)
-            if(player.transform.position.y < 12.0f)state = State.Move;
+            //if(player.transform.position.y < 12.0f||true)
+                state = State.Move;
         }
         // プレイヤーの方向を向く
         else if (state == State.Move)
