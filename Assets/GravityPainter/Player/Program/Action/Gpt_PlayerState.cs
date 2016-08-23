@@ -19,6 +19,7 @@ public class Gpt_PlayerState : MonoBehaviour
     float mutekiCount = 0;
 
     public GameObject specialEnemy;
+    public AudioClip damageSound;
 
     // プロパティ
     public int HP { get; private set; }
@@ -54,6 +55,7 @@ public class Gpt_PlayerState : MonoBehaviour
         {
             AddHP(-value);
             if(setMuteki) mutekiCount = 0;
+            playerUtillity.audioSource.PlayOneShot(damageSound);
         }
     }
     public void AddHPDamage_Attack(int value, Vector3 hitPosition)

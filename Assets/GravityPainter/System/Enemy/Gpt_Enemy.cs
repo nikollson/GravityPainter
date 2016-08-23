@@ -124,6 +124,12 @@ public class Gpt_Enemy : MonoBehaviour {
     private GameObject pointEffect;
     private Gpt_PointEffect pointScript;
 
+    //浮く高度
+    public float topSky = 1.5f;
+    private float skyTemp;
+
+    public GameObject deathExplode;
+
     // Use this for initialization
     void Start () {
 
@@ -218,7 +224,9 @@ public class Gpt_Enemy : MonoBehaviour {
         {
             if (!isExplode)
             {
-                this.transform.position = topSettedPosition;
+                skyTemp += 0.1f;
+                skyTemp = skyTemp < topSky ? skyTemp : topSky;
+                this.transform.position = topSettedPosition+new Vector3(0,skyTemp,0);
                 //中心に爆発オブジェクト生成
                 Character.enabled = false;
                 rigid.isKinematic = true;
@@ -231,18 +239,19 @@ public class Gpt_Enemy : MonoBehaviour {
                     targetExploder.SetColor(GetColor());
                     touchFlag = true;
 
+                    Vector3 yuka = new Vector3(this.transform.position.x, YukaManager.transform.position.y+0.35f,this.transform.position.z);
                     switch (GetColor())
                     {
                         case 1:
-                            pointEffect = Instantiate(pointEffect_red, this.transform.position - new Vector3(0,0.4f,0), Quaternion.identity) as GameObject;
+                            pointEffect = Instantiate(pointEffect_red, yuka, Quaternion.identity) as GameObject;
                             pointScript=pointEffect.GetComponent<Gpt_PointEffect>();
                             break;
                         case 2:
-                            pointEffect = Instantiate(pointEffect_blue, this.transform.position - new Vector3(0, 0.4f, 0), Quaternion.identity) as GameObject;
+                            pointEffect = Instantiate(pointEffect_blue, yuka, Quaternion.identity) as GameObject;
                             pointScript = pointEffect.GetComponent<Gpt_PointEffect>();
                             break;
                         case 3:
-                            pointEffect = Instantiate(pointEffect_yellow, this.transform.position - new Vector3(0, 0.4f, 0), Quaternion.identity) as GameObject;
+                            pointEffect = Instantiate(pointEffect_yellow, yuka, Quaternion.identity) as GameObject;
                             pointScript = pointEffect.GetComponent<Gpt_PointEffect>();
                             break;
                     }
@@ -257,9 +266,15 @@ public class Gpt_Enemy : MonoBehaviour {
             {
                 if (EnemyGravityManeger.recodeColorNum[GetColor() - 1]>=2)
                 {
-                    Debug.Log("afafa");
+                    //Debug.Log("afafa");
                     pointScript.isStart = true;
                 }
+            }
+
+            //床がない場合落ちる
+            if (!YukaManager.HasTile(this.transform.position))
+            {
+                
             }
             
             
@@ -616,6 +631,7 @@ public class Gpt_Enemy : MonoBehaviour {
     void OnDestroy()
     {
         EnemyGravityManeger.RemoveEnemyList(this);
+        Instantiate(deathExplode,this.transform.position, Quaternion.identity);
     }
 
     public void IsExplode()
@@ -649,6 +665,8 @@ public class Gpt_Enemy : MonoBehaviour {
     {
         return touchFlag;
     }
+
+    
 
     public void EnemyReset()
     {
@@ -746,4 +764,5 @@ public class Gpt_Enemy : MonoBehaviour {
         topSettedPosition = this.transform.position + new Vector3(0,0.2f,0);
         IsTop = true;
     }
+    
 }
