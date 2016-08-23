@@ -48,7 +48,6 @@ public class Gpt_PointEffect : MonoBehaviour {
 
             if (isDelete)
             {
-                Debug.Log("delete");
                 waveStop.Play();
                 waveStop2.Stop();
                 lightLine.Stop();
@@ -66,6 +65,14 @@ public class Gpt_PointEffect : MonoBehaviour {
                 }
             }
 
+        }
+
+        if (!isStart&&isDelete)
+        {
+            lightLine.Stop();
+            lightCircle.Stop();
+            Object.Destroy(this.gameObject, 4f);
+            //temp = true;
         }
     }
 
