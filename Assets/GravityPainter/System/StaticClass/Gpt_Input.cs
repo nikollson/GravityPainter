@@ -33,6 +33,19 @@ public class Gpt_Input : MonoBehaviour
         ret |= Gpt_Input.Option;
         return ret;
     }
+    public static bool HasAnyKeyDown()
+    {
+        bool ret = false;
+        ret |= Gpt_Input.AttackDown;
+        ret |= Gpt_Input.SkillDown;
+        ret |= Gpt_Input.JumpDown;
+        ret |= Gpt_Input.ColorLeftDown;
+        ret |= Gpt_Input.ColorRightDown;
+        ret |= Gpt_Input.CameraPushDown;
+        ret |= Gpt_Input.MovePushDown;
+        ret |= Gpt_Input.OptionDown;
+        return ret;
+    }
 
     //キーが押され始めたフレームを返すプロパティ。押されてないときは0を返す
     public static int JumpStartFrame { get { inputGetter.Update(); return inputGetter.JumpStartFrame; } }

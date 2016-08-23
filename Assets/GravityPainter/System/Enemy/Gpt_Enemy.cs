@@ -511,7 +511,7 @@ public class Gpt_Enemy : MonoBehaviour {
             rigid.isKinematic = false;
             rigid.useGravity = false;
             navAgent.enabled = false;
-            Debug.Log("rakka");
+            //Debug.Log("rakka");
             preserveVec = new Vector3(0, 300f, 0);
             rigid.AddForce(-preserveVec * gravity / 100, ForceMode.VelocityChange);
         }

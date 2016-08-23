@@ -24,6 +24,7 @@ public class Gpt_PlayerAnimator : MonoBehaviour {
         animator.SetBool("IsDetonating", player.Mode == Gpt_Player.MODE.DETONATE);
         animator.SetBool("IsDamaging", player.Mode == Gpt_Player.MODE.DAMAGE);
         animator.SetBool("IsDead", player.Mode == Gpt_Player.MODE.DEAD);
+        animator.SetBool("IsSkill", player.Mode == Gpt_Player.MODE.SKILL);
 
         for (int i = 0; i < animationMoveRepeat; i++) animator.Update(EPS);
     }
