@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Gpt_EnemyMove : MonoBehaviour {
 
-
+    private Gpt_Enemy mainEnemy;
     public Gpt_EnemyAttack EnemyAttack;
     public GameObject Animator;
     private Gpt_EnemyAnimation EnemyAnimation;
@@ -83,6 +83,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        mainEnemy = this.gameObject.GetComponent<Gpt_Enemy>();
         EnemyAnimation = Animator.GetComponent<Gpt_EnemyAnimation>();
         Character = GetComponent<CharacterController>();
         player = GameObject.Find("Player");
@@ -150,7 +151,9 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 if (Vector3.Distance(player.transform.position, this.transform.position) < searchArea&&
                     Vector3.Distance(tempPlayerVec, tempEnemyVec) < 4f)
                 {
-                    navMesh.enabled = true;
+                    
+                    //Debug.Log(navMesh.enabled);
+
                     if (!EnemyAttack.GetAttack())
                     {
                         //moveVec = Vector3.Slerp(moveVec, player.transform.position - this.transform.position, 0.75f);
@@ -158,7 +161,15 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         preserveVec=moveVec;
                         if (navMesh!=null)
                         {
-                            navMesh.enabled = true;
+                            //ダメージ判定時は例外でfalse
+                            if (mainEnemy.damageFlag)
+                            {
+                                navMesh.enabled = false;
+                            }
+                            else
+                            {
+                                navMesh.enabled = true;
+                            }
                         }
                         
                     }
@@ -196,9 +207,13 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 }
                 else
                 {
-                    float angle = Mathf.Atan2(moveVec.z, moveVec.x);
-                    ////移動方向に回転
-                    this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle) + 90, 0));
+                    //ダメージモーション中は回転しない
+                    if (!mainEnemy.damageFlag)
+                    {
+                        float angle = Mathf.Atan2(moveVec.z, moveVec.x);
+                        ////移動方向に回転
+                        this.transform.rotation = Quaternion.Euler(new Vector3(0, radToDigree(-angle) + 90, 0));
+                    }
                 }
 
                 //移動処理

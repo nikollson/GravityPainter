@@ -99,7 +99,7 @@ public class Gpt_Exploder : MonoBehaviour {
                     this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - explodeUnderSpeed, this.transform.position.z);
                     if (!isFlare)
                     {
-                        Instantiate(Explosion_Flare, this.transform.position-new Vector3(0,2f,0), Quaternion.identity);
+                        Instantiate(Explosion_Flare, this.transform.position, Quaternion.identity);
                         isFlare = true;
                     }
                     

@@ -103,7 +103,7 @@ public class Gpt_EnemyAnimation : MonoBehaviour {
                 
                 if (okiActionTemp > explodeTime+0.2f)
                 {
-                    Debug.Log("anime");   
+                    //Debug.Log("anime");   
                     isOkiAction = false;
                     walkAnimator.SetBool("IsAttack", false);
                     okiAnimator.SetBool("IsAttack", false);

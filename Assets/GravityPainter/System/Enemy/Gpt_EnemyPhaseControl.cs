@@ -15,7 +15,7 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
     private Gpt_YukaManager yukaManager;
     private Gpt_Camera camera;
     
-    bool opended = false;
+    public bool opended { get; private set; }
 
     public float loadEnemyTime = 3f;
     int currentfaseNum = -1;
