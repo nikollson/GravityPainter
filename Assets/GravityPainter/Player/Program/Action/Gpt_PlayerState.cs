@@ -20,6 +20,7 @@ public class Gpt_PlayerState : MonoBehaviour
 
     public GameObject specialEnemy;
     public AudioClip damageSound;
+    public GameObject damagePrefab;
 
     // プロパティ
     public int HP { get; private set; }
@@ -55,7 +56,7 @@ public class Gpt_PlayerState : MonoBehaviour
         {
             AddHP(-value);
             if(setMuteki) mutekiCount = 0;
-            playerUtillity.audioSource.PlayOneShot(damageSound);
+            MakeDamagePrefab();
         }
     }
     public void AddHPDamage_Attack(int value, Vector3 hitPosition)
@@ -67,7 +68,12 @@ public class Gpt_PlayerState : MonoBehaviour
             look.y = this.transform.position.y;
             playerUtillity.LookAt(look);
             playerColor.StartMutekiFlush(mutekiTime);
+            playerUtillity.audioSource.PlayOneShot(damageSound);
         }
+    }
+    void MakeDamagePrefab()
+    {
+        var obj = (GameObject)Instantiate(damagePrefab, this.transform.position, Quaternion.identity);
     }
 
     public void AddFeever(float value) { Feever = floatValueLimit(0f, feeverMax, Feever + value); }
