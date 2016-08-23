@@ -61,6 +61,10 @@ public class Gpt_Boss : MonoBehaviour
     float dieCnt = 0.0f;
     float upGrav = 0.0f;        // 上昇時重力
 
+    bool blinkFlg = false;
+    bool blinks = true;     // 必ずtrueで開始する
+    float blinkCnt = 0.0f;
+
     void Start()
     {
         for (int i = 0; i < yuka.Length; i++) yukaDieCnt[i] = 0.0f;
@@ -145,6 +149,7 @@ public class Gpt_Boss : MonoBehaviour
             {
                 state = State.Up;
                 this.hp -= magmaDmg;
+                blinkFlg = true;
                 fallSpd = 4.0f;
 
                 // 死んだら
@@ -305,6 +310,27 @@ public class Gpt_Boss : MonoBehaviour
             if(dieCnt >= 9.0f)
             {
                 Application.LoadLevel("Ending_Staffroll");
+            }
+        }
+
+        // 点滅
+        if (blinkFlg)
+        {
+            blinkCnt += Time.deltaTime;
+            if(blinks)
+            {
+                this.transform.position += new Vector3(-10000,0,0);
+                blinks = false;
+            }
+            else
+            {
+                this.transform.position += new Vector3(10000, 0, 0);
+                blinks = true;
+            }
+
+            if(Mathf.Abs(this.transform.position.x)<1000.0f && blinkCnt>= 4.5f)
+            {
+                blinkFlg = false;
             }
         }
 
