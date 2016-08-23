@@ -327,11 +327,11 @@ public class Gpt_Boss : MonoBehaviour
 
             if (dieCnt >= 6.0f)
             {
-                Gpt_FadeManager.SetFade_White(() => { Gpt_SceneManager.LoadScene("Ending_Staffroll", false); });
+                Gpt_FadeManager.SetFade_White(() => { Gpt_SceneManager.LoadScene("Story_Last", false); });
             }
             if(dieCnt >= 9.0f)
             {
-                Application.LoadLevel("Ending_Staffroll");
+                Application.LoadLevel("Story_Last");
             }
         }
 
