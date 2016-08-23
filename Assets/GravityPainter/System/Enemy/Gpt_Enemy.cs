@@ -116,6 +116,7 @@ public class Gpt_Enemy : MonoBehaviour {
 
     //何割地面に落ちるか(全て落ちる場合は100)
     public float fallProb=30f;
+    private float fallRand;
 
     //ポイントエフェクト
     public GameObject pointEffect_red;
@@ -315,6 +316,7 @@ public class Gpt_Enemy : MonoBehaviour {
         }
         else if (damageFlag)//爆風の点滅処理
         {
+            //Debug.Log("damagegg");
             EnemyColor.IsDamage();
             EnemyAttack.StopAttack();
 
@@ -337,7 +339,7 @@ public class Gpt_Enemy : MonoBehaviour {
             if (damageCount == 0f)
             {
 
-                Debug.Log("Damage");
+                //Debug.Log("Damage");
                 //waveVec.y = 0;
                 //waveVec.y=2000f;
                 //waveVec = new Vector3(0,0,0);
@@ -351,7 +353,7 @@ public class Gpt_Enemy : MonoBehaviour {
             if (damageCount < 0.2f)
             {
                 waveVec.y = 0;
-                rigid.AddForce(-waveVec * forceSpeed * 10f, ForceMode.VelocityChange);
+                rigid.AddForce(-waveVec * forceSpeed * 6f, ForceMode.VelocityChange);
                 rigid.AddForce(new Vector3(0, forceHeight / 10f, 0), ForceMode.VelocityChange);
             }
 
@@ -360,6 +362,7 @@ public class Gpt_Enemy : MonoBehaviour {
             EnemyAnimation.IsOkiAction(damageTime+4.8f);//調整
             if (damageCount > damageTime)
             {
+                Debug.Log("damageCount");
                 EnemyColor.IsDamageFalse();
                 damageFlag=false;
                 EnemyReset();
@@ -444,13 +447,15 @@ public class Gpt_Enemy : MonoBehaviour {
                         
                     }
                     float rand = Random.Range(0, 100f);
+                    fallRand = rand;
                     exVec.y = 0;
                     //Debug.Log("DD:" + rand);
-                    if (rand < fallProb)
+                    if (fallRand < fallProb)
                     {
 
                         rigid.AddForce(exVec * forceSpeed, ForceMode.VelocityChange);
                         rigid.AddForce(new Vector3(0, forceHeight, 0), ForceMode.VelocityChange);
+                        
                     }
                     else
                     {
@@ -461,6 +466,12 @@ public class Gpt_Enemy : MonoBehaviour {
                     
                     
                 }
+
+                if (fallRand < fallProb)
+                {
+                    rigid.AddForce(new Vector3(0, -0.6f, 0), ForceMode.VelocityChange);
+                }
+
                 motionTime2 += 0.2f;
                 EnemyColor.IsDamage();
                 EnemyAnimation.IsOkiAction(revivalTime);
@@ -586,8 +597,18 @@ public class Gpt_Enemy : MonoBehaviour {
                 {
                     EnemyAttack.StopAttack();
                 }
+                Vector3 exVec = (exploderPosition - this.transform.position).normalized;
+                //rigid.AddForce(-gravityVec * gravity, ForceMode.VelocityChange);
+                if (gravityTime < 4.5f)
+                {
+                    rigid.AddForce(exVec * gravity, ForceMode.VelocityChange);
+                }
+                else
+                {
+                    rigid.AddForce(exVec * gravity/1.5f, ForceMode.VelocityChange);
+                }
                 
-                rigid.AddForce(-gravityVec * gravity, ForceMode.VelocityChange);
+
             }
             
         }

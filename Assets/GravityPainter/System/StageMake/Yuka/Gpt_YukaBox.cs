@@ -37,6 +37,9 @@ public class Gpt_YukaBox : MonoBehaviour {
     float flushTime;
 
     Gpt_InkColor nextColor = Gpt_InkColor.NONE;
+
+    bool isDelayNav;
+    float delayNav;
     
     public void SetColor(Gpt_InkColor color)
     {
@@ -68,8 +71,9 @@ public class Gpt_YukaBox : MonoBehaviour {
         fallStartY = this.transform.position.y;
         renderer.enabled = false;
         collider.enabled = false;
-        navMeshObstacle.enabled = true;
-        foreach (var a in subNavMeshObstacles) a.enabled = true;
+        //navMeshObstacle.enabled = true;
+        //foreach (var a in subNavMeshObstacles) a.enabled = true;
+        isDelayNav = true;
         this.transform.position += new Vector3(0, -tileSetting.fallDistance, 0);
         isFalling = true;
         isReversing = false;
@@ -177,6 +181,21 @@ public class Gpt_YukaBox : MonoBehaviour {
                     EndFall2();
                     isFalling = false;
                     isReversing = false;
+                }
+            }
+            //Debug.Log("aaaaffffaaa");
+
+            if (isDelayNav)
+            {
+                delayNav += 0.1f;
+                //Debug.Log("delayNav");
+                if (delayNav > 0.3f)
+                {
+                    //Debug.Log("delayNav___");
+                    navMeshObstacle.enabled = true;
+                    foreach (var a in subNavMeshObstacles) a.enabled = true;
+                    delayNav = 0;
+                    isDelayNav = false;
                 }
             }
 

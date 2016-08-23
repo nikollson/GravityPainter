@@ -127,19 +127,11 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
                         //Debug.Log("Top!!");
                         //i番目へのベクトル
                         Vector3 objVec1 = EnemyList[i].transform.position - EnemyList[j].transform.position;
+
                         Vector3 objVec2 = EnemyList[j].transform.position - EnemyList[i].transform.position;
 
-                        if (EnemyList[i].IsTop)
-                        {
-                            //Debug.Log("i:Top is "+EnemyList[i].name);
-                        }
-                        else
-                        {
-                            //Debug.Log("j:Top is " + EnemyList[j].name);
-                        }
-
-                        float topGravityPower = 0.5f;
-                        float scaleA = EnemyList[j].IsTop ? topGravityPower : 0.5f;
+                        float topGravityPower = 2f;
+                        float scaleA = EnemyList[j].IsTop ? topGravityPower : 0.8f;
                         Vector3 normVec1 = objVec1.normalized * scaleA;
                         Vector3 normVec2 = objVec2.normalized * scaleA;
                         if (EnemyList[i].GetShake() != EnemyList[j].GetShake())
@@ -161,7 +153,36 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
                         {
                             previousTemp[i]++;
                         }
-                        
+
+
+                        /*---以前の処理--*/
+                        //hitted++;
+                        ////Debug.Log("Top!!");
+                        ////i番目へのベクトル
+
+                        //if (EnemyList[i].IsTop)
+                        //{
+                        //    //Vector3 objVec1 = EnemyList[i].transform.position - EnemyList[j].transform.position;
+                        //    Vector3 objVec2 = EnemyList[j].transform.position - (EnemyList[i].transform.position + new Vector3(0, 1.5f, 0));
+
+                        //    //Debug.Log("i:Top is "+EnemyList[i].name);
+                        //    //float topGravityPower = 0.8f;
+                        //    //float scaleA = EnemyList[j].IsTop ? topGravityPower : 0.4f;
+                        //    Vector3 normVec2 = objVec2.normalized;
+                        //    EnemyList[j].SetGravity(normVec2);
+                        //}
+                        //else if (EnemyList[j].IsTop)
+                        //{
+                        //    Vector3 objVec1 = EnemyList[i].transform.position - (EnemyList[j].transform.position + new Vector3(0, 1.5f, 0));
+                        //    //Debug.Log("j:Top is " + EnemyList[j].name);
+                        //    Vector3 normVec1 = objVec1.normalized;
+                        //    EnemyList[i].SetGravity(normVec1);
+                        //}
+                        //else
+                        //{
+
+                        //}
+                        /*---以前の処理--*/
                     }
                 }
 
@@ -284,13 +305,16 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
             {
                 //爆風に近い範囲でダメージ
                 //爆破の範囲は地面から
+                
                 Vector3 exPosition = new Vector3(ExplodeList[i].gameObject.transform.position.x, EnemyList[j].gameObject.transform.position.y,
                                         ExplodeList[i].gameObject.transform.position.z);
                 if (Vector3.Distance(exPosition, EnemyList[j].gameObject.transform.position) < explodeRange)
                 {
+                    Debug.Log("enemy: " + j);
                     //引力状態にない敵のみダメージ
                     if (!EnemyList[j].GetGravity())
                     {
+                        
                         EnemyList[j].SetWavePosition(ExplodeList[i].GetPosition());
                         EnemyList[j].ExplodeDamage(1);
                     }
