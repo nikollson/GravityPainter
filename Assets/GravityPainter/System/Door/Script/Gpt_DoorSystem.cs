@@ -127,6 +127,7 @@ public class Gpt_DoorSystem : MonoBehaviour {
         {
             state = State.OPEN;
             player.canControl = true;
+            cameraObj.GetComponent<Gpt_Camera>().state = 0;
         }
     }
 
@@ -139,7 +140,7 @@ public class Gpt_DoorSystem : MonoBehaviour {
             doorObj[1].transform.eulerAngles += new Vector3(0f, -Time.deltaTime * ROT_SPD, 0f);
         }
         else {
-            //cameraObj.GetComponent<Gpt_Camera>().state = 0;
+            cameraObj.GetComponent<Gpt_Camera>().state = 0;
             state = State.OPEN;
         }
     }
