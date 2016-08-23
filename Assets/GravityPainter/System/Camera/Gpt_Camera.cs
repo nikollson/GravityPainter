@@ -126,7 +126,7 @@ public class Gpt_Camera : MonoBehaviour
         }
         else if (state == (int)State.BossBattle)
         {
-            // 高い位置にいればカメラ操作しない
+            // 低い位置にいればカメラ操作しない
             if (player.transform.position.y >= 15.0f)
             {
                 Update_Positioning();
@@ -139,10 +139,12 @@ public class Gpt_Camera : MonoBehaviour
                 Vector3 v = player.transform.position;
                 Vector3 vn = v;
                 vn.Normalize();
-                this.transform.position = player.transform.position * 1.2f + vn * 6.0f + new Vector3(0, 0.5f, 0);
+                //this.transform.position = player.transform.position * 1.2f + vn * 6.0f + new Vector3(0, 0.5f, 0);
+                this.transform.position = vn * 20.5f + new Vector3(0, 0.0f, 0) + v * 0.7f;
 
                 // 注視点設定
-                Update_Look(new Vector3(0, 7.0f-v.magnitude*0.25f, 0));
+               // Update_Look(new Vector3(0, 13.0f-v.magnitude*0.25f, 0));
+                Update_Look(new Vector3(0, 13.0f-vn.magnitude*5.25f, 0));
             }
         }
         else if (state == (int)State.BossStartMovie)
