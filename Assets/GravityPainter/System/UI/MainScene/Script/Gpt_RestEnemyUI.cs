@@ -155,7 +155,7 @@ public class Gpt_RestEnemyUI : MonoBehaviour
         //Debug.Log("fff]"+tenPoint);
         //Debug.Log("ggg]" + onePoint);
 
-        switch (playState.PlayerColor)
+        switch ((int)playState.PlayerColor)
         {
             case 0:
                 countTen.sprite = Count[0];
