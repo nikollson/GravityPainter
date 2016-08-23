@@ -205,6 +205,7 @@ public class Gpt_Enemy : MonoBehaviour {
     }
 
 
+    bool bug;
     float temp;
     // Update is called once per frame
     void Update () {
@@ -292,6 +293,13 @@ public class Gpt_Enemy : MonoBehaviour {
             this.transform.position = Vector3.Lerp(firstVector, firstVector + firstTemp, 0.5f);
         }
 
+        if (bug)
+        {
+            Debug.Log("dameFlag:"+damageFlag);
+            Debug.Log("gravityFlag:" + gravityFlag);
+            bug = false;
+        }
+
         if (gravityFlag)
         {
             gravityTime += 0.1f;
@@ -316,7 +324,7 @@ public class Gpt_Enemy : MonoBehaviour {
         }
         else if (damageFlag)//爆風の点滅処理
         {
-            //Debug.Log("damagegg");
+            
             EnemyColor.IsDamage();
             EnemyAttack.StopAttack();
 
@@ -339,7 +347,7 @@ public class Gpt_Enemy : MonoBehaviour {
             if (damageCount == 0f)
             {
 
-                //Debug.Log("Damage");
+                Debug.Log("Damage");
                 //waveVec.y = 0;
                 //waveVec.y=2000f;
                 //waveVec = new Vector3(0,0,0);
@@ -360,9 +368,11 @@ public class Gpt_Enemy : MonoBehaviour {
             damageCount += 0.1f;
             CanSetColor = false;
             EnemyAnimation.IsOkiAction(damageTime+4.8f);//調整
+            
             if (damageCount > damageTime)
             {
-                Debug.Log("damageCount");
+                //Debug.Log("damageCount");
+                damageCount = 0;
                 EnemyColor.IsDamageFalse();
                 damageFlag=false;
                 EnemyReset();
@@ -492,7 +502,6 @@ public class Gpt_Enemy : MonoBehaviour {
                 }
             }
         }
-
         //爆風での死亡判定
         if (hitPoint<=0)
         {
@@ -727,6 +736,8 @@ public class Gpt_Enemy : MonoBehaviour {
         {
             isDeath = true;
         }
+        bug = true;
+        //Debug.Log("graviFlag:"+gravityFlag);
 
     }
 

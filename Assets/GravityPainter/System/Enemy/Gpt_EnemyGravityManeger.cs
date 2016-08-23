@@ -310,11 +310,11 @@ public class Gpt_EnemyGravityManeger : MonoBehaviour
                                         ExplodeList[i].gameObject.transform.position.z);
                 if (Vector3.Distance(exPosition, EnemyList[j].gameObject.transform.position) < explodeRange)
                 {
-                    Debug.Log("enemy: " + j);
+                    //Debug.Log("EnemyGrabi+"+EnemyList[j].GetGravity());
                     //引力状態にない敵のみダメージ
                     if (!EnemyList[j].GetGravity())
                     {
-                        
+                          
                         EnemyList[j].SetWavePosition(ExplodeList[i].GetPosition());
                         EnemyList[j].ExplodeDamage(1);
                     }
