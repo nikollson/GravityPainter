@@ -41,7 +41,7 @@ public class Gpt_StoryTalk : MonoBehaviour
 
     void Update()
     {
-        bool hit = Input.GetMouseButtonDown(0);
+        bool hit = Gpt_Input.HasAnyKeyDown();
         bool isEnd = IsEnd();
         if (!isEnd)
         {
