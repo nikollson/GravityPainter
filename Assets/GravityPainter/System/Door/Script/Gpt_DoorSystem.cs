@@ -92,8 +92,6 @@ public class Gpt_DoorSystem : MonoBehaviour {
                 SetCamera_SceneLoad();
             }
             player.canControl = true;
-
-            Debug.Log(state + " " + cameraObj.GetComponent<Gpt_Camera>().state);
         }
 
         if (startSceneLoad)

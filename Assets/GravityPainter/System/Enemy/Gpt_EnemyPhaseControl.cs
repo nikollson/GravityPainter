@@ -31,7 +31,13 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
     bool opened = false;
     bool enemyRemoved = false;
     public float enemyRemoveTime = 2.5f;
+    public float effectStartTime = 2.0f;
+    bool effectStarted = false;
 
+    public float shakeStartTime = 0.4f;
+    public float shakeEndTime = 1.5f;
+    public float shakePower = 0.5f;
+    
 
     void Start()
     {
@@ -61,17 +67,26 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
         if (cleared)
         {
             clearCount += Time.deltaTime;
-            if(!enemyRemoved && clearCount > enemyRemoveTime)
+            if (!enemyRemoved && clearCount > enemyRemoveTime)
             {
                 enemyRemoved = true;
                 RemoveAllEnemy2();
             }
-            if(clearCount > clearDoorTime)
+            if (clearCount > clearDoorTime)
             {
                 doorSystem.OpenDoor();
             }
+            if (shakeStartTime < clearCount && clearCount < shakeEndTime)
+            {
+                camera.SetScreenShake(shakePower);
+            }
+            if(!effectStarted && clearCount > effectStartTime)
+            {
+                RemoveAllEnemy1();
+                effectStarted = true;
+            }
         }
-        
+
     }
 
     bool CanLoadPhase()
@@ -106,7 +121,6 @@ public class Gpt_EnemyPhaseControl : MonoBehaviour {
 
     void DoEndAll()
     {
-        RemoveAllEnemy1();
         
         yukaManager.MakeClaerFlush();
         camera.StartPositionLook(clearCameraPosition, clearCameraLook);
