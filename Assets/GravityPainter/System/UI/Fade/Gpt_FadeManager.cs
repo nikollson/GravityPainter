@@ -9,7 +9,7 @@ public class Gpt_FadeManager : MonoBehaviour
     private static Gpt_FadeManager _this;
     private static Action sceneLoadFunc;
     private static Animator animator;
-
+    private static bool setting = false;
 
     public enum Mode { NONE, WHITE, BLACK }
 
@@ -23,22 +23,22 @@ public class Gpt_FadeManager : MonoBehaviour
 
     public static void SetFade_White(Action func)
     {
-        sceneLoadFunc = func;
+        if (!CanStartFade()) return;
         settedMode = Mode.WHITE;
-        MakeFade(_this.fadeInWhite);
+        MakeFade(_this.fadeInWhite, func);
     }
 
     public static void SetFade_Black(Action func)
     {
-        sceneLoadFunc = func;
+        if (!CanStartFade()) return;
         settedMode = Mode.BLACK;
-        MakeFade(_this.fadeInBlack);
+        MakeFade(_this.fadeInBlack, func);
     }
 
     public static void FadeInOutBlack(Action func)
     {
-        sceneLoadFunc = func;
-        MakeFade(_this.fadeInOutBlack);
+        if (!CanStartFade()) return;
+        MakeFade(_this.fadeInOutBlack, func);
     }
 
     void Awake()
@@ -56,25 +56,38 @@ public class Gpt_FadeManager : MonoBehaviour
         if (animator != null)
         {
             var state = animator.GetCurrentAnimatorStateInfo(0);
-            if (state.normalizedTime >= 1.0 && sceneLoadFunc != null)
+            if (state.normalizedTime >= 1.0f)
             {
-                sceneLoadFunc();
+                var copy = sceneLoadFunc;
                 sceneLoadFunc = null;
+                animator = null;
+                setting = false;
+                if (copy != null)
+                {
+                    copy();
+                }
             }
         }
+    }
+
+    static bool CanStartFade()
+    {
+        return !setting;
     }
 
     void MakeFadeOut()
     {
         Mode nextMode = settedMode != Mode.NONE ? settedMode : defaultMode;
-        if (nextMode == Mode.WHITE) MakeFade(fadeOutWhite);
-        if (nextMode == Mode.BLACK) MakeFade(fadeOutBlack);
+        if (nextMode == Mode.WHITE) MakeFade(fadeOutWhite, null);
+        if (nextMode == Mode.BLACK) MakeFade(fadeOutBlack, null);
     }
 
-    public static void MakeFade(GameObject prefab)
+    public static void MakeFade(GameObject prefab, Action func)
     {
         GameObject obj = (GameObject)Instantiate(prefab);
         obj.transform.SetParent(_this.transform, false);
         animator = obj.GetComponent<Animator>();
+        sceneLoadFunc = func;
+        setting = true;
     }
 }

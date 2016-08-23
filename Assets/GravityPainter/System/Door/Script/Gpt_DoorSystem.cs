@@ -5,6 +5,7 @@ using System.Collections;
 
 public class Gpt_DoorSystem : MonoBehaviour {
 
+    public GameObject warpHole;
     public GameObject cameraObj;
     public GameObject[] doorObj = new GameObject[2];
 
@@ -16,6 +17,7 @@ public class Gpt_DoorSystem : MonoBehaviour {
     public float closeStartTime = 3.0f;
     public float closeEndTime = 3.5f;
 
+    
     public Transform sceneLoadCamera;
     public Transform sceneLoadLook;
     public Transform camOpenPos;
@@ -53,15 +55,9 @@ public class Gpt_DoorSystem : MonoBehaviour {
             if (b != null) { player = b; break; }
         }
     }
-
     void Update()
     {
-
-        //Debug.Log("AAAAA" + cameraHitManager.IsHit);
-        foreach (var a in meshRenderer)
-        {
-            a.enabled = !cameraHitManager.IsHit;
-        }
+        
 
         switch (state)
         {
@@ -81,6 +77,7 @@ public class Gpt_DoorSystem : MonoBehaviour {
         }
         if (state == State.OPEN)
         {
+            player.canControl = true;
             if (!opened && !startSceneLoad)
             {
                 opened = true;
@@ -89,14 +86,15 @@ public class Gpt_DoorSystem : MonoBehaviour {
             if (!startSceneLoad && playerInChecker.IsHit)
             {
                 startSceneLoad = true;
-                SetCamera_SceneLoad();
+                //SetCamera_SceneLoad();
+                player.canControl = false;
             }
-            player.canControl = true;
         }
 
         if (startSceneLoad)
         {
             sceneLoadCount += Time.deltaTime;
+            /*
             if (sceneLoadCount > closeStartTime && sceneLoadCount < closeEndTime)
             {
                 float allTime = closeEndTime - closeStartTime;
@@ -106,9 +104,11 @@ public class Gpt_DoorSystem : MonoBehaviour {
                 doorObj[0].transform.eulerAngles = new Vector3(0f, ROT_SPD_SECOND * time * (1 - closeTimePar), 0f);
                 doorObj[1].transform.eulerAngles = new Vector3(0f, -ROT_SPD * time * (1 - closeTimePar), 0f);
             }
+            */
+            player.canControl = false;
             if (sceneLoadCount > sceneLoadTime)
             {
-                Gpt_SceneManager.LoadScene(nextSceneName);
+                Gpt_FadeManager.SetFade_White(() => { Gpt_SceneManager.LoadScene(nextSceneName); });
             }
         }
     }
@@ -136,8 +136,8 @@ public class Gpt_DoorSystem : MonoBehaviour {
         rotCount += Time.deltaTime* ROT_SPD;
         if (rotCount <= OPEN_MAX)
         {
-            doorObj[0].transform.eulerAngles += new Vector3(0f, Time.deltaTime * ROT_SPD_SECOND, 0f);
-            doorObj[1].transform.eulerAngles += new Vector3(0f, -Time.deltaTime * ROT_SPD, 0f);
+            //doorObj[0].transform.eulerAngles += new Vector3(0f, Time.deltaTime * ROT_SPD_SECOND, 0f);
+            //doorObj[1].transform.eulerAngles += new Vector3(0f, -Time.deltaTime * ROT_SPD, 0f);
         }
         else {
             cameraObj.GetComponent<Gpt_Camera>().state = 0;
@@ -149,6 +149,7 @@ public class Gpt_DoorSystem : MonoBehaviour {
     {
         state = State.OPENING;
         se.Play();
+        warpHole.SetActive(true);
         cameraObj.GetComponent<Gpt_Camera>().StartPositionLook(camOpenPos, camOpenLook);
     }
 }
