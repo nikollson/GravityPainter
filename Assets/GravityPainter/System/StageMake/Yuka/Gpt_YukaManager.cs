@@ -233,7 +233,7 @@ public class Gpt_YukaManager : MonoBehaviour {
         {
             foreach (var a in tiles)
             {
-                a.ReverseTile();
+                if(a.IsFalling()) a.ReverseTile(true);
             }
         }
     }
