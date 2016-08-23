@@ -7,6 +7,8 @@ public class Gpt_BossBattleManager : MonoBehaviour {
     public float fallY = -20.0f;
     public Vector3 playerResPos;
 
+    public Transform enemyMakePos;
+
     public GameObject enemy;
     float cnt = 0.0f;
     const float ENEMYRES_TIME= 3.0f;
@@ -23,8 +25,8 @@ public class Gpt_BossBattleManager : MonoBehaviour {
         if (cnt >= ENEMYRES_TIME)
         {
             cnt = 0.0f;
-            if(Random.Range(0.0f,1.0f)>=0.5f)Instantiate(enemy, resPos,Quaternion.identity);
-            else Instantiate(enemy, resPos2, Quaternion.identity);
+            //if(Random.Range(0.0f,1.0f)>=0.5f)Instantiate(enemy, resPos,Quaternion.identity);
+            //else Instantiate(enemy, resPos2, Quaternion.identity);
         }
 
         if (player.transform.position.y < fallY)

@@ -11,6 +11,8 @@ public class Gpt_Camera : MonoBehaviour
         Door = 1,
         BossStartMovie = 2,
         BossBattle = 3,
+        BossDie = 4,
+        PositionLook = 5
     }
     public int state = (int)State.Normal;
     public GameObject door;
@@ -21,6 +23,10 @@ public class Gpt_Camera : MonoBehaviour
     Vector3 firstPlayerPos;
     public GameObject movieBar1;
     public GameObject movieBar2;
+    Vector3  movieBar1pos;
+    Vector3  movieBar2pos;
+    Transform positionLook_Position;
+    Transform positionLook_Look;
 
     /* スティック入力情報変数 */
     float oldCamMoveX = 0.0f;           // スティックX移動量(1フレーム前)
@@ -71,8 +77,7 @@ public class Gpt_Camera : MonoBehaviour
     float stopMoveY;                    // 停止時のXZ移動方向
     public float addStopTimeY = 3.0f;   // 停止までの時間倍率(小さいほど長くなる)
     public float stopSpdY = 0.05f;      // 停止速度
-
-
+    
     /* 画面揺れ系 */
     private Vector3 screenShake = Vector3.zero;
     public float shakeFriction = 0.8f;
@@ -80,10 +85,17 @@ public class Gpt_Camera : MonoBehaviour
     public float pushShakePower = 0.5f;
     private float shakePower = 0;
 
+    /* PositionLook強度 */
+    public float lookStlength = 0.5f;
+    public float positionStlength = 0.5f;
+    public float positionSpeedMax = 5;
+
 
 
     bool firstBossMovieFlg = true;
     Vector3 BossStartMovie = new Vector3(-0.05f, 19.935f, 40.329f);
+    public Transform bossDieCamPos;
+    public GameObject boss;
 
     // -------------------------------------------------- 大元関数 -------------------------------------------------- //
 
@@ -91,6 +103,8 @@ public class Gpt_Camera : MonoBehaviour
     void Start()
     {
         firstPlayerPos = player.transform.position;
+        if (movieBar1 != null) movieBar1pos = movieBar1.transform.position;
+        if (movieBar2 != null) movieBar2pos = movieBar2.transform.position;
     }
 
     //レンダリング前更新関数
@@ -102,8 +116,8 @@ public class Gpt_Camera : MonoBehaviour
         if (state == (int)State.Normal)
         {
             Update_Rotation();
-            Update_Position();
-            Update_Look(player.transform.position + playerZure);
+            Update_Positioning();
+            Update_Look(GetPlayerCameraPosition(), player.transform.position + playerZure, lookStlength);
         }
         else if (state == (int)State.Door)
         {
@@ -115,7 +129,7 @@ public class Gpt_Camera : MonoBehaviour
             // 高い位置にいればカメラ操作しない
             if (player.transform.position.y >= 15.0f)
             {
-                Update_Position();
+                Update_Positioning();
                 Update_Rotation();
                 Update_Look(player.transform.position);
             }
@@ -128,7 +142,7 @@ public class Gpt_Camera : MonoBehaviour
                 this.transform.position = player.transform.position * 1.2f + vn * 6.0f + new Vector3(0, 0.5f, 0);
 
                 // 注視点設定
-                Update_Look(new Vector3(0, 6.0f-v.magnitude*0.25f, 0));
+                Update_Look(new Vector3(0, 7.0f-v.magnitude*0.25f, 0));
             }
         }
         else if (state == (int)State.BossStartMovie)
@@ -166,9 +180,24 @@ public class Gpt_Camera : MonoBehaviour
                     state = (int)State.BossBattle;
                     movieBar1.transform.position = notDrawPos;
                     movieBar2.transform.position = notDrawPos;
-                    player.GetComponent<Gpt_Player>().canControl = false;
+                    player.GetComponent<Gpt_Player>().canControl = true;
                 }
             }
+        }
+        // ボス死亡時カメラ
+        else if(state == (int)State.BossDie)
+        {
+            movieBar1.transform.position = movieBar1pos;
+            movieBar2.transform.position = movieBar2pos;
+
+            this.transform.position = bossDieCamPos.position;
+            Update_Look(boss.transform.position + new Vector3(0,3.5f,0));
+        }
+        // TransformからTransformをながめるカメラ
+        else if(state == (int)State.PositionLook)
+        {
+            Update_Look(positionLook_Position.position, positionLook_Look.position, lookStlength);
+            Update_Position(positionLook_Position.position, positionStlength);
         }
     }
 
@@ -194,19 +223,46 @@ public class Gpt_Camera : MonoBehaviour
     }
 
     // 最終的な座標を決定する関数
-    void Update_Position()
+    Vector3 GetPlayerCameraPosition()
     {
         float x = Mathf.Cos(angToRad(rotY)) * distanceXZ * Mathf.Cos(rotXZ);
         float y = Mathf.Sin(angToRad(rotY)) * distanceY;
         float z = Mathf.Cos(angToRad(rotY)) * distanceXZ * Mathf.Sin(rotXZ);
-        this.transform.position = player.transform.position + new Vector3(x, y, z);
+        return player.transform.position + new Vector3(x, y, z);
+    }
+    void Update_Positioning()
+    {
+        Update_Position(GetPlayerCameraPosition(), positionStlength);
     }
 
     // 注視点設定関数
-    void Update_Look(Vector3 pos)
+
+    void Update_Look(Vector3 lookPos, float stlength = 1.0f)
     {
-        this.transform.LookAt(pos);
+        Update_Look(this.transform.position, lookPos, stlength);
+    }
+    /// <summary>
+    /// カメラの方向を目標の位置にゆっくりと向ける
+    /// </summary>
+    /// <param name="cameraPos">カメラの位置</param>
+    /// <param name="lookPos">見るオブジェクトの位置</param>
+    /// <param name="stlength">補間強度（1.0fなら１フレームでLook終了）</param>
+    void Update_Look(Vector3 cameraPos, Vector3 lookPos, float stlength = 1.0f)
+    {
+        Quaternion target = Quaternion.LookRotation(lookPos - cameraPos);
+        Quaternion next = Quaternion.Slerp(this.transform.rotation, target, stlength);
+
+        this.transform.rotation = next;
         this.transform.Rotate(screenShake);
+    }
+
+    // カメラ位置設定関数(stlength=1.0fなら1フレームで移動終了)
+    void Update_Position(Vector3 pos, float stlength = 1.0f)
+    {
+        Vector3 diff = pos - this.transform.position;
+        Vector3 move = diff * stlength;
+        move = move / move.magnitude * Mathf.Min(move.magnitude, positionSpeedMax);
+        this.transform.position = this.transform.position + move;
     }
 
     // -------------------------------------------------- 回転系関数 -------------------------------------------------- //
@@ -339,6 +395,24 @@ public class Gpt_Camera : MonoBehaviour
         // 限界回転値を超えたら戻す
         if (rotY > MAX_ROTY) rotY = MAX_ROTY;
         if (rotY < MIN_ROTY) rotY = MIN_ROTY;
+    }
+
+    public void StartPositionLook(Transform position, Transform look)
+    {
+        StartPositionLook(position, look, this.lookStlength, this.lookStlength);
+    }
+    public void StartPositionLook(Transform position, Transform look, float stlengthLook, float stlengthPosition)
+    {
+        this.lookStlength = stlengthLook;
+        this.positionStlength = stlengthPosition;
+        state = (int)State.PositionLook;
+        this.positionLook_Position = position;
+        this.positionLook_Look = look;
+    }
+
+    public void EndPositionLook()
+    {
+        state = (int)State.Normal;
     }
 
     // -------------------------------------------------- 画面揺れ -------------------------------------------------- //

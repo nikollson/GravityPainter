@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class Gpt_PlayerInChecker : MonoBehaviour
 {
     public string nextSceneName = "Stage_Boss";
+    public HitManager hitMangaer;
 
     void Start()
     {
@@ -12,13 +13,10 @@ public class Gpt_PlayerInChecker : MonoBehaviour
 
     void Update()
     {
-    }
-
-    void OnTriggerEnter(Collider coll)
-    {
-        if (coll.tag == "Player")
+        if (hitMangaer.IsHit)
         {
-            Gpt_SceneManager.LoadScene(nextSceneName);
+                Gpt_SceneManager.LoadScene(nextSceneName);
         }
     }
+
 }

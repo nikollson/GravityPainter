@@ -1,24 +1,21 @@
 fileFormatVersion: 2
 guid: 31765ad60cc79c14eadd82ba986011d1
+timeCreated: 1471856148
+licenseType: Free
 PluginImporter:
   serializedVersion: 1
   iconMap: {}
   executionOrder: {}
   isPreloaded: 0
   platformData:
-    Android:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
     Any:
-      enabled: 0
+      enabled: 1
       settings: {}
     Editor:
-      enabled: 1
+      enabled: 0
       settings:
         CPU: x86
         DefaultValueInitialized: true
-        OS: Windows
     Linux:
       enabled: 1
       settings:
@@ -28,7 +25,7 @@ PluginImporter:
       settings:
         CPU: None
     LinuxUniversal:
-      enabled: 0
+      enabled: 1
       settings:
         CPU: x86
     OSXIntel:

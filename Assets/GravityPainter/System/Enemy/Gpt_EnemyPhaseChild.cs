@@ -9,6 +9,8 @@ public class Gpt_EnemyPhaseChild : MonoBehaviour {
     public float comeTimeSetting = 10.0f;
     public bool isRandomTimeCome = true;
 
+    public bool bossBattleFlag = false;
+
     float count = 0;
     float comeTime = 0;
     bool made = false;
@@ -27,10 +29,21 @@ public class Gpt_EnemyPhaseChild : MonoBehaviour {
     void Update()
     {
         count += Time.deltaTime;
-        if(!made && count > comeTime && HasTile())
+
+        if (!bossBattleFlag)
         {
-            made = true;
-            MakeEnemy();
+            if (!made && count > comeTime && HasTile())
+            {
+                made = true;
+                MakeEnemy();
+            }
+        }else
+        {
+            if (!made && count > comeTime)
+            {
+                made = true;
+                MakeEnemy();
+            }
         }
     }
 

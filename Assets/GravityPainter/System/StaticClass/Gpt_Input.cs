@@ -30,6 +30,20 @@ public class Gpt_Input : MonoBehaviour
         ret |= Gpt_Input.ColorRight;
         ret |= Gpt_Input.CameraPush;
         ret |= Gpt_Input.MovePush;
+        ret |= Gpt_Input.Option;
+        return ret;
+    }
+    public static bool HasAnyKeyDown()
+    {
+        bool ret = false;
+        ret |= Gpt_Input.AttackDown;
+        ret |= Gpt_Input.SkillDown;
+        ret |= Gpt_Input.JumpDown;
+        ret |= Gpt_Input.ColorLeftDown;
+        ret |= Gpt_Input.ColorRightDown;
+        ret |= Gpt_Input.CameraPushDown;
+        ret |= Gpt_Input.MovePushDown;
+        ret |= Gpt_Input.OptionDown;
         return ret;
     }
 
