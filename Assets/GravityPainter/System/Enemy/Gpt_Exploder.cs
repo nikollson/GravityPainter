@@ -99,7 +99,7 @@ public class Gpt_Exploder : MonoBehaviour {
                     this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - explodeUnderSpeed, this.transform.position.z);
                     if (!isFlare)
                     {
-                        Instantiate(Explosion_Flare, this.transform.position, Quaternion.identity);
+                        Instantiate(Explosion_Flare, this.transform.position-new Vector3(0,4f,0), Quaternion.identity);
                         isFlare = true;
                     }
                     
@@ -197,7 +197,8 @@ public class Gpt_Exploder : MonoBehaviour {
                 //座標が同じになるバグ回避
                 float bug = Random.Range(0, 0.1f);
                 Vector3 bugVec = new Vector3(bug, bug, bug);
-                SetPosition(collision.gameObject.transform.position+bugVec);
+                Vector3 VecY = new Vector3(0, 0.3f, 0);//位置調整
+                SetPosition(collision.gameObject.transform.position+bugVec+VecY);
                 preserveEnemyNum++;
             }
             else if (targetEnemy.GetColor() == color)//はがれる処理関係

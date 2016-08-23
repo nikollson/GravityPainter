@@ -85,6 +85,11 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
     private Rigidbody rigid;
 
+    //ボス時で敵の判定を変える
+    public bool bossFlag=false;
+
+    //床についているかどうか
+    public bool IsFloor { get; set; }
     // Use this for initialization
     void Start()
     {
@@ -144,18 +149,27 @@ public class Gpt_EnemyMove : MonoBehaviour {
             if (isWalked)
             {
                 //地面に床がない場合落下
-                //if (!YukaManager.HasTile(this.transform.position))
-                //{
-                //    Debug.Log("DDDD"+YukaManager.HasTile(this.transform.position));
-                //    enemySpeed = 0;
-                //    rigid.useGravity = true;
-                //    rigid.isKinematic = false;
-                //    rigid.AddForce(-transform.up*2f,ForceMode.VelocityChange);
-                //    navMesh.enabled=false;
+                if (!bossFlag&&!YukaManager.HasTile(this.transform.position))
+                {
+                    Debug.Log("DDDD"+YukaManager.HasTile(this.transform.position));
+                    enemySpeed = 0;
+                    rigid.useGravity = true;
+                    rigid.isKinematic = false;
+                    rigid.AddForce(-transform.up*2f,ForceMode.VelocityChange);
+                    navMesh.enabled=false;
 
-                //}
-                //else
-                //{
+                }
+                else if (bossFlag && IsFloor)
+                {
+                    Debug.Log("DDDD" + YukaManager.HasTile(this.transform.position));
+                    enemySpeed = 0;
+                    rigid.useGravity = true;
+                    rigid.isKinematic = false;
+                    rigid.AddForce(-transform.up * 2f, ForceMode.VelocityChange);
+                    navMesh.enabled = false;
+
+                }else{
+
                     if (moveAngle == -1)
                     {
                         moveAngle = Random.Range(0, 361);
@@ -313,7 +327,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                             enemyTemp = 0;
                         }
                     }
-                //}
+                }
                 //Debug.Log("enemy:"+enemyTemp);
                 
             }
