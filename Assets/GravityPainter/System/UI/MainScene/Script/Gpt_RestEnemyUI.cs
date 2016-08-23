@@ -158,13 +158,13 @@ public class Gpt_RestEnemyUI : MonoBehaviour
 
         switch ((int)playState.PlayerColor)
         {
-            case Gpt_InkColor.RED:
+            case 1:
                 colorImage.sprite = ColorSelect[0];
                 break;
-            case Gpt_InkColor.BLUE:
+            case 2:
                 colorImage.sprite = ColorSelect[1];
                 break;
-            case Gpt_InkColor.YELLOW:
+            case 3:
                 colorImage.sprite = ColorSelect[2];
                 break;
         }
