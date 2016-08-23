@@ -15,6 +15,8 @@ public class Gpt_PlayerJump : MonoBehaviour {
     public float fase2StartTime = 0.15f;
     public Vector2 fase2Friction = new Vector2(0, 5);
     public float fase2DownPower = 1000;
+
+    public AudioClip jumpSound;
     
     public float jumpTime = 0.3f;
 
@@ -28,6 +30,8 @@ public class Gpt_PlayerJump : MonoBehaviour {
         Vector3 speedDownYPower = -1 * new Vector3(0, rigidbody.velocity.y, 0);
         rigidbody.AddForce(jumpForce + speedDownXZPower + speedDownYPower, ForceMode.VelocityChange);
         jumpPushFrame_log = JumpPushFrame;
+
+        playerUtillity.audioSource.PlayOneShot(jumpSound);
     }
 
     public void EndJump()
