@@ -163,7 +163,7 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Up)
         {
             // 上昇ベクトルを足す
-            upSpd -= Time.deltaTime * 6.0f;
+            upSpd -= Time.deltaTime * 5.0f;
             this.transform.position += new Vector3(0, Time.deltaTime * upSpd, 0);
 
             // 元々いた位置まで上昇すれば
