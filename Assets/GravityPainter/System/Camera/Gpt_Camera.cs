@@ -150,6 +150,7 @@ public class Gpt_Camera : MonoBehaviour
             // 最初のみ場所を代入
             if (stateStartFlg)
             {
+                player.GetComponent<Gpt_Player>().canControl = false;
                 this.transform.position = camStartPos.transform.position;
                 stateStartFlg = false;
             }
@@ -167,7 +168,7 @@ public class Gpt_Camera : MonoBehaviour
             else {
                 if (firstBossMovieFlg) {
                     firstBossMovieFlg = false;
-                    player.GetComponent<Gpt_Player>().canControl = false;
+                   //player.GetComponent<Gpt_Player>().canControl = false;
                 }
 
                 Vector3 vec = BossStartMovie - this.transform.position;

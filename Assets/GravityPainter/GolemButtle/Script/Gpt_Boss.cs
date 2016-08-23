@@ -54,7 +54,7 @@ public class Gpt_Boss : MonoBehaviour
     Transform targetPos;        // プレイヤーから一番近い座標
 
     float readyTime = 0.0f;
-    const float READY_TIME_MAX = 2.25f;
+    const float READY_TIME_MAX = 4.25f;
     float attackTime = 0.0f;
     const float ATTACK_TIME_MAX = 3.5f;
     const float ATTACK_TIME_MAX_NAGI = 7.5f;
@@ -68,6 +68,7 @@ public class Gpt_Boss : MonoBehaviour
     bool blinkFlg = false;
     bool blinks = true;     // 必ずtrueで開始する
     float blinkCnt = 0.0f;
+    float moveCnt = 0.01f;
 
     void Start()
     {
@@ -92,7 +93,8 @@ public class Gpt_Boss : MonoBehaviour
         {
             if (readyTime < READY_TIME_MAX)
             {
-                transform.rotation = Quaternion.Slerp(this.transform.rotation, targetPos.rotation, Time.deltaTime);
+                //transform.rotation = Quaternion.Slerp(this.transform.rotation, targetPos.rotation, Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(this.transform.rotation, targetPos.rotation, (moveCnt+=Time.deltaTime*0.008f)) ;
                 readyTime += Time.deltaTime;
             }
             else
@@ -100,6 +102,7 @@ public class Gpt_Boss : MonoBehaviour
                 // 一定時間経過でステート変更
                 state = State.SelectAtk;
                 readyTime = 0.0f;
+                moveCnt=0.01f;
             }
         }
         // 攻撃方法を選ぶ
