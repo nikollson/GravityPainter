@@ -141,6 +141,8 @@ public class Gpt_Boss : MonoBehaviour
         }
         else if (state == State.Fall)
         {
+            anim.SetBool("Atk_FallL_Flg", true);
+
             // 落下ベクトルを足す
             fallSpd += Time.deltaTime*20.0f;
             this.transform.position += new Vector3(0, -Time.deltaTime * fallSpd, 0);
@@ -148,6 +150,8 @@ public class Gpt_Boss : MonoBehaviour
             if (this.transform.position.y < fallY)
             {
                 state = State.Up;
+                anim.SetBool("Atk_FallL_Flg", false);
+
                 this.hp -= magmaDmg;
                 blinkFlg = true;
                 fallSpd = 4.0f;
