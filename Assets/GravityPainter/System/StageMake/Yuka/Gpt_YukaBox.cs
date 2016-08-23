@@ -98,6 +98,8 @@ public class Gpt_YukaBox : MonoBehaviour {
     }
     public void SetExplode(float flushTiming, float explodeTiming, float reverseTiming, float reverseEndTiming)
     {
+        if (!CanSetExplode()) return;
+
         if (HP == 1)
         {
             yukaParts.UpdateColor(Time.frameCount);
