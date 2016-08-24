@@ -328,6 +328,14 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Atk3)
         {
             attackTime += Time.deltaTime;
+            if (attackTime>=12.0f)
+            {
+                anim.SetBool("Atk_Nagi_Flg", false);
+                state = State.Search;
+                attackTime = 0.0f;
+                if (yukaBlink) yuka[(targetYukaNum - 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
+                else yukaBlink = true;
+            }
             //if (yukaBlink) yuka[(targetYukaNum - 2) % 8].GetComponent<Gpt_YukaBox>().SetFlush();
             //else yuka[(targetYukaNum - 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
 
