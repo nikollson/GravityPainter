@@ -529,11 +529,11 @@ public class Gpt_Enemy : MonoBehaviour {
 
         if (isRakka)
         {
-            Character.enabled = false;
-            rigid.isKinematic = false;
-            rigid.useGravity = false;
+            //Character.enabled = false;
+            //rigid.isKinematic = false;
+            rigid.useGravity =true;
             navAgent.enabled = false;
-            //Debug.Log("rakka");
+            ////Debug.Log("rakka");
             preserveVec = new Vector3(0, 300f, 0);
             rigid.AddForce(-preserveVec * gravity / 100, ForceMode.VelocityChange);
         }
@@ -567,7 +567,8 @@ public class Gpt_Enemy : MonoBehaviour {
             rigid.useGravity = false;
             navAgent.enabled = false;
             rigid.AddForce(player.transform.right * faliingTime, ForceMode.VelocityChange);
-            
+            this.gameObject.layer = LayerMask.NameToLayer("EnemyGravity");
+
         }
         //Debug.Log("Gravity");
         gravityFlag = true;

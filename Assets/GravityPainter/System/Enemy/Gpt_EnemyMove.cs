@@ -90,6 +90,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
 
     //床についているかどうか
     public bool IsFloor { get; set; }
+
+    float temp_speed;
     // Use this for initialization
     void Start()
     {
@@ -107,6 +109,8 @@ public class Gpt_EnemyMove : MonoBehaviour {
         YukaManager = ManegerObject.GetComponent<Gpt_YukaManager>();
         rigid = this.GetComponent<Rigidbody>();
 
+        temp_speed = enemySpeed;
+
     }
 
     // Update is called once per frame
@@ -122,7 +126,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 isWalked = true;
                 isMoved = true;
                 navMesh.enabled = true;
-
+                Debug.Log(this.transform.parent.name);
             }
             gravity = 0;
 
@@ -293,7 +297,13 @@ public class Gpt_EnemyMove : MonoBehaviour {
                         {
                             enemyTemp = 0;
                         }
-                       // Debug.Log("Debug:"+enemyTemp);
+                        // Debug.Log("Debug:"+enemyTemp);
+
+                        //もし万が一バグで敵が高速になったらここで制御
+                        if (enemyTemp>6f)
+                        {
+                            enemyTemp = temp_speed;
+                        }
 
                         enemyMove.x = moveVec.x * enemyTemp;
                         enemyMove.y = gravity;
