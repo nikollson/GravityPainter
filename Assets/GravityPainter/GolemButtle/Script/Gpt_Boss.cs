@@ -19,6 +19,7 @@ public class Gpt_Boss : MonoBehaviour
 
         Die,
     }
+
     State state = State.Search;
     public GameObject camera;
     public GameObject se;
@@ -123,57 +124,65 @@ public class Gpt_Boss : MonoBehaviour
         // 攻撃方法を選ぶ
         else if (state == State.SelectAtk)
         {
-            float rnd = UnityEngine.Random.Range(0.0f, 100.0f);
-            if (hp >= 7.0f)
-            {
-                if (rnd < 50.0f)
-                {
-                    state = State.Atk1;
-                    attackTime = 0.0f;
-                    anim.SetBool("Atk_L_Flg", true);
-                }
-                else
-                {
-                    state = State.Atk2;
-                    attackTime = 0.0f;
-                    anim.SetBool("Atk_R_Flg", true);
-                }
-            }
-            else
-            {
-                if (rnd < 25.0f)
-                {
-                    state = State.Atk1;
-                    attackTime = 0.0f;
-                    anim.SetBool("Atk_L_Flg", true);
+            //float rnd = UnityEngine.Random.Range(0.0f, 100.0f);
 
-                }
-                else if (rnd < 50.0f)
-                {
-                    state = State.Atk2;
-                    attackTime = 0.0f;
-                    anim.SetBool("Atk_R_Flg", true);
+            state = State.Atk1;
+            attackTime = 0.0f;
+            anim.SetBool("Atk_L_Flg", true);
 
-                }
-                else
-                {
-                    state = State.Atk3;
-                    attackTime = 0.0f;
-                    anim.SetBool("Atk_Nagi_Flg", true);
-                }
-            }
+            //if (hp >= 7.0f)
+            //{
+            //    if (rnd < 50.0f)
+            //    {
+            //        state = State.Atk1;
+            //        attackTime = 0.0f;
+            //        anim.SetBool("Atk_L_Flg", true);
+            //    }
+            //    else
+            //    {
+            //        state = State.Atk2;
+            //        attackTime = 0.0f;
+            //        anim.SetBool("Atk_R_Flg", true);
+            //    }
+            //}
+            //else
+            //{
+            //    if (rnd < 25.0f)
+            //    {
+            //        state = State.Atk1;
+            //        attackTime = 0.0f;
+            //        anim.SetBool("Atk_L_Flg", true);
+            //    }
+            //    else if (rnd < 50.0f)
+            //    {
+            //        state = State.Atk2;
+            //        attackTime = 0.0f;
+            //        anim.SetBool("Atk_R_Flg", true);
+            //    }
+            //    else
+            //    {
+            //        state = State.Atk3;
+            //        attackTime = 0.0f;
+            //        anim.SetBool("Atk_Nagi_Flg", true);
+            //    }
+            //}
         }
         else if (state == State.Fall)
         {
             fallCnt += Time.deltaTime;
+            anim.SetBool("Atk_R_Flg", false);
+            anim.SetBool("Atk_L_Flg", false);
+            anim.SetBool("Atk_Nagi_Flg", false);
+            anim.SetBool("Atk_FallR_Flg", true);
+            anim.SetBool("Atk_FallL_Flg", false);
 
             if (fallL_Flg)
             {
-                anim.SetBool("Atk_FallR_Flg", true);
+                //anim.SetBool("Atk_FallR_Flg", true);
             }
             else
             {
-                anim.SetBool("Atk_FallL_Flg", true);
+                //anim.SetBool("Atk_FallL_Flg", true);
             }
 
             /* 座標調整 */
@@ -261,7 +270,7 @@ public class Gpt_Boss : MonoBehaviour
             // 落下判定
             if (FallCheck(true))
             {
-                anim.SetBool("Atk_L_Flg", false);
+                anim.SetBool("Atk_R_Flg", false);
                 state = State.Fall;
                 attackTime = 0.0f;
                 if (yukaBlink) yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();

@@ -10,9 +10,11 @@ public class Gpt_WarpStartPoint : MonoBehaviour
     public MeshRenderer yukaRenderer;
 
     public float playerOnTiming = 2.0f;
+    public float playerMoveTiming = 3.5f;
     private float time;
 
     bool appear = false;
+    bool move = false;
     public bool canControlAfter = true;
 
     void Start()
@@ -33,9 +35,12 @@ public class Gpt_WarpStartPoint : MonoBehaviour
         if(!appear && time > playerOnTiming)
         {
             appear = true;
-            player.canControl = canControlAfter;
             player.transform.position = apperPosition.position;
             player.playerColor.MeshRendererOn();
+        }
+        if(!move && time > playerMoveTiming)
+        {
+            player.canControl = canControlAfter;
         }
         
     }
