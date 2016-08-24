@@ -20,7 +20,6 @@ public class Gpt_Boss : MonoBehaviour
         Die,
     }
     State state = State.Search;
-    //State state = State.Fall;
     public GameObject camera;
     public GameObject se;
     public GameObject parentObj;
@@ -79,8 +78,6 @@ public class Gpt_Boss : MonoBehaviour
 
     void Update()
     {
-        if(cnt>=20.0f) state = State.Fall;
-
         cnt += Time.deltaTime;
         if (yukaBlink) yukaBlink = false;
         else yukaBlink = true;
