@@ -178,11 +178,11 @@ public class Gpt_Boss : MonoBehaviour
 
             if (fallL_Flg)
             {
-                //anim.SetBool("Atk_FallR_Flg", true);
+                anim.SetBool("Atk_FallR_Flg", true);
             }
             else
             {
-                //anim.SetBool("Atk_FallL_Flg", true);
+                anim.SetBool("Atk_FallL_Flg", true);
             }
 
             /* 座標調整 */
@@ -270,7 +270,7 @@ public class Gpt_Boss : MonoBehaviour
             // 落下判定
             if (FallCheck(true))
             {
-                anim.SetBool("Atk_R_Flg", false);
+                anim.SetBool("Atk_FallR_Flg", true);
                 state = State.Fall;
                 attackTime = 0.0f;
                 if (yukaBlink) yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
@@ -410,7 +410,7 @@ public class Gpt_Boss : MonoBehaviour
             anim.SetBool("Atk_FallR_Flg", false);
             anim.SetBool("Atk_FallL_Flg", false);
 
-
+            player.GetComponent<Gpt_PlayerState>().AddHP(12);
 
 
             if (firstDieFlg)
