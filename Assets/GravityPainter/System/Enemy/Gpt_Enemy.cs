@@ -659,7 +659,7 @@ public class Gpt_Enemy : MonoBehaviour {
     void OnDestroy()
     {
         EnemyGravityManeger.RemoveEnemyList(this);
-        Instantiate(deathExplode,this.transform.position, Quaternion.identity);
+        
     }
 
     public void IsExplode()
