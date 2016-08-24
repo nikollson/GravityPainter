@@ -20,7 +20,7 @@ public class Gpt_ImageColorFlush : MonoBehaviour {
 
     void Update()
     {
-        rot += rotSpeed * Time.deltaTime;
+        rot += rotSpeed * Time.deltaTime / 180 * Mathf.PI;
         Color col = image.color;
         float par = (Mathf.Sin(rot / Mathf.PI * 180) + 1) / 2;
         col.a = par * (maxi - mini) + mini;
