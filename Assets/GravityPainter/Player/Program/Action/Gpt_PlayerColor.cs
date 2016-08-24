@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Gpt_PlayerColor : MonoBehaviour
 {
+    public Gpt_PlayerUtillity playerUtillity;
+
     public Material redHairMaterial;
     public Material blueHairMaterial;
     public Material yellowHairMaterial;
@@ -29,6 +31,8 @@ public class Gpt_PlayerColor : MonoBehaviour
     private float flushLength = 0;
     private float flushTime = 0;
     private bool flushing = false;
+
+    public AudioClip changeSound;
 
     void Start()
     {
@@ -95,6 +99,7 @@ public class Gpt_PlayerColor : MonoBehaviour
 
     public void SetNextColor()
     {
+        playerUtillity.audioSource.PlayOneShot(changeSound);
         Gpt_InkColor tmpColor = Color;
         if (tmpColor == Gpt_InkColor.RED) SetColor(Gpt_InkColor.YELLOW);
         if (tmpColor == Gpt_InkColor.YELLOW) SetColor(Gpt_InkColor.BLUE);
@@ -103,6 +108,7 @@ public class Gpt_PlayerColor : MonoBehaviour
 
     public void SetPrevColor()
     {
+        playerUtillity.audioSource.PlayOneShot(changeSound);
         Gpt_InkColor tmpColor = Color;
         if (tmpColor == Gpt_InkColor.RED) SetColor(Gpt_InkColor.BLUE);
         if (tmpColor == Gpt_InkColor.BLUE) SetColor(Gpt_InkColor.YELLOW);

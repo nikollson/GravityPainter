@@ -10,6 +10,7 @@ public class Gpt_EnemyPhaseChild : MonoBehaviour {
     public bool isRandomTimeCome = true;
 
     public bool bossBattleFlag = false;
+    
 
     float count = 0;
     float comeTime = 0;

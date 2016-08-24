@@ -21,6 +21,8 @@ public class Gpt_PlayerState : MonoBehaviour
     public GameObject specialEnemy;
     public AudioClip damageSound;
     public GameObject damagePrefab;
+    public AudioClip damageVoiceA;
+    public AudioClip damageVoiceB;
 
     // プロパティ
     public int HP { get; private set; }
@@ -69,6 +71,8 @@ public class Gpt_PlayerState : MonoBehaviour
             playerUtillity.LookAt(look);
             playerColor.StartMutekiFlush(mutekiTime);
             playerUtillity.audioSource.PlayOneShot(damageSound);
+            int a = (int)Random.Range(0, 2);
+            playerUtillity.audioSource.PlayOneShot(a < 1 ? damageVoiceA : damageVoiceB);
         }
     }
     void MakeDamagePrefab()
