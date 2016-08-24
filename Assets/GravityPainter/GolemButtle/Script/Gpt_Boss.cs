@@ -86,7 +86,7 @@ public class Gpt_Boss : MonoBehaviour
     {
         //if (cnt > 1.0f) state = State.Fall;   //debug
         //Debug.Log("STATE: "+state);
-        //hp = 0.01f;
+        hp = 0.01f;
 
         cnt += Time.deltaTime;
         yukaBlinkCnt += Time.deltaTime;
@@ -142,15 +142,23 @@ public class Gpt_Boss : MonoBehaviour
             {
                 if (rnd < 25.0f)
                 {
-                    state = State.Atk1;
+                    //state = State.Atk1;
+                    //attackTime = 0.0f;
+                    //anim.SetBool("Atk_L_Flg", true);
+
+                    state = State.Atk3;
                     attackTime = 0.0f;
-                    anim.SetBool("Atk_L_Flg", true);
+                    anim.SetBool("Atk_Nagi_Flg", true);
                 }
                 else if (rnd < 50.0f)
                 {
-                    state = State.Atk2;
+                    //state = State.Atk2;
+                    //attackTime = 0.0f;
+                    //anim.SetBool("Atk_R_Flg", true);
+
+                    state = State.Atk3;
                     attackTime = 0.0f;
-                    anim.SetBool("Atk_R_Flg", true);
+                    anim.SetBool("Atk_Nagi_Flg", true);
                 }
                 else
                 {
