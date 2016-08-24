@@ -20,7 +20,7 @@ public class Gpt_EndingManager : MonoBehaviour {
         {
             if (Gpt_Input.HasAnyKey())
             {
-                Gpt_FadeManager.SetFade_White(() => { SceneManager.LoadScene(NextSceneName); }, true);
+                Gpt_FadeManager.SetFade_Black(() => { SceneManager.LoadScene(NextSceneName); }, true);
             }
         }
     }
