@@ -79,6 +79,8 @@ public class Gpt_Boss : MonoBehaviour
 
     void Update()
     {
+        if(cnt>=20.0f) state = State.Fall;
+
         cnt += Time.deltaTime;
         if (yukaBlink) yukaBlink = false;
         else yukaBlink = true;
@@ -157,7 +159,7 @@ public class Gpt_Boss : MonoBehaviour
             /* 座標調整 */
             if (firstFall)
             {
-                parentObj.transform.position += new Vector3(6.5f, 0, 0);
+                parentObj.transform.position += new Vector3(7.0f, 0, 0);
                 firstFall = false;
             }
 
@@ -168,7 +170,7 @@ public class Gpt_Boss : MonoBehaviour
             if (this.transform.position.y < fallY)
             {
                 state = State.Up;
-                parentObj.transform.position -= new Vector3(6.5f, 0, 0);
+                parentObj.transform.position -= new Vector3(7.0f, 0, 0);
                 anim.SetBool("Atk_FallL_Flg", false);
 
                 this.hp -= magmaDmg;
