@@ -70,6 +70,9 @@ public class Gpt_Boss : MonoBehaviour
     float moveCnt = 0.01f;
     bool yukaBlink = true;
 
+    float fallCnt = 0.0f;
+    bool fallL_Flg = true;
+
     void Start()
     {
         for (int i = 0; i < yuka.Length; i++) yukaDieCnt[i] = 0.0f;
@@ -78,6 +81,8 @@ public class Gpt_Boss : MonoBehaviour
 
     void Update()
     {
+        //if (cnt > 1.0f) state = State.Fall;   //debug
+
         cnt += Time.deltaTime;
         if (yukaBlink) yukaBlink = false;
         else yukaBlink = true;
@@ -152,20 +157,27 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Fall)
         {
             anim.SetBool("Atk_FallL_Flg", true);
+            fallCnt += Time.deltaTime;
 
             /* 座標調整 */
             if (firstFall)
             {
-                parentObj.transform.position += new Vector3(7.0f, 0, 0);
+                //parentObj.transform.position += 
+                //    new Vector3(yuka[(targetYukaNum - 5) % 8].transform.position.x, 0, 
+                //    yuka[(targetYukaNum - 5) % 8].transform.position.z);
                 firstFall = false;
             }
 
             // 落下ベクトルを足す
-            fallSpd += Time.deltaTime*20.0f;
-            this.transform.position += new Vector3(0, -Time.deltaTime * fallSpd, 0);
+            if (fallCnt >= 0.0f)
+            {
+                fallSpd += Time.deltaTime * 20.0f;
+                this.transform.position += new Vector3(0, -Time.deltaTime * fallSpd, 0);
+            }
             // 一定まで落ちると被ダメ
             if (this.transform.position.y < fallY)
             {
+                fallCnt = 0.0f;
                 state = State.Up;
                 parentObj.transform.position -= new Vector3(7.0f, 0, 0);
                 anim.SetBool("Atk_FallL_Flg", false);
@@ -175,10 +187,9 @@ public class Gpt_Boss : MonoBehaviour
                 fallSpd = 4.0f;
                 firstFall = true;
 
-                parentObj.transform.position =
-    new Vector3(parentObj.transform.position.x - 0.0f,
-    parentObj.transform.position.y,
-    parentObj.transform.position.z);
+                //parentObj.transform.position -=
+                //    new Vector3(yuka[(targetYukaNum - 5) % 8].transform.position.x, 0,
+                //    yuka[(targetYukaNum - 5) % 8].transform.position.z);
 
                 // 死んだら
                 if (this.hp <= 0.0f)
@@ -234,6 +245,7 @@ public class Gpt_Boss : MonoBehaviour
                 attackTime = 0.0f;
                 if(yukaBlink) yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
                 else yukaBlink = true;
+                fallL_Flg = true;
             }
 
             // 終わったらステート戻す
@@ -276,6 +288,7 @@ public class Gpt_Boss : MonoBehaviour
                 attackTime = 0.0f;
                 if (yukaBlink) yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
                 else yukaBlink = true;
+                fallL_Flg = true;
             }
 
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime >= ATTACK_TIME_MAX)
@@ -332,6 +345,7 @@ public class Gpt_Boss : MonoBehaviour
                 attackTime = 0.0f;
                 if (yukaBlink) yuka[(targetYukaNum - 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
                 else yukaBlink = true;
+                fallL_Flg = false;
             }
 
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime >= ATTACK_TIME_MAX_NAGI)
