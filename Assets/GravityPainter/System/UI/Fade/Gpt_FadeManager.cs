@@ -21,23 +21,23 @@ public class Gpt_FadeManager : MonoBehaviour
 
     public Mode defaultMode;
 
-    public static void SetFade_White(Action func)
+    public static void SetFade_White(Action func, bool powerful = false)
     {
-        if (!CanStartFade()) return;
+        if (!CanStartFade() && !powerful) return;
         settedMode = Mode.WHITE;
         MakeFade(_this.fadeInWhite, func);
     }
 
-    public static void SetFade_Black(Action func)
+    public static void SetFade_Black(Action func, bool powerful = false)
     {
-        if (!CanStartFade()) return;
+        if (!CanStartFade() && !powerful) return;
         settedMode = Mode.BLACK;
         MakeFade(_this.fadeInBlack, func);
     }
 
-    public static void FadeInOutBlack(Action func)
+    public static void FadeInOutBlack(Action func, bool powerful = false)
     {
-        if (!CanStartFade()) return;
+        if (!CanStartFade() && !powerful) return;
         MakeFade(_this.fadeInOutBlack, func);
     }
 
@@ -70,7 +70,7 @@ public class Gpt_FadeManager : MonoBehaviour
         }
     }
 
-    static bool CanStartFade()
+    static public bool CanStartFade()
     {
         return !setting;
     }

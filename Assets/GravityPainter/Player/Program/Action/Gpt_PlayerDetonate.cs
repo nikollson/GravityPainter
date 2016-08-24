@@ -8,6 +8,7 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
     public Gpt_PlayerState playerState;
     public float detonateEndTime = 0.5f;
     public float detonateDoTime = 0.3f;
+    public float detonateSoundTime = 1.5f;
     public float friction = 400;
     public new Rigidbody rigidbody;
     public float screenShakeTime = 1.4f;
@@ -18,6 +19,7 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
     float detonateCount = 0;
     bool detonateDone = false;
     bool hamoned = false;
+    bool sounded = false;
 
     public AudioClip audioClip;
 
@@ -32,6 +34,7 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
         inputFrame_log = inputFrame;
         detonateCount = 0;
         detonateDone = false;
+        sounded = false;
     }
 
 
@@ -81,13 +84,18 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
             DoDetonate();            
         }
 
+        if(!sounded && detonateCount > detonateSoundTime)
+        {
+            sounded = true;
+            playerUtillity.audioSource.PlayOneShot(audioClip);
+        }
+
         if(detonateCount > screenShakeTime)
         {
             playerUtillity.camera.SetScreenShake(screenShake);
             if (!hamoned)
             {
                 var obj = (GameObject)Instantiate(hamonPrefab, this.transform.position, Quaternion.identity);
-                playerUtillity.audioSource.PlayOneShot(audioClip);
                 hamoned = true;
             }
         }
