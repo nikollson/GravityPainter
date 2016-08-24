@@ -55,7 +55,6 @@ public class Gpt_EnemyPhaseChild : MonoBehaviour {
 
     void MakeEnemy()
     {
-        Debug.Log("aaaaa");
         var obj = (GameObject)Instantiate(prefab, this.transform.position, this.transform.rotation);
         obj.transform.parent = this.transform;
         Destroy(effectObject);

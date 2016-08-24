@@ -13,6 +13,7 @@ public class Gpt_RestEnemyUI : MonoBehaviour
 
     private GameObject player;
     private Gpt_PlayerState playState;
+    public AudioSource audioSource;
 
     public Sprite[] Count;
     public Sprite[] ColorSelect;
@@ -36,6 +37,20 @@ public class Gpt_RestEnemyUI : MonoBehaviour
     private int Maxcount;
 
     private Gpt_InkColor playColor;
+
+    
+    int previusCount;
+    int previusColor;
+    float countTime;
+    bool countScaleUp;
+    bool countScaleDown;
+
+    RectTransform tenRect;
+    RectTransform oneRect;
+
+    int colorselected;
+
+    int nowCount;
 
     void Start()
     {
@@ -61,7 +76,10 @@ public class Gpt_RestEnemyUI : MonoBehaviour
             //Debug.Log("faffafasasfasfafa");
             //this.gameObject.SetActive(false);
         }
-        
+
+        tenRect = countTen.GetComponent<RectTransform>();
+        oneRect = countOne.GetComponent<RectTransform>();
+        previusColor = 0;
     }
 
     void Update()
@@ -72,11 +90,65 @@ public class Gpt_RestEnemyUI : MonoBehaviour
             //enemyNumText.text = "" + Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount());
             
         }
-//        Debug.Log(playState.PlayerColor);
+        
+        if (count)
+        {
+            //Debug.Log("cacacaca");
+            nowCount = Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount());
+            if (previusCount != nowCount)
+            {
+                if (countTime == 0)
+                {
+                    countScaleUp = true;
+                    countTime = 0.01f;
+                }
+            }
+            if (countScaleUp)
+            {
+                countTime *= 4f;
+                countTime = countTime < 100 ? countTime : 100;
+                tenRect.sizeDelta = new Vector2(tenRect.sizeDelta.x + countTime, tenRect.sizeDelta.y + countTime);
+                oneRect.sizeDelta = new Vector2(oneRect.sizeDelta.x + countTime, oneRect.sizeDelta.y + countTime);
+                if (countTime == 100)
+                {
+                    countScaleUp = false;
+                    countScaleDown = true;
+                    countTime = 0.01f;
+                }
+            }
+
+            if (countScaleDown)
+            {
+                
+                countTime *= 4f;
+                countTime = countTime < 100 ? countTime : 100;
+                tenRect.sizeDelta = new Vector2(tenRect.sizeDelta.x - countTime, tenRect.sizeDelta.y - countTime);
+                oneRect.sizeDelta = new Vector2(oneRect.sizeDelta.x - countTime, oneRect.sizeDelta.y - countTime);
+                if (countTime == 100)
+                {
+                    countScaleDown = false;
+                    countTime = 0;
+                }
+            }
+
+            previusCount = nowCount;
+
+
+        }
+
+        //        Debug.Log(playState.PlayerColor);
         if (!count)
         {
+            colorselected = (int)playState.PlayerColor;
+            previusColor = colorselected;
+            nowCount = Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount());
+            previusCount = nowCount;
+
             Maxcount = Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount());
             count = true;
+
+            
+
             tenPointParent = Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount()) / 10;
             onePointParent = Mathf.Max(0, phaseControl.GetAllClearEnemyNum() - gravityManager.GetEnemyNumCount()) % 10;
 
@@ -169,6 +241,17 @@ public class Gpt_RestEnemyUI : MonoBehaviour
                 break;
         }
 
+
+        colorselected = (int)playState.PlayerColor;
+        if (colorselected != previusColor)
+        {
+            audioSource.Play();
+        }
+
+        previusColor = colorselected;
+
+
+
         switch (tenPoint)
         { 
             case 0:
@@ -237,7 +320,7 @@ public class Gpt_RestEnemyUI : MonoBehaviour
                 break;
         }
 
-
+        
 
         //countOne.sprite = Count[1];
     }
