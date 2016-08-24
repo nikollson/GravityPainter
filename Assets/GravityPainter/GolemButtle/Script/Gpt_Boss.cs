@@ -36,7 +36,7 @@ public class Gpt_Boss : MonoBehaviour
     float upSpd = 25.0f;        // 上昇速度
     float firstUpSpd;
     float fallY = -40.0f;       // マグマY位置()
-    float magmaDmg = 30.34f;
+    float magmaDmg = 3.34f;
     float cnt = 0.0f;
     public Vector3 firstBossPos;
     public GameObject player;
@@ -372,8 +372,8 @@ public class Gpt_Boss : MonoBehaviour
             anim.SetBool("Atk_R_Flg", false);
             anim.SetBool("Atk_L_Flg", false);
             anim.SetBool("Atk_Nagi_Flg", false);
-            anim.SetBool("Atk_FallR_Flg", true);
-            anim.SetBool("Atk_FallL_Flg", true);
+            anim.SetBool("Atk_FallR_Flg", false);
+            anim.SetBool("Atk_FallL_Flg", false);
 
 
 
@@ -387,7 +387,7 @@ public class Gpt_Boss : MonoBehaviour
 
             if (dieCnt < 0.2f)
             {
-                transform.position = new Vector3(0, -25.0f, 0);
+                transform.position = new Vector3(0, -22.0f, 0);
             }
 
 
