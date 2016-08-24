@@ -170,7 +170,11 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Fall)
         {
             fallCnt += Time.deltaTime;
-            anim.SetBool("Atk_FallL_Flg", true);
+            anim.SetBool("Atk_R_Flg", false);
+            anim.SetBool("Atk_L_Flg", false);
+            anim.SetBool("Atk_Nagi_Flg", false);
+            anim.SetBool("Atk_FallR_Flg", true);
+            anim.SetBool("Atk_FallL_Flg", false);
 
             if (fallL_Flg)
             {
