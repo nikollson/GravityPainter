@@ -23,8 +23,9 @@ public class Gpt_Enemy : MonoBehaviour {
     //雑魚パターン(0:近接 1:遠隔)
     public int enemyPattern=0;
     //重力エネルギー
-    public float gravity=0.13f;
-
+    public float maxGravity = 0.4f;
+    public float minGravity = 0.2f;
+    float gravity;
     //重力フラグ
     private bool gravityFlag;
     //接触フラグ
@@ -205,6 +206,7 @@ public class Gpt_Enemy : MonoBehaviour {
     }
 
 
+    bool bug;
     float temp;
     // Update is called once per frame
     void Update () {
@@ -292,6 +294,13 @@ public class Gpt_Enemy : MonoBehaviour {
             this.transform.position = Vector3.Lerp(firstVector, firstVector + firstTemp, 0.5f);
         }
 
+        if (bug)
+        {
+            Debug.Log("dameFlag:"+damageFlag);
+            Debug.Log("gravityFlag:" + gravityFlag);
+            bug = false;
+        }
+
         if (gravityFlag)
         {
             gravityTime += 0.1f;
@@ -300,7 +309,7 @@ public class Gpt_Enemy : MonoBehaviour {
                 Debug.Log("rakka");
                 preserveVec = new Vector3(0,300f,0);
             }
-            rigid.AddForce(-preserveVec * gravity / 100, ForceMode.VelocityChange);
+            rigid.AddForce(-preserveVec * maxGravity / 100, ForceMode.VelocityChange);
             //coll.isTrigger = true;
             firmCount += 0.1f;
             if (firmCount > firmTime&&!isExplode)
@@ -316,7 +325,7 @@ public class Gpt_Enemy : MonoBehaviour {
         }
         else if (damageFlag)//爆風の点滅処理
         {
-            //Debug.Log("damagegg");
+            
             EnemyColor.IsDamage();
             EnemyAttack.StopAttack();
 
@@ -339,7 +348,7 @@ public class Gpt_Enemy : MonoBehaviour {
             if (damageCount == 0f)
             {
 
-                //Debug.Log("Damage");
+                Debug.Log("Damage");
                 //waveVec.y = 0;
                 //waveVec.y=2000f;
                 //waveVec = new Vector3(0,0,0);
@@ -360,9 +369,11 @@ public class Gpt_Enemy : MonoBehaviour {
             damageCount += 0.1f;
             CanSetColor = false;
             EnemyAnimation.IsOkiAction(damageTime+4.8f);//調整
+            
             if (damageCount > damageTime)
             {
-                Debug.Log("damageCount");
+                //Debug.Log("damageCount");
+                damageCount = 0;
                 EnemyColor.IsDamageFalse();
                 damageFlag=false;
                 EnemyReset();
@@ -373,6 +384,7 @@ public class Gpt_Enemy : MonoBehaviour {
         //爆発モーション
         if (isExplode)
         {
+            this.gameObject.layer = LayerMask.NameToLayer("EnemyTrigger");
             //ポイントオブジェクトの削除
             if (pointEffect != null)
             {
@@ -492,7 +504,6 @@ public class Gpt_Enemy : MonoBehaviour {
                 }
             }
         }
-
         //爆風での死亡判定
         if (hitPoint<=0)
         {
@@ -549,14 +560,14 @@ public class Gpt_Enemy : MonoBehaviour {
             preserveZ = this.transform.position.z;
             preserveVec = gravityVec;
             EnemyAttack.StopAttack();
-
+            gravity = maxGravity;
             //転ばせる
             Character.enabled = false;
             rigid.isKinematic = false;
             rigid.useGravity = false;
             navAgent.enabled = false;
             rigid.AddForce(player.transform.right * faliingTime, ForceMode.VelocityChange);
-            this.gameObject.layer = LayerMask.NameToLayer("EnemyTrigger");
+            
         }
         //Debug.Log("Gravity");
         gravityFlag = true;
@@ -598,15 +609,10 @@ public class Gpt_Enemy : MonoBehaviour {
                     EnemyAttack.StopAttack();
                 }
                 Vector3 exVec = (exploderPosition - this.transform.position).normalized;
+                gravity -= 0.04f;
+                gravity = gravity < minGravity ? minGravity : gravity;
                 //rigid.AddForce(-gravityVec * gravity, ForceMode.VelocityChange);
-                if (gravityTime < 4.5f)
-                {
-                    rigid.AddForce(exVec * gravity, ForceMode.VelocityChange);
-                }
-                else
-                {
-                    rigid.AddForce(exVec * gravity/1.5f, ForceMode.VelocityChange);
-                }
+                rigid.AddForce(exVec * gravity, ForceMode.VelocityChange);
                 
 
             }
@@ -727,6 +733,8 @@ public class Gpt_Enemy : MonoBehaviour {
         {
             isDeath = true;
         }
+        bug = true;
+        //Debug.Log("graviFlag:"+gravityFlag);
 
     }
 
