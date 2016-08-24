@@ -20,6 +20,9 @@ public class Gpt_StoryTalk : MonoBehaviour
     public string nextSceneName;
     public bool doChangeEffect = true;
 
+    public AudioClip mekuriSound;
+    AudioSource audioSource;
+
     public Data[] data;
     public float fadeOutScale = 1.2f;
 
@@ -37,6 +40,8 @@ public class Gpt_StoryTalk : MonoBehaviour
     {
         time = 0.0f;
         life = data[0].changeTime;
+
+        audioSource = this.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -87,6 +92,7 @@ public class Gpt_StoryTalk : MonoBehaviour
         c.a = 1.0f;
         imagePrev.color = c;
 
+        audioSource.PlayOneShot(mekuriSound);
 
         next++;
         if (next >= data.Length) return;

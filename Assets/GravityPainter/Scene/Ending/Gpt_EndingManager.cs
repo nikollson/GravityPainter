@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class Gpt_EndingManager : MonoBehaviour {
 
-    public float inputTime = 3f;
+    public bool canMoveNext = false;
     public string NextSceneName = "";
 
     float count = 0;
@@ -13,7 +13,10 @@ public class Gpt_EndingManager : MonoBehaviour {
     {
         count += Time.deltaTime;
 
-        if(count > inputTime)
+        bool ok = false;
+        ok |= canMoveNext && Gpt_Input.HasAnyKey();
+        ok |= Gpt_Input.Option;
+        if(ok)
         {
             if (Gpt_Input.HasAnyKey())
             {

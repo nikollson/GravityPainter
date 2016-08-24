@@ -54,8 +54,9 @@ public class Gpt_YukaBox : MonoBehaviour {
         if (HP != 0) MaterialUpdate();
     }
 
-    public void ReverseTile()
+    public void ReverseTile(bool setWhite = false)
     {
+        if (setWhite) nextColor = Gpt_InkColor.NONE;
         reverseTime = 0;
         reverseEndTime = 0;
     }
@@ -101,6 +102,8 @@ public class Gpt_YukaBox : MonoBehaviour {
     }
     public void SetExplode(float flushTiming, float explodeTiming, float reverseTiming, float reverseEndTiming)
     {
+        if (!CanSetExplode()) return;
+
         if (HP == 1)
         {
             yukaParts.UpdateColor(Time.frameCount);

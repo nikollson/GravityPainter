@@ -6,6 +6,8 @@ public class Gpt_PlayerRespawnArea : MonoBehaviour
     public GameObject respawnFloorPrefab;
     public Transform respawnFloorPosition;
     public GameObject playerDeleteEffect;
+    public GameObject deadMarkerPrefab;
+    public Vector3 deadMarkerZure = new Vector3(0, 1, 0);
 
     public HitManager hitManager;
     public Transform respawnPosition;
@@ -36,8 +38,14 @@ public class Gpt_PlayerRespawnArea : MonoBehaviour
                 count = 0;
                 Gpt_FadeManager.FadeInOutBlack(null);
 
-                effectObject = (GameObject)Instantiate(playerDeleteEffect, player.transform.position, Quaternion.identity);
-                effectObject.transform.parent = player.transform;
+                var obj = (GameObject)Instantiate(deadMarkerPrefab, player.transform.position + deadMarkerZure, Quaternion.identity);
+                camera.StartPositionLook(camera.transform, obj.transform);
+
+                if (playerDeleteEffect != null)
+                {
+                    effectObject = (GameObject)Instantiate(playerDeleteEffect, player.transform.position, Quaternion.identity);
+                    effectObject.transform.parent = player.transform;
+                }
             }
         }
 
@@ -45,13 +53,17 @@ public class Gpt_PlayerRespawnArea : MonoBehaviour
         {
             count += Time.deltaTime;
 
-            if(!respawn && count > respawnTimte)
+            if (!respawn && count > respawnTimte)
             {
-                Destroy(effectObject);
-
+                respawn = true;
+                if (effectObject != null) Destroy(effectObject);
+                
                 MakeFloor();
                 player.DoRespawn(respawnPosition.position);
-                respawn = true;
+                if (!player.state.IsDead())
+                {
+                    camera.state = 0;
+                }
                 hit = false;
             }
         }

@@ -13,7 +13,9 @@ public class Gpt_AutoRotateCenter : MonoBehaviour {
     void Start()
     {
         startPosition = rotateCenter.transform.position;
+        startPosition.y = this.transform.position.y;
         Vector3 dist = startPosition - this.transform.position;
+        dist = (dist - new Vector3(0, dist.y, 0)).normalized;
         currentAngle = Mathf.Atan2(dist.z, dist.x);
     }
 

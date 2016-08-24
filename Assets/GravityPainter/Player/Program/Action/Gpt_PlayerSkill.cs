@@ -92,6 +92,10 @@ public class Gpt_PlayerSkill : MonoBehaviour
         public float startVelocity = 5;
         public float accelPower = 500;
 
+        public GameObject dashEffect;
+        public AudioClip dashSound;
+        public Transform effectPosition;
+
         float count = 0;
 
         public override void Start()
@@ -100,6 +104,11 @@ public class Gpt_PlayerSkill : MonoBehaviour
             Vector3 force = startVelocity * dir - rigidbody.velocity;
             rigidbody.AddForce(force, ForceMode.VelocityChange);
             count = 0;
+
+            var obj = (GameObject)Instantiate(dashEffect, effectPosition.position, playerUtillity.transform.rotation);
+            obj.transform.parent = playerUtillity.transform;
+
+            playerUtillity.audioSource.PlayOneShot(dashSound);
         }
         public override void Update()
         {

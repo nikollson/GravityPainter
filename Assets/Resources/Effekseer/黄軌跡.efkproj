@@ -599,6 +599,7 @@
                   <ColorTexture>yellow_dot.png</ColorTexture>
                   <AlphaBlend>2</AlphaBlend>
                 </RendererCommonValues>
+                <IsRendered>False</IsRendered>
                 <Name>Hit</Name>
                 <Children />
               </Node>
@@ -690,6 +691,7 @@
                     </ColorAll_Fixed>
                   </Sprite>
                 </DrawingValues>
+                <IsRendered>False</IsRendered>
                 <Name>Hit2</Name>
                 <Children />
               </Node>
@@ -797,6 +799,7 @@
                     </ColorAll_Random>
                   </Sprite>
                 </DrawingValues>
+                <IsRendered>False</IsRendered>
                 <Name>Splash</Name>
                 <Children />
               </Node>
@@ -911,6 +914,7 @@
                         </ColorRight_Fixed>
                       </Track>
                     </DrawingValues>
+                    <IsRendered>False</IsRendered>
                     <Name>Spark</Name>
                     <Children />
                   </Node>

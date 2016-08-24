@@ -54,7 +54,7 @@ public class Gpt_Boss : MonoBehaviour
     Transform targetPos;        // プレイヤーから一番近い座標
 
     float readyTime = 0.0f;
-    const float READY_TIME_MAX = 2.25f;
+    const float READY_TIME_MAX = 4.25f;
     float attackTime = 0.0f;
     const float ATTACK_TIME_MAX = 3.5f;
     const float ATTACK_TIME_MAX_NAGI = 7.5f;
@@ -68,6 +68,8 @@ public class Gpt_Boss : MonoBehaviour
     bool blinkFlg = false;
     bool blinks = true;     // 必ずtrueで開始する
     float blinkCnt = 0.0f;
+    float moveCnt = 0.01f;
+    bool yukaBlink = true;
 
     void Start()
     {
@@ -78,6 +80,8 @@ public class Gpt_Boss : MonoBehaviour
     void Update()
     {
         cnt += Time.deltaTime;
+        if (yukaBlink) yukaBlink = false;
+        else yukaBlink = true;
 
         // プレイヤーを探す
         if (state == State.Search)
@@ -85,14 +89,16 @@ public class Gpt_Boss : MonoBehaviour
             // targetPos(プレイヤーから一番近い座標)取得
             Search_PlayerNearPos();
             // ステート変更(プレイヤーが下にいる時だけ)
-            if(player.transform.position.y < 12.0f)state = State.Move;
+            //if(player.transform.position.y < 12.0f||true)
+                state = State.Move;
         }
         // プレイヤーの方向を向く
         else if (state == State.Move)
         {
             if (readyTime < READY_TIME_MAX)
             {
-                transform.rotation = Quaternion.Slerp(this.transform.rotation, targetPos.rotation, Time.deltaTime);
+                //transform.rotation = Quaternion.Slerp(this.transform.rotation, targetPos.rotation, Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(this.transform.rotation, targetPos.rotation, (moveCnt+=Time.deltaTime*0.008f)) ;
                 readyTime += Time.deltaTime;
             }
             else
@@ -100,6 +106,7 @@ public class Gpt_Boss : MonoBehaviour
                 // 一定時間経過でステート変更
                 state = State.SelectAtk;
                 readyTime = 0.0f;
+                moveCnt=0.01f;
             }
         }
         // 攻撃方法を選ぶ
@@ -146,12 +153,11 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Fall)
         {
             anim.SetBool("Atk_FallL_Flg", true);
+
+            /* 座標調整 */
             if (firstFall)
             {
-                parentObj.transform.position =
-                    new Vector3(parentObj.transform.position.x + 0.0f,
-                    parentObj.transform.position.y,
-                    parentObj.transform.position.z);
+                parentObj.transform.position += new Vector3(6.5f, 0, 0);
                 firstFall = false;
             }
 
@@ -162,6 +168,7 @@ public class Gpt_Boss : MonoBehaviour
             if (this.transform.position.y < fallY)
             {
                 state = State.Up;
+                parentObj.transform.position -= new Vector3(6.5f, 0, 0);
                 anim.SetBool("Atk_FallL_Flg", false);
 
                 this.hp -= magmaDmg;
@@ -200,6 +207,8 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Atk1)
         {
             attackTime += Time.deltaTime;
+            if(yukaBlink) yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().SetFlush();
+            else yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
 
             // 途中で床は壊れる
             if (attackTime <= 10.0f)
@@ -224,6 +233,8 @@ public class Gpt_Boss : MonoBehaviour
                 anim.SetBool("Atk_L_Flg", false);
                 state = State.Fall;
                 attackTime = 0.0f;
+                if(yukaBlink) yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
+                else yukaBlink = true;
             }
 
             // 終わったらステート戻す
@@ -232,20 +243,24 @@ public class Gpt_Boss : MonoBehaviour
                 anim.SetBool("Atk_L_Flg", false);
                 state = State.Search;
                 attackTime=0.0f;
+                if (yukaBlink) yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
+                else yukaBlink = true;
             }
         }
         // 攻撃R
         else if (state == State.Atk2)
         {
             attackTime += Time.deltaTime;
+            if (yukaBlink) yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().SetFlush();
+            else yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
 
             // 途中で床は壊れる
-                if (attackTime >= 2.4f && attackTime<=10.0f)
+            if (attackTime >= 2.4f && attackTime<=10.0f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
 
-                    if (yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().HP == 1)
+                if (yuka[(targetYukaNum) % 8].GetComponent<Gpt_YukaBox>().HP == 1)
                     {
                         yukaDieCnt[(targetYukaNum) % 8] = 0.1f;
                     }
@@ -260,6 +275,8 @@ public class Gpt_Boss : MonoBehaviour
                 anim.SetBool("Atk_R_Flg", false);
                 state = State.Fall;
                 attackTime = 0.0f;
+                if (yukaBlink) yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
+                else yukaBlink = true;
             }
 
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime >= ATTACK_TIME_MAX)
@@ -267,16 +284,20 @@ public class Gpt_Boss : MonoBehaviour
                 anim.SetBool("Atk_R_Flg", false);
                 state = State.Search;
                 attackTime = 0.0f;
+                if (yukaBlink) yuka[(targetYukaNum + 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
+                else yukaBlink = true;
             }
         }
         // なぎ払い攻撃
         else if (state == State.Atk3)
         {
             attackTime += Time.deltaTime;
+            if (yukaBlink) yuka[(targetYukaNum - 2) % 8].GetComponent<Gpt_YukaBox>().SetFlush();
+            else yuka[(targetYukaNum - 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
 
             // 途中で床は壊れる
             // プレイヤーが下にいる
-                if (attackTime >= 2.0f && attackTime <= 2.99f)
+            if (attackTime >= 2.0f && attackTime <= 2.99f)
                 {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
@@ -310,6 +331,8 @@ public class Gpt_Boss : MonoBehaviour
                 anim.SetBool("Atk_Nagi_Flg", false);
                 state = State.Fall;
                 attackTime = 0.0f;
+                if (yukaBlink) yuka[(targetYukaNum - 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
+                else yukaBlink = true;
             }
 
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime >= ATTACK_TIME_MAX_NAGI)
@@ -317,6 +340,8 @@ public class Gpt_Boss : MonoBehaviour
                 anim.SetBool("Atk_Nagi_Flg", false);
                 state = State.Search;
                 attackTime = 0.0f;
+                if (yukaBlink) yuka[(targetYukaNum - 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
+                else yukaBlink = true;
             }
         }
         else if (state == State.Die)
