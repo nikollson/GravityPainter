@@ -53,7 +53,7 @@ public class Gpt_ContinueUI : MonoBehaviour
     {
         if (Gpt_Input.IsMoving)
         {
-            bool isLeft = Gpt_Input.Move.y < 0;
+            bool isLeft = Gpt_Input.Move.y > 0;
             SelectYes(isLeft);
         }
         if (Gpt_Input.Attack)

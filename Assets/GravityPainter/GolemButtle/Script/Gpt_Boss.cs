@@ -277,7 +277,7 @@ public class Gpt_Boss : MonoBehaviour
             }
 
             // 落下判定
-            if (FallCheck(true))
+            if (FallCheck(true) && attackTime>=0.5f)
             {
                 anim.SetBool("Atk_FallR_Flg", true);
                 state = State.Fall;
