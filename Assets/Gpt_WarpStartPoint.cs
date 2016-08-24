@@ -13,6 +13,7 @@ public class Gpt_WarpStartPoint : MonoBehaviour
     private float time;
 
     bool appear = false;
+    public bool canControlAfter = true;
 
     void Start()
     {
@@ -32,7 +33,7 @@ public class Gpt_WarpStartPoint : MonoBehaviour
         if(!appear && time > playerOnTiming)
         {
             appear = true;
-            player.canControl = true;
+            player.canControl = canControlAfter;
             player.transform.position = apperPosition.position;
             player.playerColor.MeshRendererOn();
         }
