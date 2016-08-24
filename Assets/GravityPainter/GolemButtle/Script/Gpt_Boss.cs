@@ -22,6 +22,7 @@ public class Gpt_Boss : MonoBehaviour
     State state = State.Search;
     public GameObject camera;
     public GameObject se;
+    public GameObject se1;
     public GameObject parentObj;
 
     const float maxHp = 10.0f;
@@ -86,7 +87,7 @@ public class Gpt_Boss : MonoBehaviour
     {
         //if (cnt > 1.0f) state = State.Fall;   //debug
         //Debug.Log("STATE: "+state);
-        hp = 0.01f;
+        //hp = 0.01f;
 
         cnt += Time.deltaTime;
         yukaBlinkCnt += Time.deltaTime;
@@ -142,23 +143,17 @@ public class Gpt_Boss : MonoBehaviour
             {
                 if (rnd < 25.0f)
                 {
-                    //state = State.Atk1;
-                    //attackTime = 0.0f;
-                    //anim.SetBool("Atk_L_Flg", true);
-
-                    state = State.Atk3;
+                    state = State.Atk1;
                     attackTime = 0.0f;
-                    anim.SetBool("Atk_Nagi_Flg", true);
+                    anim.SetBool("Atk_L_Flg", true);
+
                 }
                 else if (rnd < 50.0f)
                 {
-                    //state = State.Atk2;
-                    //attackTime = 0.0f;
-                    //anim.SetBool("Atk_R_Flg", true);
-
-                    state = State.Atk3;
+                    state = State.Atk2;
                     attackTime = 0.0f;
-                    anim.SetBool("Atk_Nagi_Flg", true);
+                    anim.SetBool("Atk_R_Flg", true);
+
                 }
                 else
                 {
@@ -336,7 +331,7 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Atk3)
         {
             attackTime += Time.deltaTime;
-            if (attackTime>=12.0f)
+            if (attackTime>=10.5f)
             {
                 anim.SetBool("Atk_Nagi_Flg", false);
                 state = State.Search;
@@ -412,6 +407,7 @@ public class Gpt_Boss : MonoBehaviour
             if (firstDieFlg)
             {
                 firstDieFlg = false;
+                se1.GetComponent<AudioSource>().Play();
             }
 
             if (blinks) blinkFlg = false;
