@@ -36,7 +36,7 @@ public class Gpt_Boss : MonoBehaviour
     float upSpd = 25.0f;        // 上昇速度
     float firstUpSpd;
     float fallY = -40.0f;       // マグマY位置()
-    float magmaDmg = 3.34f;
+    float magmaDmg = 30.34f;
     float cnt = 0.0f;
     public Vector3 firstBossPos;
     public GameObject player;
@@ -72,6 +72,8 @@ public class Gpt_Boss : MonoBehaviour
 
     float fallCnt = 0.0f;
     bool fallL_Flg = true;
+
+    bool firstDieFlg = true;
 
     void Start()
     {
@@ -156,8 +158,16 @@ public class Gpt_Boss : MonoBehaviour
         }
         else if (state == State.Fall)
         {
-            anim.SetBool("Atk_FallL_Flg", true);
             fallCnt += Time.deltaTime;
+
+            if (fallL_Flg)
+            {
+                anim.SetBool("Atk_FallL_Flg", true);
+            }
+            else
+            {
+                anim.SetBool("Atk_FallR_Flg", true);
+            }
 
             /* 座標調整 */
             if (firstFall)
@@ -359,6 +369,29 @@ public class Gpt_Boss : MonoBehaviour
         }
         else if (state == State.Die)
         {
+            anim.SetBool("Atk_R_Flg", false);
+            anim.SetBool("Atk_L_Flg", false);
+            anim.SetBool("Atk_Nagi_Flg", false);
+            anim.SetBool("Atk_FallR_Flg", true);
+            anim.SetBool("Atk_FallL_Flg", true);
+
+
+
+
+            if (firstDieFlg)
+            {
+                firstDieFlg = false;
+            }
+
+            if (blinks) blinkFlg = false;
+
+            if (dieCnt < 0.2f)
+            {
+                transform.position = new Vector3(0, -25.0f, 0);
+            }
+
+
+
             dieCnt += Time.deltaTime;
             this.transform.position += new Vector3(0, -Time.deltaTime * fallSpd * 0.25f, 0);
             camera.GetComponent<Gpt_Camera>().state = 4;
