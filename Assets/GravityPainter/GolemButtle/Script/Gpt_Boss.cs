@@ -31,6 +31,8 @@ public class Gpt_Boss : MonoBehaviour
 
     public GameObject hand1;
     public GameObject hand2;
+    public GameObject hpBar;
+    //public GameObject hpBar1;
 
     bool firstFall = true;
 
@@ -56,7 +58,7 @@ public class Gpt_Boss : MonoBehaviour
 
     float readyTime = 0.0f;
     const float READY_TIME_MAX = 4.25f;
-    float attackTime = 0.0f;
+    float attackTime = -3.2f;
     const float ATTACK_TIME_MAX = 3.5f*2.0f;
     const float ATTACK_TIME_MAX_NAGI = 7.5f;
 
@@ -86,6 +88,12 @@ public class Gpt_Boss : MonoBehaviour
 
     void Update()
     {
+        if (player.GetComponent<Gpt_PlayerState>().HP <= 0)
+        {
+            hpBar.GetComponent<Gpt_BossHPBar>().notDrawFlg = true;
+            //hpBar1.GetComponent<Gpt_BossHPBar>().notDrawFlg = true;
+        }
+
         //if (cnt > 1.0f) state = State.Fall;   //debug
         //Debug.Log("STATE: "+state);
         //hp = 0.01f;
