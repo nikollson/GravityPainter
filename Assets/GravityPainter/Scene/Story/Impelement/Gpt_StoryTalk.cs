@@ -105,7 +105,7 @@ public class Gpt_StoryTalk : MonoBehaviour
                     () =>
                     {
                         Application.LoadLevel(nextSceneName);
-                    }
+                    },true
                 );
             }
             else

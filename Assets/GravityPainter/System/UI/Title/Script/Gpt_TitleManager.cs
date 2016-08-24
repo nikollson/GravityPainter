@@ -33,7 +33,7 @@ public class Gpt_TitleManager : MonoBehaviour
             {
                 selected = true;
                 audioSource.PlayOneShot(audioClip);
-                Gpt_FadeManager.SetFade_Black(() => { Gpt_SceneManager.LoadScene(NextSceneName, false); });
+                Gpt_FadeManager.SetFade_Black(() => { Gpt_SceneManager.LoadScene(NextSceneName, false); }, true);
             }
         }
     }
