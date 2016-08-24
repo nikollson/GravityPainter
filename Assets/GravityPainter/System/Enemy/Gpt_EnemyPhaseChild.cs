@@ -10,12 +10,14 @@ public class Gpt_EnemyPhaseChild : MonoBehaviour {
     public bool isRandomTimeCome = true;
 
     public bool bossBattleFlag = false;
-    
+
+    public AudioClip clip;
 
     float count = 0;
     float comeTime = 0;
     bool made = false;
     GameObject effectObject;
+    private AudioSource source;
 
     Gpt_YukaManager yukaManager;
 
@@ -24,6 +26,8 @@ public class Gpt_EnemyPhaseChild : MonoBehaviour {
         comeTime = isRandomTimeCome ? Random.Range(0, comeTimeSetting) : comeTimeSetting;
         yukaManager = GameObject.FindWithTag("YukaManager").GetComponent<Gpt_YukaManager>();
         MakeGateEffect();
+
+        source = this.GetComponent<AudioSource>();
     }
 
 
@@ -58,6 +62,8 @@ public class Gpt_EnemyPhaseChild : MonoBehaviour {
         var obj = (GameObject)Instantiate(prefab, this.transform.position, this.transform.rotation);
         obj.transform.parent = this.transform;
         Destroy(effectObject);
+
+        source.PlayOneShot(clip);
     }
 
     void MakeGateEffect()
