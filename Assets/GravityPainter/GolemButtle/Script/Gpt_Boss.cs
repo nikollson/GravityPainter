@@ -153,12 +153,11 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Fall)
         {
             anim.SetBool("Atk_FallL_Flg", true);
+
+            /* 座標調整 */
             if (firstFall)
             {
-                parentObj.transform.position =
-                    new Vector3(parentObj.transform.position.x + 0.0f,
-                    parentObj.transform.position.y,
-                    parentObj.transform.position.z);
+                parentObj.transform.position += new Vector3(6.5f, 0, 0);
                 firstFall = false;
             }
 
@@ -169,6 +168,7 @@ public class Gpt_Boss : MonoBehaviour
             if (this.transform.position.y < fallY)
             {
                 state = State.Up;
+                parentObj.transform.position -= new Vector3(6.5f, 0, 0);
                 anim.SetBool("Atk_FallL_Flg", false);
 
                 this.hp -= magmaDmg;
