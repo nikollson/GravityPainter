@@ -19,6 +19,7 @@ public class Gpt_Boss : MonoBehaviour
 
         Die,
     }
+
     State state = State.Search;
     public GameObject camera;
     public GameObject se;
