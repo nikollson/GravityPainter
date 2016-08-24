@@ -17,6 +17,7 @@ public class Gpt_PauseMenuUI : MonoBehaviour {
     int frameMemo = 0;
     const float slowTimeScale = 0.000001f;
     const float normalTimeScale = 1.0f;
+    
 
     void Start()
     {
