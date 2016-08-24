@@ -19,6 +19,8 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
     bool detonateDone = false;
     bool hamoned = false;
 
+    public AudioClip audioClip;
+
     public bool CanStartDetonate(int inputFrame)
     {
         return inputFrame_log != inputFrame;
@@ -51,6 +53,8 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
 
     void DoDetonate()
     {
+        playerUtillity.audioSource.PlayOneShot(audioClip);
+
         detonateDone = true;
         //playerUtillity.gravityManager.IsExplode();
         playerUtillity.gravityManager.IsExplodeColor((int)playerState.PlayerColor);

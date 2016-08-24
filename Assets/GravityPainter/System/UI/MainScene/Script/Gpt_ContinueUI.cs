@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Gpt_ContinueUI : MonoBehaviour
 {
     public GameObject parent;
+    public GameObject normalUI;
     public Image SelectorYes;
     public Image SelectorNo;
 
@@ -15,18 +16,21 @@ public class Gpt_ContinueUI : MonoBehaviour
     public float uiActiveTime = 0.5f;
 
     public Gpt_UIManager uiManager;
+    public AudioClip gameOver;
 
     bool isYes = false;
     bool isActive = false;
     Gpt_Player player;
 
     float count = 0;
+    AudioSource audioSource;
 
     void Start()
     {
         player = uiManager.player.GetComponent<Gpt_Player>();
         SelectYes(true);
         SetOff();
+        audioSource = this.GetComponent<AudioSource>();
     }
 
 
@@ -36,7 +40,10 @@ public class Gpt_ContinueUI : MonoBehaviour
         {
             count += Time.deltaTime;
 
-            if(!isActive && count > uiActiveTime) { SetOn(); }
+            if (!isActive && count > uiActiveTime)
+            {
+                SetOn();
+            }
             if(count > canSelectTime) Update_Slect();
         }
 
@@ -69,13 +76,16 @@ public class Gpt_ContinueUI : MonoBehaviour
 
     public void SetOn()
     {
+        audioSource.Play();
         parent.SetActive(true);
+        normalUI.SetActive(false);
         isActive = true;
     }
 
     public void SetOff()
     {
         parent.SetActive(false);
+        normalUI.SetActive(true);
         isActive = false;
     }
 }

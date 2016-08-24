@@ -10,6 +10,7 @@ public class Gpt_EnemyPhaseChild : MonoBehaviour {
     public bool isRandomTimeCome = true;
 
     public bool bossBattleFlag = false;
+    
 
     float count = 0;
     float comeTime = 0;
@@ -54,7 +55,6 @@ public class Gpt_EnemyPhaseChild : MonoBehaviour {
 
     void MakeEnemy()
     {
-        Debug.Log("aaaaa");
         var obj = (GameObject)Instantiate(prefab, this.transform.position, this.transform.rotation);
         obj.transform.parent = this.transform;
         Destroy(effectObject);
