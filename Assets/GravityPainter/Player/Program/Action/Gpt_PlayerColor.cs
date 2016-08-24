@@ -115,4 +115,18 @@ public class Gpt_PlayerColor : MonoBehaviour
         this.flushLength = flushTime;
         this.flushTime = 0.0f;
     }
+
+    public void MeshRendererOn()
+    {
+        for (int i = 0; i < hairRenders.Length; i++) hairRenders[i].enabled = true;
+        for (int i = 0; i < bodyRenderes.Length; i++) bodyRenderes[i].enabled = true;
+        for (int i = 0; i < fudeRenderes.Length; i++) fudeRenderes[i].enabled = true;
+    }
+
+    public void MeshRendererOff()
+    {
+        for (int i = 0; i < hairRenders.Length; i++) hairRenders[i].enabled = false;
+        for (int i = 0; i < bodyRenderes.Length; i++) bodyRenderes[i].enabled = false;
+        for (int i = 0; i < fudeRenderes.Length; i++) fudeRenderes[i].enabled = false;
+    }
 }
