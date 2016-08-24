@@ -7,8 +7,8 @@ public class Gpt_ContinueUI : MonoBehaviour
 {
     public GameObject parent;
     public GameObject normalUI;
-    public Image SelectorYes;
-    public Image SelectorNo;
+    public Image[] SelectorYes;
+    public Image[] SelectorNo;
 
     public string tileSceneName;
 
@@ -53,7 +53,7 @@ public class Gpt_ContinueUI : MonoBehaviour
     {
         if (Gpt_Input.IsMoving)
         {
-            bool isLeft = Gpt_Input.Move.x < 0;
+            bool isLeft = Gpt_Input.Move.y < 0;
             SelectYes(isLeft);
         }
         if (Gpt_Input.Attack)
@@ -70,12 +70,13 @@ public class Gpt_ContinueUI : MonoBehaviour
     public void SelectYes(bool isYes)
     {
         this.isYes = isYes;
-        SelectorYes.enabled = isYes;
-        SelectorNo.enabled = !isYes;
+        foreach (var a in SelectorYes) a.enabled = isYes;
+        foreach (var a in SelectorNo) a.enabled = !isYes;
     }
 
     public void SetOn()
     {
+        GameObject.Find("BGM_Floor").GetComponent<AudioSource>().Stop();
         audioSource.Play();
         parent.SetActive(true);
         normalUI.SetActive(false);

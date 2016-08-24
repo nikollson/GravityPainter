@@ -53,7 +53,6 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
 
     void DoDetonate()
     {
-        playerUtillity.audioSource.PlayOneShot(audioClip);
 
         detonateDone = true;
         //playerUtillity.gravityManager.IsExplode();
@@ -88,6 +87,7 @@ public class Gpt_PlayerDetonate : MonoBehaviour {
             if (!hamoned)
             {
                 var obj = (GameObject)Instantiate(hamonPrefab, this.transform.position, Quaternion.identity);
+                playerUtillity.audioSource.PlayOneShot(audioClip);
                 hamoned = true;
             }
         }
