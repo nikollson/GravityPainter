@@ -22,6 +22,7 @@ public class Gpt_Boss : MonoBehaviour
     State state = State.Search;
     public GameObject camera;
     public GameObject se;
+    public GameObject se1;
     public GameObject parentObj;
 
     const float maxHp = 10.0f;
@@ -145,12 +146,14 @@ public class Gpt_Boss : MonoBehaviour
                     state = State.Atk1;
                     attackTime = 0.0f;
                     anim.SetBool("Atk_L_Flg", true);
+
                 }
                 else if (rnd < 50.0f)
                 {
                     state = State.Atk2;
                     attackTime = 0.0f;
                     anim.SetBool("Atk_R_Flg", true);
+
                 }
                 else
                 {
@@ -328,6 +331,14 @@ public class Gpt_Boss : MonoBehaviour
         else if (state == State.Atk3)
         {
             attackTime += Time.deltaTime;
+            if (attackTime>=10.5f)
+            {
+                anim.SetBool("Atk_Nagi_Flg", false);
+                state = State.Search;
+                attackTime = 0.0f;
+                if (yukaBlink) yuka[(targetYukaNum - 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
+                else yukaBlink = true;
+            }
             //if (yukaBlink) yuka[(targetYukaNum - 2) % 8].GetComponent<Gpt_YukaBox>().SetFlush();
             //else yuka[(targetYukaNum - 2) % 8].GetComponent<Gpt_YukaBox>().UnSetFlush();
 
@@ -396,6 +407,7 @@ public class Gpt_Boss : MonoBehaviour
             if (firstDieFlg)
             {
                 firstDieFlg = false;
+                se1.GetComponent<AudioSource>().Play();
             }
 
             if (blinks) blinkFlg = false;
