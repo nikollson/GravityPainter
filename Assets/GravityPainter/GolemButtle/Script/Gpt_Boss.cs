@@ -57,7 +57,7 @@ public class Gpt_Boss : MonoBehaviour
     float readyTime = 0.0f;
     const float READY_TIME_MAX = 4.25f;
     float attackTime = 0.0f;
-    const float ATTACK_TIME_MAX = 3.5f;
+    const float ATTACK_TIME_MAX = 3.5f*2.0f;
     const float ATTACK_TIME_MAX_NAGI = 7.5f;
 
     public float screenShake = 4.0f;
@@ -253,8 +253,9 @@ public class Gpt_Boss : MonoBehaviour
             // 途中で床は壊れる
             if (attackTime <= 10.0f)
             {
-                if (attackTime >= 2.4f)
-                {
+                //if (attackTime >= (2.4f*2.0f))
+                if (attackTime >= 4.5f)
+                    {
                     se.GetComponent<AudioSource>().Play();
                     camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
 
@@ -484,7 +485,7 @@ public class Gpt_Boss : MonoBehaviour
 
     void SetEXP(int add=0)
     {
-        yuka[(targetYukaNum + add) % 8].GetComponent<Gpt_YukaBox>().SetExplode(0.0f, 0.3f, 2.7f, 3.7f);
+        yuka[(targetYukaNum + add) % 8].GetComponent<Gpt_YukaBox>().SetExplode(0.0f, 0.01f, 2.7f, 3.7f);
     }
 
     // プレイヤーと最も近い場所を探す
