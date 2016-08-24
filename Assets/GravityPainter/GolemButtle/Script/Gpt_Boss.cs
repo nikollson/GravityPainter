@@ -74,6 +74,7 @@ public class Gpt_Boss : MonoBehaviour
     bool fallL_Flg = true;
 
     bool firstDieFlg = true;
+    float yukaBlinkCnt = 0.0f;
 
     void Start()
     {
@@ -84,8 +85,11 @@ public class Gpt_Boss : MonoBehaviour
     void Update()
     {
         //if (cnt > 1.0f) state = State.Fall;   //debug
+        //Debug.Log("STATE: "+state);
+        //hp = 0.01f;
 
         cnt += Time.deltaTime;
+        yukaBlinkCnt += Time.deltaTime;
         if (yukaBlink) yukaBlink = false;
         else yukaBlink = true;
 
@@ -309,6 +313,8 @@ public class Gpt_Boss : MonoBehaviour
                 fallL_Flg = true;
             }
 
+
+
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime >= ATTACK_TIME_MAX)
             {
                 anim.SetBool("Atk_R_Flg", false);
@@ -328,32 +334,32 @@ public class Gpt_Boss : MonoBehaviour
             // 途中で床は壊れる
             // プレイヤーが下にいる
             if (attackTime >= 2.0f && attackTime <= 2.99f)
-                {
-                    se.GetComponent<AudioSource>().Play();
-                    camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
+            {
+                se.GetComponent<AudioSource>().Play();
+                camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
 
-                    SetEXP(1);
+                SetEXP(1);
 
-                    attackTime += 1.0f;
-                }
-                else if (attackTime >= 4.5f && attackTime <= 5.49f)
-                {
-                    se.GetComponent<AudioSource>().Play();
-                    camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
+                attackTime += 1.0f;
+            }
+            else if (attackTime >= 4.5f && attackTime <= 5.49f)
+            {
+                se.GetComponent<AudioSource>().Play();
+                camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
 
-                    SetEXP();
+                SetEXP();
 
-                    attackTime += 1.0f;
-                }
-                else if (attackTime >= 6.5f && attackTime <= 7.49f)
-                {
-                    se.GetComponent<AudioSource>().Play();
-                    camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
+                attackTime += 1.0f;
+            }
+            else if (attackTime >= 6.5f && attackTime <= 7.49f)
+            {
+                se.GetComponent<AudioSource>().Play();
+                camera.GetComponent<Gpt_Camera>().SetScreenShake(screenShake);
 
-                    SetEXP(-1);
+                SetEXP(-1);
 
-                    attackTime += 1.0f;
-                }
+                attackTime += 1.0f;
+            }
 
             // 落下判定
             if (FallCheck(false))
@@ -366,8 +372,9 @@ public class Gpt_Boss : MonoBehaviour
                 fallL_Flg = false;
             }
 
+            //if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select"))
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("Select") && attackTime >= ATTACK_TIME_MAX_NAGI)
-            {
+                {
                 anim.SetBool("Atk_Nagi_Flg", false);
                 state = State.Search;
                 attackTime = 0.0f;
