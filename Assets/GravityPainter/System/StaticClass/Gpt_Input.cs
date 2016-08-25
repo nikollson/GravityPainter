@@ -14,6 +14,7 @@ public class Gpt_Input : MonoBehaviour
     public static Vector2 Move { get { inputGetter.Update(); return inputGetter.Move; } }
     public static Vector2 CamMove { get { inputGetter.Update(); return inputGetter.CamMove; } }
     public static Vector2 MouseCamMove { get { inputGetter.Update(); return inputGetter.MouseCamMove; } }
+    public static bool IsMouseAndKey { get { return inputGetter.IsMouseAndKey; } }
     public static bool MovePush { get { inputGetter.Update(); return inputGetter.MovePush; } }
     public static bool CameraPush { get { inputGetter.Update(); return inputGetter.CameraPush; } }
     public static bool ColorLeft { get { inputGetter.Update(); return inputGetter.ColorLeft; } }
@@ -95,6 +96,7 @@ public class Gpt_Input : MonoBehaviour
         public Vector2 Move { get; private set; }
         public Vector2 CamMove { get; private set; }
         public Vector2 MouseCamMove { get; private set; }
+        public bool IsMouseAndKey { get; private set; }
         public bool MovePush { get; private set; }
         public bool CameraPush { get; private set; }
         public bool ColorLeft { get; private set; }
@@ -145,16 +147,25 @@ public class Gpt_Input : MonoBehaviour
             y = -Input.GetAxisRaw("Mouse Y") * ySpeed * 0.02f;/// * ySpeed * 0.06f;
 
             //Cursor.lockState = CursorLockMode.Locked;
+
+            if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            {
+                IsMouseAndKey = true;
+            }
             
             Move = Move.normalized;
             CamMove = CamMove.normalized;
             MouseCamMove = new Vector2(x, y);
 
+            float xx = Mathf.Abs(CamMove.x) > Mathf.Abs(MouseCamMove.x) ? CamMove.x : MouseCamMove.x;
+            float yy = Mathf.Abs(CamMove.y) > Mathf.Abs(MouseCamMove.y) ? CamMove.y : MouseCamMove.y;
+            CamMove = new Vector2(xx, yy);
+
             MovePush = Input.GetButton(movePushKey);
             CameraPush = Input.GetButton(cameraPushKey);
 
-            ColorLeft = Input.GetButton(colorLeftKey);
-            ColorRight = Input.GetButton(colorRightKey);
+            ColorLeft = Input.GetButton(colorLeftKey) || Input.GetAxisRaw("Mouse ScrollWheel") > 0;
+            ColorRight = Input.GetButton(colorRightKey) || Input.GetAxis("Mouse ScrollWheel") < 0;
             Option = Input.GetButton(optionKey);
             Detonate = Input.GetButton(detonateKey);
         }

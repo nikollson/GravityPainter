@@ -97,7 +97,7 @@ public class Gpt_Boss : MonoBehaviour
 
         //if (cnt > 1.0f) state = State.Fall;   //debug
         //Debug.Log("STATE: "+state);
-        hp = 0.01f;
+        //hp = 0.01f;
 
         cnt += Time.deltaTime;
         yukaBlinkCnt += Time.deltaTime;
