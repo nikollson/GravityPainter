@@ -126,7 +126,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 isWalked = true;
                 isMoved = true;
                 navMesh.enabled = true;
-                Debug.Log(this.transform.parent.name);
+                //Debug.Log(this.transform.parent.name);
             }
             gravity = 0;
 
@@ -155,7 +155,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 //地面に床がない場合落下
                 if (!bossFlag&&!YukaManager.HasTile(this.transform.position))
                 {
-                    Debug.Log("DDDD"+YukaManager.HasTile(this.transform.position));
+                    //Debug.Log("DDDD"+YukaManager.HasTile(this.transform.position));
                     enemySpeed = 0;
                     rigid.useGravity = true;
                     rigid.isKinematic = false;
@@ -165,7 +165,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
                 }
                 else if (bossFlag && IsFloor)
                 {
-                    Debug.Log("DDDD" + YukaManager.HasTile(this.transform.position));
+                    //Debug.Log("DDDD" + YukaManager.HasTile(this.transform.position));
                     enemySpeed = 0;
                     rigid.useGravity = true;
                     rigid.isKinematic = false;

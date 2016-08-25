@@ -22,6 +22,7 @@ public class Gpt_Boss : MonoBehaviour
 
     State state = State.Search;
     public GameObject camera;
+    public GameObject firstPos;
     public GameObject se;
     public GameObject se1;
     public GameObject parentObj;
