@@ -117,7 +117,8 @@ public class Gpt_Camera : MonoBehaviour
         {
             Update_Rotation();
             Update_Positioning();
-            Update_Look(GetPlayerCameraPosition(), player.transform.position + playerZure, lookStlength);
+            float lookst = Gpt_Input.IsMouseAndKey ? 1 : lookStlength;
+            Update_Look(GetPlayerCameraPosition(), player.transform.position + playerZure, lookst);
         }
         else if (state == (int)State.Door)
         {
@@ -235,6 +236,7 @@ public class Gpt_Camera : MonoBehaviour
     }
     void Update_Positioning()
     {
+        float stlength = Gpt_Input.IsMouseAndKey ? 1 : positionStlength;
         Update_Position(GetPlayerCameraPosition(), positionStlength);
     }
 

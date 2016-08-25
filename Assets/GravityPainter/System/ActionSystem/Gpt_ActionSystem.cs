@@ -8,6 +8,8 @@ public class Gpt_ActionSystem : MonoBehaviour {
     void Awake()
     {
         Application.targetFrameRate = targetFPS; //30FPSに設定
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update()
