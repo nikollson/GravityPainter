@@ -40,12 +40,8 @@ public class Gpt_PauseMenuUI : MonoBehaviour {
     }
     void Update_Pause()
     {
-        if (Gpt_Input.IsMoving)
-        {
-            Vector2 input = Gpt_Input.Move;
-            if (input.y < 0) selectNum = 1;
-            if (input.y > 0) selectNum = 0;
-        }
+        if (Gpt_Input.Move.y < 0) selectNum = 1;
+        if (Gpt_Input.Move.y > 0) selectNum = 0;
 
         if (HasOptionInput())
         {
