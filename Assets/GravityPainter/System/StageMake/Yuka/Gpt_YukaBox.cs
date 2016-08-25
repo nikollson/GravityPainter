@@ -122,11 +122,13 @@ public class Gpt_YukaBox : MonoBehaviour {
     public void SetFlush()
     {
         renderer.material = tileSetting.GetMaterial(Color, HP, true);
+        //flushObject = (GameObject)Instantiate(flushSetting.flushLong, this.transform.position, Quaternion.identity);
     }
 
     public void UnSetFlush()
     {
         MaterialUpdate();
+        //Destroy(flushObject);
     }
 
     void Update()
