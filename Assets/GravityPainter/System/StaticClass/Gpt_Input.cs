@@ -13,6 +13,7 @@ public class Gpt_Input : MonoBehaviour
     public static bool IsMoving { get { return Move.magnitude > EPS; } }
     public static Vector2 Move { get { inputGetter.Update(); return inputGetter.Move; } }
     public static Vector2 CamMove { get { inputGetter.Update(); return inputGetter.CamMove; } }
+    public static Vector2 MouseCamMove { get { inputGetter.Update(); return inputGetter.MouseCamMove; } }
     public static bool MovePush { get { inputGetter.Update(); return inputGetter.MovePush; } }
     public static bool CameraPush { get { inputGetter.Update(); return inputGetter.CameraPush; } }
     public static bool ColorLeft { get { inputGetter.Update(); return inputGetter.ColorLeft; } }
@@ -114,8 +115,8 @@ public class Gpt_Input : MonoBehaviour
 
         int prevFrame = -1;
 
-        float xSpeed = 12f;
-        float ySpeed = 9f;
+        float xSpeed = 4f;
+        float ySpeed = 4f;
 
         float x = 0f;
         float y = 0f;
@@ -135,7 +136,7 @@ public class Gpt_Input : MonoBehaviour
             Attack = Input.GetButton(attackKey);
             Skill = Input.GetButton(skillKey);
 
-            Move = new Vector2(Input.GetAxis(xKey), Input.GetAxis(yKey));
+            Move = new Vector2(Input.GetAxisRaw(xKey), Input.GetAxisRaw(yKey));
             CamMove = new Vector2(Input.GetAxis(camXKey), Input.GetAxis(camYKey));
 
             //CamMove = new Vector2(Input.GetAxis(camXKey), Input.GetAxis(camXKey));
