@@ -93,6 +93,7 @@ public class Gpt_Input : MonoBehaviour
         public bool Skill { get; private set; }
         public Vector2 Move { get; private set; }
         public Vector2 CamMove { get; private set; }
+        public Vector2 MouseCamMove { get; private set; }
         public bool MovePush { get; private set; }
         public bool CameraPush { get; private set; }
         public bool ColorLeft { get; private set; }
@@ -113,6 +114,12 @@ public class Gpt_Input : MonoBehaviour
 
         int prevFrame = -1;
 
+        float xSpeed = 12f;
+        float ySpeed = 9f;
+
+        float x = 0f;
+        float y = 0f;
+
         public void Update()
         {
             if (prevFrame == Time.frameCount) return;
@@ -131,8 +138,16 @@ public class Gpt_Input : MonoBehaviour
             Move = new Vector2(Input.GetAxis(xKey), Input.GetAxis(yKey));
             CamMove = new Vector2(Input.GetAxis(camXKey), Input.GetAxis(camYKey));
 
+            //CamMove = new Vector2(Input.GetAxis(camXKey), Input.GetAxis(camXKey));
+
+            x = Input.GetAxisRaw("Mouse X") * xSpeed * 0.02f;// * xSpeed * 0.06f;
+            y = -Input.GetAxisRaw("Mouse Y") * ySpeed * 0.02f;/// * ySpeed * 0.06f;
+
+            //Cursor.lockState = CursorLockMode.Locked;
+            
             Move = Move.normalized;
             CamMove = CamMove.normalized;
+            MouseCamMove = new Vector2(x, y);
 
             MovePush = Input.GetButton(movePushKey);
             CameraPush = Input.GetButton(cameraPushKey);
