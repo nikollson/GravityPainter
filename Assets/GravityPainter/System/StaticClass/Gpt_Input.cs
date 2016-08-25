@@ -14,7 +14,6 @@ public class Gpt_Input : MonoBehaviour
     public static Vector2 Move { get { inputGetter.Update(); return inputGetter.Move; } }
     public static Vector2 CamMove { get { inputGetter.Update(); return inputGetter.CamMove; } }
     public static Vector2 MouseCamMove { get { inputGetter.Update(); return inputGetter.MouseCamMove; } }
-    public static bool IsMouseAndKey { get { return inputGetter.IsMouseAndKey; } }
     public static bool MovePush { get { inputGetter.Update(); return inputGetter.MovePush; } }
     public static bool CameraPush { get { inputGetter.Update(); return inputGetter.CameraPush; } }
     public static bool ColorLeft { get { inputGetter.Update(); return inputGetter.ColorLeft; } }
@@ -102,7 +101,6 @@ public class Gpt_Input : MonoBehaviour
         public bool ColorRight { get; private set; }
         public bool Option { get; private set; }
         public bool Detonate { get; private set; }
-        public bool IsMouseAndKey { get; private set; }
 
         public int JumpStartFrame { get; private set; }
         public int AttackStartFrame { get; private set; }
@@ -117,8 +115,8 @@ public class Gpt_Input : MonoBehaviour
 
         int prevFrame = -1;
 
-        float xSpeed = 12f;
-        float ySpeed = 9f;
+        float xSpeed = 4f;
+        float ySpeed = 4f;
 
         float x = 0f;
         float y = 0f;
@@ -139,27 +137,18 @@ public class Gpt_Input : MonoBehaviour
             Skill = Input.GetButton(skillKey);
 
             Move = new Vector2(Input.GetAxisRaw(xKey), Input.GetAxisRaw(yKey));
-            
+            CamMove = new Vector2(Input.GetAxis(camXKey), Input.GetAxis(camYKey));
+
+            //CamMove = new Vector2(Input.GetAxis(camXKey), Input.GetAxis(camXKey));
 
             x = Input.GetAxisRaw("Mouse X") * xSpeed * 0.02f;// * xSpeed * 0.06f;
             y = -Input.GetAxisRaw("Mouse Y") * ySpeed * 0.02f;/// * ySpeed * 0.06f;
 
-            if (Input.GetMouseButton(0))
-            {
-                IsMouseAndKey = true;
-            }
-
             //Cursor.lockState = CursorLockMode.Locked;
             
             Move = Move.normalized;
+            CamMove = CamMove.normalized;
             MouseCamMove = new Vector2(x, y);
-
-            Vector2 tmpCamMove = new Vector2(Input.GetAxisRaw(camXKey), Input.GetAxisRaw(camYKey));
-            tmpCamMove = tmpCamMove.normalized;
-
-            float camX = Mathf.Abs(x) > Mathf.Abs(tmpCamMove.x) ? x : tmpCamMove.x;
-            float camY = Mathf.Abs(y) > Mathf.Abs(tmpCamMove.y) ? y : tmpCamMove.y;
-            CamMove = new Vector2(camX, camY);
 
             MovePush = Input.GetButton(movePushKey);
             CameraPush = Input.GetButton(cameraPushKey);
