@@ -97,7 +97,7 @@ public class Gpt_Boss : MonoBehaviour
 
         //if (cnt > 1.0f) state = State.Fall;   //debug
         //Debug.Log("STATE: "+state);
-        //hp = 0.01f;
+        hp = 0.01f;
 
         cnt += Time.deltaTime;
         yukaBlinkCnt += Time.deltaTime;
@@ -187,11 +187,11 @@ public class Gpt_Boss : MonoBehaviour
 
             if (fallL_Flg)
             {
-                anim.SetBool("Atk_FallR_Flg", true);
+                //anim.SetBool("Atk_FallR_Flg", true);
             }
             else
             {
-                anim.SetBool("Atk_FallL_Flg", true);
+                //anim.SetBool("Atk_FallL_Flg", true);
             }
 
             /* 座標調整 */
@@ -209,13 +209,19 @@ public class Gpt_Boss : MonoBehaviour
                 fallSpd += Time.deltaTime * 20.0f;
                 this.transform.position += new Vector3(0, -Time.deltaTime * fallSpd, 0);
             }
+
+            if(this.transform.position.y<-20.0f && hp <= 4.0f)
+            {
+                anim.SetBool("Atk_FallL_Flg", true);
+            }
+
             // 一定まで落ちると被ダメ
             if (this.transform.position.y < fallY)
             {
                 fallCnt = 0.0f;
                 state = State.Up;
                 //parentObj.transform.position -= new Vector3(7.0f, 0, 0);
-                anim.SetBool("Atk_FallL_Flg", false);
+                //anim.SetBool("Atk_FallL_Flg", false);
                 anim.SetBool("Atk_FallR_Flg", false);
 
                 this.hp -= magmaDmg;
