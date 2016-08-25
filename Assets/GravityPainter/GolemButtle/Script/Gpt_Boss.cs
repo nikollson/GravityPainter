@@ -416,8 +416,11 @@ public class Gpt_Boss : MonoBehaviour
             anim.SetBool("Atk_R_Flg", false);
             anim.SetBool("Atk_L_Flg", false);
             anim.SetBool("Atk_Nagi_Flg", false);
+            anim.SetBool("Atk_FallL_Flg", true);
             anim.SetBool("Atk_FallR_Flg", false);
-            anim.SetBool("Atk_FallL_Flg", false);
+
+            Debug.Log("LLL"+anim.GetBool("Atk_FallR_Flg"));
+            Debug.Log("RRR"+anim.GetBool("Atk_FallL_Flg"));
 
             player.GetComponent<Gpt_PlayerState>().AddHP(12);
 
@@ -432,7 +435,7 @@ public class Gpt_Boss : MonoBehaviour
 
             if (dieCnt < 0.2f)
             {
-                transform.position = new Vector3(0, -22.0f, 0);
+                transform.position = new Vector3(0, -18.0f, 0);
             }
 
 
