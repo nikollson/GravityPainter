@@ -11,8 +11,6 @@ public class Gpt_EnemyColor : MonoBehaviour {
     public Gpt_Enemy EnemyClass;
     public Material[] _material;
     public Material[] _materialIkemen;
-
-    public Material ikemen_material;
     public Material ikemen_damage;
 
     private bool isDamage;
