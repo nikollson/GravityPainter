@@ -132,6 +132,9 @@ public class Gpt_Enemy : MonoBehaviour {
 
     public GameObject deathExplode;
 
+    //爆発により吹っ飛ぶフラグ
+    public bool isFall{ get; private set; }
+
     // Use this for initialization
     void Start () {
 
@@ -483,7 +486,7 @@ public class Gpt_Enemy : MonoBehaviour {
                 {
                     rigid.AddForce(new Vector3(0, -0.6f, 0), ForceMode.VelocityChange);
                 }
-
+                isFall = true;
                 motionTime2 += 0.2f;
                 EnemyColor.IsDamage();
                 EnemyAnimation.IsOkiAction(revivalTime);
@@ -721,8 +724,9 @@ public class Gpt_Enemy : MonoBehaviour {
         navAgent.enabled = true;
         //敵同士のあたり判定を戻す
         this.gameObject.layer = LayerMask.NameToLayer("EnemyBody");
-        //起き上がるモーションを入れる。
-        
+        isFall = false;
+        skyTemp = 0;
+
     }
 
     //爆風のダメージ
@@ -794,5 +798,15 @@ public class Gpt_Enemy : MonoBehaviour {
         topSettedPosition = this.transform.position + new Vector3(0,0.2f,0);
         IsTop = true;
     }
+ 
     
+    public bool GetIsExplode()
+    {
+        return isExplode;
+    }
+
+    public bool GetIsDamage()
+    {
+        return damageFlag;
+    }
 }

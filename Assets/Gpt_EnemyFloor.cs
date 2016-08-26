@@ -19,14 +19,31 @@ public class Gpt_EnemyFloor : MonoBehaviour {
 
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, -transform.up, out hit, 30))
+        if (Physics.Raycast(transform.position, -transform.up, out hit, 2f))
         {
-            //Debug.Log("hit!:" + hit.transform.gameObject.name);
-            moveScript.IsFloor = false;
+            Debug.Log("hit!:" + hit.transform.gameObject.name+"  :"+this.transform.parent.parent.name);
+            if (!moveScript.isMoved)
+            {
+                moveScript.IsFloor = false;
+            }
+            //右手の場合例外
+            if(hit.transform.gameObject.name == "nurbsCircle5"|| hit.transform.gameObject.name == "FallChecker")
+            {
+                moveScript.IsFloor = true;
+            }
+
+            if (hit.transform.gameObject.layer==11)//EnemyBody
+            {
+                moveScript.IsFloor = true;
+            }
         }
         else
         {
-            moveScript.IsFloor = true;
+            Debug.Log("nonhit!:" + "  :" + this.transform.parent.parent.name);
+            if (moveScript.isMoved)
+            {
+                moveScript.IsFloor = true;
+            }
         }
 
         //collFlg = false;

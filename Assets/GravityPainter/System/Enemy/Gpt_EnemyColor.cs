@@ -10,8 +10,8 @@ public class Gpt_EnemyColor : MonoBehaviour {
     public Renderer rendererFootL;
     public Gpt_Enemy EnemyClass;
     public Material[] _material;
-
-    public Material ikemen_material;
+    public Material[] _materialIkemen;
+    public Material ikemen_damage;
 
     private bool isDamage;
     private bool ikemen;
@@ -24,13 +24,14 @@ public class Gpt_EnemyColor : MonoBehaviour {
     void Start () {
         int texture=Random.Range(0,101);
 
-        if (texture < 90)
+        if (texture < 50)
         {
-            textureOffset = 0f;//ノーマル顔
+            renderer.sharedMaterial = _material[0];
+            //textureOffset = 0f;//ノーマル顔
         }
         else
         {
-            textureOffset = 0.39f;//イケメン顔
+            renderer.sharedMaterial = _materialIkemen[0];
             ikemen = true;
         }
 
@@ -39,13 +40,58 @@ public class Gpt_EnemyColor : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (EnemyClass.GetGravity()||EnemyClass.IsTop)
+        //if (EnemyClass.GetGravity()||EnemyClass.IsTop)
+        //{
+        //    if (ikemen)
+        //    {
+        //        renderer.sharedMaterial.SetTextureOffset("_MainTex", new Vector2(0, 0.39f));
+        //    }else
+        //    {
+        //        renderer.sharedMaterial.SetTextureOffset("_MainTex", new Vector2(0, 0.2f));
+        //    }
+
+
+        //}
+        //else if(EnemyClass.isFall|| EnemyClass.GetIsDamage())
+        //{
+        //    if (ikemen)
+        //    {
+        //        renderer.sharedMaterial.SetTextureOffset("_MainTex", new Vector2(0, 0.39f));
+        //    }
+        //    else
+        //    {
+        //        renderer.sharedMaterial.SetTextureOffset("_MainTex", new Vector2(0, 0.2f));
+        //    }
+        //}
+        //else
+        //{
+        //    if (ikemen)
+        //    {
+        //        renderer.sharedMaterial = ikemen_material;
+        //        renderer.sharedMaterial.SetTextureOffset("_MainTex", new Vector2(0, textureOffset));
+        //    }
+        //    else
+        //    {
+        //        renderer.sharedMaterial = _material[0];
+        //        renderer.sharedMaterial.SetTextureOffset("_MainTex", new Vector2(0, textureOffset));
+        //    }
+
+        //}
+
+        if (EnemyClass.isFall || EnemyClass.GetIsDamage())
         {
-            renderer.sharedMaterial.SetTextureOffset("_MainTex", new Vector2(0, 0.2f));
+            if (!ikemen)
+            {
+                renderer.sharedMaterial = ikemen_damage;
+            }
+                
         }
         else
         {
-            renderer.sharedMaterial.SetTextureOffset("_MainTex", new Vector2(0, textureOffset));//やられ顔
+            if (!ikemen&&Color==0)
+            {
+                renderer.sharedMaterial = _material[0];
+            }
         }
 
         damageCount++;
@@ -82,7 +128,7 @@ public class Gpt_EnemyColor : MonoBehaviour {
         {
             if (ikemen)
             {
-                renderer.sharedMaterial = ikemen_material;
+                renderer.sharedMaterial = _materialIkemen[0];
             }
             else
             {
@@ -91,7 +137,15 @@ public class Gpt_EnemyColor : MonoBehaviour {
         }
         else
         {
-            renderer.sharedMaterial = _material[setColor];
+            if (ikemen)
+            {
+                renderer.sharedMaterial = _materialIkemen[setColor];
+            }
+            else
+            {
+                renderer.sharedMaterial = _material[setColor];
+            }
+            
         }
         
         rendererFootR.sharedMaterial = _material[setColor];
