@@ -20,6 +20,8 @@ public class Gpt_Boss : MonoBehaviour
         Die,
     }
 
+    public GameObject dieGolemObj;
+
     State state = State.Search;
     public GameObject camera;
     public GameObject firstPos;
@@ -431,14 +433,16 @@ public class Gpt_Boss : MonoBehaviour
 
             player.GetComponent<Gpt_PlayerState>().AddHP(12);
 
+            if (blinks) blinkFlg = false;
 
             if (firstDieFlg)
             {
                 firstDieFlg = false;
                 se1.GetComponent<AudioSource>().Play();
-            }
 
-            if (blinks) blinkFlg = false;
+                dieGolemObj.SetActive(true);
+                this.gameObject.SetActive(false);
+            }
 
             if (dieCnt < 0.2f)
             {
@@ -462,7 +466,7 @@ public class Gpt_Boss : MonoBehaviour
         }
 
         // 点滅
-        if (blinkFlg)
+        if (blinkFlg && !(State.Die == state))
         {
             blinkCnt += Time.deltaTime;
             if(blinks)
