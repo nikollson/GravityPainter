@@ -68,7 +68,7 @@ public class Gpt_EnemyMove : MonoBehaviour {
     //移動スイッチ
     private bool isWalked=false;
     //起動スイッチ
-    private bool isMoved = false;
+    public bool isMoved { get; private set; }
 
     private bool isAbyss = false;
 
@@ -159,17 +159,18 @@ public class Gpt_EnemyMove : MonoBehaviour {
                     enemySpeed = 0;
                     rigid.useGravity = true;
                     rigid.isKinematic = false;
-                    rigid.AddForce(-transform.up*2f,ForceMode.VelocityChange);
+                    rigid.AddForce(-transform.up * 1.4f, ForceMode.VelocityChange);
                     navMesh.enabled=false;
 
                 }
                 else if (bossFlag && IsFloor)
                 {
                     //Debug.Log("DDDD" + YukaManager.HasTile(this.transform.position));
-                    enemySpeed = 0;
+                    //enemySpeed = 0;
+                    Character.enabled = false;
                     rigid.useGravity = true;
                     rigid.isKinematic = false;
-                    rigid.AddForce(-transform.up * 2f, ForceMode.VelocityChange);
+                    rigid.AddForce(-transform.up * 1.4f, ForceMode.VelocityChange);
                     navMesh.enabled = false;
 
                 }else{

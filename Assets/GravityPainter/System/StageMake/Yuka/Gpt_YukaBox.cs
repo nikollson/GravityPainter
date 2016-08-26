@@ -191,7 +191,7 @@ public class Gpt_YukaBox : MonoBehaviour {
             {
                 delayNav += 0.1f;
                 //Debug.Log("delayNav");
-                if (delayNav > 0.3f)
+                if (delayNav > 0.6f)
                 {
                     //Debug.Log("delayNav___");
                     navMeshObstacle.enabled = true;
