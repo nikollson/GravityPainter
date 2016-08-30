@@ -21,7 +21,7 @@ public class Gpt_EnemyFloor : MonoBehaviour {
 
         if (Physics.Raycast(transform.position, -transform.up, out hit, 2f))
         {
-            Debug.Log("hit!:" + hit.transform.gameObject.name+"  :"+this.transform.parent.parent.name);
+            //Debug.Log("hit!:" + hit.transform.gameObject.name+"  :"+this.transform.parent.parent.name);
             if (!moveScript.isMoved)
             {
                 moveScript.IsFloor = false;
@@ -39,7 +39,7 @@ public class Gpt_EnemyFloor : MonoBehaviour {
         }
         else
         {
-            Debug.Log("nonhit!:" + "  :" + this.transform.parent.parent.name);
+            //Debug.Log("nonhit!:" + "  :" + this.transform.parent.parent.name);
             if (moveScript.isMoved)
             {
                 moveScript.IsFloor = true;
